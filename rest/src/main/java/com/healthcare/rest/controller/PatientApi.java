@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -28,6 +29,7 @@ import com.healthcare.model.entities.Visit;
 import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.DoctorService;
 import com.healthcare.service.PatientService;
+import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.dto.converter.DTOEntityConverter;
 
@@ -46,39 +48,45 @@ public class PatientApi {
 	}
 	
 	@GetMapping
-	public List<Patient> getPatients() {
-		return patientService.getPatients();
+	public List<PatientDTO> getPatients() {
+		return patientService
+				.getPatients()
+				.stream()
+				.map(DTOEntityConverter::toPatientDTO)
+				.collect(Collectors.toList());
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Patient processPatientRegistration(@RequestBody @Valid Patient patient, BindingResult result) {
+	public PatientDTO processPatientRegistration(@RequestBody @Valid PatientDTO patientDTO, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		Patient registeredPatient = patientService.registerPatient(patient);
-		return registeredPatient;
+		Patient registeredPatient = patientService.registerPatient(DTOEntityConverter.toPatientEntity(patientDTO));
+		return DTOEntityConverter.toPatientDTO(registeredPatient);
 	}
 	
 	@GetMapping("/{id}")
-	public Patient getPatient(@PathVariable long id) {
-		return patientService.getPatientById(id);
+	public PatientDTO getPatient(@PathVariable long id) {
+		Patient patient = patientService.getPatientById(id);
+		return DTOEntityConverter.toPatientDTO(patient);
 	}
 	
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Patient updatePatient(@RequestBody @Valid Patient patient, BindingResult result, @PathVariable long id) {
+	public PatientDTO updatePatient(@RequestBody @Valid PatientDTO patientDTO, BindingResult result, @PathVariable long id) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
+		Patient patient = DTOEntityConverter.toPatientEntity(patientDTO);
 		patient.setId(id);
 		Patient persistedPatient = patientService.updatePatient(patient);
-		return persistedPatient;		
+		return DTOEntityConverter.toPatientDTO(persistedPatient);		
 	}
 	
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Visit addVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
+	public VisitDTO addVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
@@ -89,7 +97,7 @@ public class PatientApi {
 		Visit visit = DTOEntityConverter.toVisitEntity(visitDTO, patient, doctor);
 		
 		Visit registeredVisit = patientService.addVisit(visit);
-		return registeredVisit;
+		return DTOEntityConverter.toVisitDTO(registeredVisit, patient.getId(), doctor.getId());
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)
