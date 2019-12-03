@@ -34,7 +34,7 @@ public abstract class Person {
 	@Column(name = "phone_number", nullable = false, length = 40)
 	private String phoneNumber;
 	
-	@Column(name = "email", nullable = false, length = 100)
+	@Column(name = "email", length = 100)
 	private String email;	
 
 	@Column(name = "create_time", nullable = false, updatable = false)
