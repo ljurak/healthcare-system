@@ -29,6 +29,7 @@ import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.DoctorService;
 import com.healthcare.service.PatientService;
 import com.healthcare.service.dto.VisitDTO;
+import com.healthcare.service.dto.converter.DTOEntityConverter;
 
 @RestController
 @RequestMapping("/patients")
@@ -85,7 +86,7 @@ public class PatientApi {
 		visitDTO.setPatientId(id);
 		Patient patient = patientService.getPatientById(visitDTO.getPatientId());
 		Doctor doctor = doctorService.getDoctorById(visitDTO.getDoctorId());
-		Visit visit = toVisit(visitDTO, patient, doctor);
+		Visit visit = DTOEntityConverter.toVisitEntity(visitDTO, patient, doctor);
 		
 		Visit registeredVisit = patientService.addVisit(visit);
 		return registeredVisit;
@@ -99,14 +100,5 @@ public class PatientApi {
 	@ExceptionHandler(InvalidRequestException.class)
 	public ResponseEntity<Map<String, String>> handleInvalidRequestException(InvalidRequestException ex) {
 		return new ResponseEntity<>(Collections.singletonMap("error", ex.getMessage()), HttpStatus.BAD_REQUEST);
-	}
-	
-	private Visit toVisit(VisitDTO visitDTO, Patient patient, Doctor doctor) {
-		Visit visit = new Visit();
-		visit.setDoctor(doctor);
-		visit.setPatient(patient);
-		visit.setVisitDate(visitDTO.getVisitDate());
-		visit.setVisitTime(visitDTO.getVisitTime());
-		return visit;
 	}
 }
