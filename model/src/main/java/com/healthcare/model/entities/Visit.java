@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "visits")
@@ -30,15 +29,13 @@ public class Visit {
 	@JoinColumn(name = "doctor_id", nullable = false)
 	private Doctor doctor;
 	
-	@Column(name = "visit_date")
-	@NotNull
+	@Column(name = "visit_date", nullable = false)
 	private LocalDate visitDate;
 	
-	@Column(name = "visit_time")
-	@NotNull
+	@Column(name = "visit_time", nullable = false)
 	private LocalTime visitTime;
 	
-	@NotNull
+	@Column(name = "status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private VisitStatus status;
 

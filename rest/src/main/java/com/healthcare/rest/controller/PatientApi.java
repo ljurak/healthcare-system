@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.healthcare.model.entities.Doctor;
 import com.healthcare.model.entities.Patient;
 import com.healthcare.model.entities.Visit;
-import com.healthcare.rest.dto.VisitDTO;
 import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.DoctorService;
 import com.healthcare.service.PatientService;
+import com.healthcare.service.dto.VisitDTO;
 
 @RestController
 @RequestMapping("/patients")
