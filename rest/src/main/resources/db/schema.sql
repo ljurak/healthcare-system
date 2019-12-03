@@ -1,0 +1,11 @@
+CREATE TABLE patients (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	first_name VARCHAR(40) NOT NULL,
+	last_name VARCHAR(40) NOT NULL,
+	birth_date DATETIME NOT NULL,
+	address VARCHAR(100) NOT NULL,
+	phone_number VARCHAR(40) NOT NULL,
+	email VARCHAR(100),
+	create_time DATETIME NOT NULL,
+	update time DATETIME NOT NULL
+);

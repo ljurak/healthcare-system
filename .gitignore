@@ -1,0 +1,9 @@
+**/target/**
+
+!**/src/main/**
+!**/src/test/**
+
+**/HELP.md
+**/.classpath
+**/.project
+**/.settings
