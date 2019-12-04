@@ -1,6 +1,7 @@
 package com.healthcare.model.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -12,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "visits")
@@ -38,6 +42,22 @@ public class Visit {
 	@Column(name = "status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private VisitStatus status;
+	
+	@Column(name = "create_time", nullable = false, updatable = false)
+	@CreationTimestamp
+	private LocalDateTime createTime;
+	
+	@Column(name = "update_time", nullable = false)
+	@UpdateTimestamp
+	private LocalDateTime updateTime;
+	
+	public LocalDateTime getCreateTime() {
+		return createTime;
+	}
+	
+	public LocalDateTime getUpdateTime() {
+		return updateTime;
+	}
 
 	public Patient getPatient() {
 		return patient;
