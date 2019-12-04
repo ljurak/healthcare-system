@@ -12,5 +12,5 @@ import com.healthcare.model.entities.Patient;
 public interface PatientRepo extends CrudRepository<Patient, Long> {
 	
 	@Query("select p from Patient p order by p.lastName")
-	public List<Patient> findAllOrderByLastName();
+	List<Patient> findAllOrderByLastName();
 }
