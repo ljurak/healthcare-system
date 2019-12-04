@@ -65,6 +65,11 @@ public class PatientServiceImpl implements PatientService {
 		LOGGER.info("Successfully updated patient: {}", persistedPatient);
 		return persistedPatient;
 	}	
+	
+	@Override
+	public List<Visit> getPatientVisits(Long id) {
+		return visitRepo.findVisitsByPatient(id);
+	}
 
 	@Override
 	@Transactional(readOnly = false)
@@ -83,7 +88,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 	
 	private boolean checkVisitAvailability(Visit visit) {
-		Visit existingVisit = visitRepo.findVisitByDoctorAndDate(
+		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTime(
 				visit.getDoctor(), visit.getVisitDate(), visit.getVisitTime());
 		return existingVisit == null;
 	}

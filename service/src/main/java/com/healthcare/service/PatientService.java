@@ -45,6 +45,14 @@ public interface PatientService {
 	Patient updatePatient(Patient patient);
 	
 	/**
+	 * Retrieves list of specified patient's visits.
+	 * 
+	 * @param id patient id
+	 * @return list of patient's visits 
+	 */
+	List<Visit> getPatientVisits(Long id);
+	
+	/**
 	 * Adds visit for a patient to the specified doctor
 	 * at a specified time. If appointment at given time
 	 * is not possible throws <code>Visit Exception</code>
