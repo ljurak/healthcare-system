@@ -85,6 +85,15 @@ public class PatientApi {
 		return DTOEntityConverter.toPatientDTO(persistedPatient);		
 	}
 	
+	@GetMapping("/{id}/visits")
+	public List<VisitDTO> getPatientVisits(@PathVariable long id) {
+		return patientService
+				.getPatientVisits(id)
+				.stream()
+				.map(visit -> DTOEntityConverter.toVisitDTO(visit, visit.getPatient().getId(), visit.getDoctor().getId()))
+				.collect(Collectors.toList());
+	}
+	
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public VisitDTO addVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
 		if (result.hasErrors()) {
