@@ -48,25 +48,31 @@ public class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
+	public List<PatientDTO> getPatients() {
+		List<Patient> patients = patientRepo.findAllOrderByLastName();
+		return patientConverter.convertFromEntity(patients);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public PatientDTO registerPatient(PatientDTO patientDTO) {
 		LOGGER.info("An attempt to register patient: {}", patientDTO);
 		Patient registeredPatient = patientRepo.save(patientConverter.convertFromDTO(patientDTO));
 		LOGGER.info("Successfully registered patient: {}", registeredPatient);
 		return patientConverter.convertFromEntity(registeredPatient);
-	}
-	
-	@Override
-	public List<PatientDTO> getPatients() {
-		List<Patient> patients = patientRepo.findAllOrderByLastName();
-		return patientConverter.convertFromEntity(patients);
-	}
+	}	
 
 	@Override
 	public PatientDTO getPatientById(Long id) {
 		Patient patient = patientRepo.findById(id)
 			.orElseThrow(() -> new PatientException("Patient with id: " + id + " does not exist"));
 		return patientConverter.convertFromEntity(patient);
+	}
+	
+	@Override
+	public List<PatientDTO> getPatientsByLastName(String lastName) {
+		List<Patient> patients = patientRepo.findByLastNameContainingIgnoreCaseOrderByLastName(lastName);
+		return patientConverter.convertFromEntity(patients);
 	}
 	
 	@Override

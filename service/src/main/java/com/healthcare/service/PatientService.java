@@ -9,6 +9,13 @@ import com.healthcare.service.dto.VisitDTO;
 public interface PatientService {
 	
 	/**
+	 * Retrieves list of all patients.
+	 * 
+	 * @return list of all patients
+	 */
+	List<PatientDTO> getPatients();
+	
+	/**
 	 * Registers patient.
 	 * 
 	 * @param patient patient
@@ -28,11 +35,12 @@ public interface PatientService {
 	PatientDTO getPatientById(Long id);
 	
 	/**
-	 * Retrieves list of all patients.
+	 * Retrieves patients with matching last name or its part.
 	 * 
-	 * @return list of all patients
+	 * @param lastName patient last name or its part
+	 * @return list of patients
 	 */
-	List<PatientDTO> getPatients();
+	List<PatientDTO> getPatientsByLastName(String lastName);	
 	
 	/**
 	 * Updates patient data.
