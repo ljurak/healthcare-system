@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,8 +57,12 @@ public class PatientApi {
 	
 	@GetMapping("/{id}")
 	public PatientDTO getPatient(@PathVariable long id) {
-		PatientDTO patientDTO = patientService.getPatientById(id);
-		return patientDTO;
+		return patientService.getPatientById(id);
+	}
+	
+	@GetMapping(params = "lastname")
+	public List<PatientDTO> getPatientsByLastname(@RequestParam String lastname) {
+		return patientService.getPatientsByLastName(lastname);
 	}
 	
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
