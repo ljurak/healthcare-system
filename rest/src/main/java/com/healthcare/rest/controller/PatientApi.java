@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -23,15 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.healthcare.model.entities.Doctor;
-import com.healthcare.model.entities.Patient;
-import com.healthcare.model.entities.Visit;
 import com.healthcare.rest.exception.InvalidRequestException;
-import com.healthcare.service.DoctorService;
 import com.healthcare.service.PatientService;
 import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
-import com.healthcare.service.dto.converter.DTOEntityConverter;
 
 @RestController
 @RequestMapping("/patients")
@@ -39,21 +33,14 @@ public class PatientApi {
 	
 	private PatientService patientService;
 	
-	private DoctorService doctorService;
-	
 	@Autowired
-	public PatientApi(PatientService patientService, DoctorService doctorService) {
+	public PatientApi(PatientService patientService) {
 		this.patientService = patientService;
-		this.doctorService = doctorService;
 	}
 	
 	@GetMapping
 	public List<PatientDTO> getPatients() {
-		return patientService
-				.getPatients()
-				.stream()
-				.map(DTOEntityConverter::toPatientDTO)
-				.collect(Collectors.toList());
+		return patientService.getPatients();
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -63,14 +50,14 @@ public class PatientApi {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		Patient registeredPatient = patientService.registerPatient(DTOEntityConverter.toPatientEntity(patientDTO));
-		return DTOEntityConverter.toPatientDTO(registeredPatient);
+		PatientDTO registeredPatient = patientService.registerPatient(patientDTO);
+		return registeredPatient;
 	}
 	
 	@GetMapping("/{id}")
 	public PatientDTO getPatient(@PathVariable long id) {
-		Patient patient = patientService.getPatientById(id);
-		return DTOEntityConverter.toPatientDTO(patient);
+		PatientDTO patientDTO = patientService.getPatientById(id);
+		return patientDTO;
 	}
 	
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -79,34 +66,27 @@ public class PatientApi {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		Patient patient = DTOEntityConverter.toPatientEntity(patientDTO);
-		patient.setId(id);
-		Patient persistedPatient = patientService.updatePatient(patient);
-		return DTOEntityConverter.toPatientDTO(persistedPatient);		
+		PatientDTO updatedPatient = patientService.updatePatient(patientDTO, id);
+		return updatedPatient;
 	}
 	
 	@GetMapping("/{id}/visits")
 	public List<VisitDTO> getPatientVisits(@PathVariable long id) {
-		return patientService
-				.getPatientVisits(id)
-				.stream()
-				.map(visit -> DTOEntityConverter.toVisitDTO(visit, visit.getPatient().getId(), visit.getDoctor().getId()))
-				.collect(Collectors.toList());
+		return patientService.getPatientVisits(id);
 	}
 	
+	/**
+	 * @throws VisitException if visit at given time is not available 
+	 */
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public VisitDTO addVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		visitDTO.setPatientId(id);
-		Patient patient = patientService.getPatientById(visitDTO.getPatientId());
-		Doctor doctor = doctorService.getDoctorById(visitDTO.getDoctorId());
-		Visit visit = DTOEntityConverter.toVisitEntity(visitDTO, patient, doctor);
-		
-		Visit registeredVisit = patientService.addVisit(visit);
-		return DTOEntityConverter.toVisitDTO(registeredVisit, patient.getId(), doctor.getId());
+		visitDTO.setPatientId(id);		
+		VisitDTO registeredVisit = patientService.addVisit(visitDTO);
+		return registeredVisit;
 	}
 	
 	@ExceptionHandler(NoSuchElementException.class)
