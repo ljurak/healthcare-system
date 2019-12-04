@@ -7,6 +7,8 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.healthcare.model.entities.VisitStatus;
+
 public class VisitDTO {
 	
 	@NotNull
@@ -23,6 +25,8 @@ public class VisitDTO {
 	
 	@NotNull
 	private LocalTime visitTime;
+	
+	private VisitStatus status;
 
 	public Long getPatientId() {
 		return patientId;
@@ -54,5 +58,13 @@ public class VisitDTO {
 
 	public void setVisitTime(LocalTime visitTime) {
 		this.visitTime = visitTime;
-	}	
+	}
+
+	public VisitStatus getVisitStatus() {
+		return status;
+	}
+
+	public void setVisitStatus(VisitStatus visitStatus) {
+		this.status = visitStatus;
+	}
 }
