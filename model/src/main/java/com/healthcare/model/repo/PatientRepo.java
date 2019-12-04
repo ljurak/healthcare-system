@@ -13,4 +13,6 @@ public interface PatientRepo extends CrudRepository<Patient, Long> {
 	
 	@Query("select p from Patient p order by p.lastName")
 	List<Patient> findAllOrderByLastName();
+	
+	List<Patient> findByLastNameContainingIgnoreCaseOrderByLastName(String lastname);
 }
