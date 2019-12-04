@@ -3,7 +3,8 @@ package com.healthcare.service;
 import java.util.List;
 
 import com.healthcare.model.entities.Patient;
-import com.healthcare.model.entities.Visit;
+import com.healthcare.service.dto.PatientDTO;
+import com.healthcare.service.dto.VisitDTO;
 
 public interface PatientService {
 	
@@ -13,7 +14,7 @@ public interface PatientService {
 	 * @param patient patient
 	 * @return registered patient
 	 */
-	Patient registerPatient(Patient patient);
+	PatientDTO registerPatient(PatientDTO patientDTO);
 	
 	/**
 	 * Retrieves patient by given id.
@@ -24,14 +25,14 @@ public interface PatientService {
 	 * @return patient 
 	 * @throws Patient Exception
 	 */
-	Patient getPatientById(Long id);
+	PatientDTO getPatientById(Long id);
 	
 	/**
 	 * Retrieves list of all patients.
 	 * 
 	 * @return list of all patients
 	 */
-	List<Patient> getPatients();
+	List<PatientDTO> getPatients();
 	
 	/**
 	 * Updates patient data.
@@ -39,10 +40,11 @@ public interface PatientService {
 	 * with given id does not exist.
 	 * 
 	 * @param patient patient to be updated
+	 * @param id patient id
 	 * @return updated patient
 	 * @throws Patient Exception
 	 */
-	Patient updatePatient(Patient patient);
+	PatientDTO updatePatient(PatientDTO patientDTO, Long id);
 	
 	/**
 	 * Retrieves list of specified patient's visits.
@@ -50,7 +52,7 @@ public interface PatientService {
 	 * @param id patient id
 	 * @return list of patient's visits 
 	 */
-	List<Visit> getPatientVisits(Long id);
+	List<VisitDTO> getPatientVisits(Long id);
 	
 	/**
 	 * Adds visit for a patient to the specified doctor
@@ -61,5 +63,5 @@ public interface PatientService {
 	 * @return added visit
 	 * @throws VisitException
 	 */
-	Visit addVisit(Visit visit);
+	VisitDTO addVisit(VisitDTO visit);
 }

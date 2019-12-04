@@ -14,6 +14,10 @@ import com.healthcare.model.entities.VisitStatus;
 import com.healthcare.model.repo.PatientRepo;
 import com.healthcare.model.repo.VisitRepo;
 import com.healthcare.service.PatientService;
+import com.healthcare.service.dto.PatientDTO;
+import com.healthcare.service.dto.VisitDTO;
+import com.healthcare.service.dto.converter.PatientConverter;
+import com.healthcare.service.dto.converter.VisitConverter;
 import com.healthcare.service.exception.PatientException;
 import com.healthcare.service.exception.VisitException;
 
@@ -27,69 +31,83 @@ public class PatientServiceImpl implements PatientService {
 	
 	private VisitRepo visitRepo;
 	
+	private PatientConverter patientConverter;
+	
+	private VisitConverter visitConverter;
+	
 	@Autowired
-	public PatientServiceImpl(PatientRepo patientRepo, VisitRepo visitRepo) {
+	public PatientServiceImpl(
+			PatientRepo patientRepo, 
+			VisitRepo visitRepo, 
+			PatientConverter patientConverter,
+			VisitConverter visitConverter) {
 		this.patientRepo = patientRepo;
 		this.visitRepo = visitRepo;
+		this.patientConverter = patientConverter;
+		this.visitConverter = visitConverter;
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Patient registerPatient(Patient patient) {
-		LOGGER.info("An attempt to register patient: {}", patient);
-		Patient registeredPatient = patientRepo.save(patient);
+	public PatientDTO registerPatient(PatientDTO patientDTO) {
+		LOGGER.info("An attempt to register patient: {}", patientDTO);
+		Patient registeredPatient = patientRepo.save(patientConverter.convertFromDTO(patientDTO));
 		LOGGER.info("Successfully registered patient: {}", registeredPatient);
-		return registeredPatient;
+		return patientConverter.convertFromEntity(registeredPatient);
 	}
 	
 	@Override
-	public List<Patient> getPatients() {
-		return patientRepo.findAllOrderByLastName();
+	public List<PatientDTO> getPatients() {
+		List<Patient> patients = patientRepo.findAllOrderByLastName();
+		return patientConverter.convertFromEntity(patients);
 	}
 
 	@Override
-	public Patient getPatientById(Long id) {
-		return patientRepo.findById(id)
+	public PatientDTO getPatientById(Long id) {
+		Patient patient = patientRepo.findById(id)
 			.orElseThrow(() -> new PatientException("Patient with id: " + id + " does not exist"));
+		return patientConverter.convertFromEntity(patient);
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Patient updatePatient(Patient patient) {
-		Patient persistedPatient = patientRepo.findById(patient.getId())
-				.orElseThrow(() -> new PatientException("Patient with id: " + patient.getId() + " does not exist"));
-		persistedPatient.setAddress(patient.getAddress());
-		persistedPatient.setPhoneNumber(patient.getPhoneNumber());
-		persistedPatient.setEmail(patient.getEmail());
+	public PatientDTO updatePatient(PatientDTO patientDTO, Long id) {
+		Patient persistedPatient = patientRepo.findById(id)
+				.orElseThrow(() -> new PatientException("Patient with id: " + id + " does not exist"));
+		persistedPatient.setAddress(patientDTO.getAddress());
+		persistedPatient.setPhoneNumber(patientDTO.getPhoneNumber());
+		persistedPatient.setEmail(patientDTO.getEmail());
 		persistedPatient = patientRepo.save(persistedPatient);
 		LOGGER.info("Successfully updated patient: {}", persistedPatient);
-		return persistedPatient;
+		return patientConverter.convertFromEntity(persistedPatient);
 	}	
 	
 	@Override
-	public List<Visit> getPatientVisits(Long id) {
-		return visitRepo.findVisitsByPatient(id);
+	public List<VisitDTO> getPatientVisits(Long id) {
+		List<Visit> visits = visitRepo.findVisitsByPatient(id);
+		return visitConverter.convertFromEntity(visits);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public Visit addVisit(Visit visit) {
-		LOGGER.info("An attempt to add visit: {}", visit);
-		boolean isVisitAvailable = checkVisitAvailability(visit);
+	public VisitDTO addVisit(VisitDTO visitDTO) {
+		LOGGER.info("An attempt to add visit: {}", visitDTO);
+		boolean isVisitAvailable = checkVisitAvailability(visitDTO);
 		if (isVisitAvailable) {
+			Visit visit = visitConverter.convertFromDTO(visitDTO);
 			visit.setStatus(VisitStatus.ACTIVE);
 			Visit registeredVisit = visitRepo.save(visit);
 			LOGGER.info("Successfully registered visit: {}", visit);
-			return registeredVisit;
+			return visitConverter.convertFromEntity(registeredVisit);
 		} else {
-			LOGGER.info("Unable to add visit: {}", visit);
+			LOGGER.info("Unable to add visit: {}", visitDTO);
 			throw new VisitException("Visit at given time is not available");
 		}
 	}
 	
-	private boolean checkVisitAvailability(Visit visit) {
+	private boolean checkVisitAvailability(VisitDTO visitDTO) {
 		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTime(
-				visit.getDoctor(), visit.getVisitDate(), visit.getVisitTime());
+				visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
 		return existingVisit == null;
 	}
 }
