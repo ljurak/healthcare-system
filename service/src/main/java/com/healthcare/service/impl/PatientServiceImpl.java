@@ -60,7 +60,7 @@ public class PatientServiceImpl implements PatientService {
 		Patient registeredPatient = patientRepo.save(patientConverter.convertFromDTO(patientDTO));
 		LOGGER.info("Successfully registered patient: {}", registeredPatient);
 		return patientConverter.convertFromEntity(registeredPatient);
-	}	
+	}
 
 	@Override
 	public PatientDTO getPatientById(Long id) {
