@@ -67,4 +67,13 @@ public class VisitDTO {
 	public void setVisitStatus(VisitStatus visitStatus) {
 		this.status = visitStatus;
 	}
+
+	@Override
+	public String toString() {
+		return "VisitDTO [patientId=" + patientId 
+				+ ", doctorId=" + doctorId 
+				+ ", visitDate=" + visitDate
+				+ ", visitTime=" + visitTime 
+				+ ", status=" + status + "]";
+	}
 }
