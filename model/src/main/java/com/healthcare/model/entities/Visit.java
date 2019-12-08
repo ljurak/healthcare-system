@@ -102,4 +102,14 @@ public class Visit {
 	public void setStatus(VisitStatus status) {
 		this.status = status;
 	}
+
+	@Override
+	public String toString() {
+		return "Visit [id=" + id 
+				+ ", patientId=" + patient.getId() 
+				+ ", doctorId=" + doctor.getId() 
+				+ ", visitDate=" + visitDate
+				+ ", visitTime=" + visitTime 
+				+ ", status=" + status + "]";
+	}
 }
