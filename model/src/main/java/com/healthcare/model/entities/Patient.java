@@ -7,4 +7,14 @@ import javax.persistence.Table;
 @Table(name = "patients")
 public class Patient extends Person {
 
+	@Override
+	public String toString() {
+		return "Patient [firstName=" + getFirstName() 
+				+ ", lastName=" + getLastName() 
+				+ ", birthDate=" + getBirthDate()
+				+ ", address=" + getAddress() 
+				+ ", phoneNumber=" + getPhoneNumber()
+				+ ", email=" + getEmail() 
+				+ ", id=" + getId() + "]";
+	}	
 }
