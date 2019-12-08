@@ -19,5 +19,17 @@ public class Doctor extends Person {
 
 	public void setSpecialty(Specialty specialty) {
 		this.specialty = specialty;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Doctor [firstName=" + getFirstName() 
+				+ ", lastName="	+ getLastName() 
+				+ ", birthDate=" + getBirthDate() 
+				+ ", address=" + getAddress()
+				+ ", phoneNumber=" + getPhoneNumber() 
+				+ ", email=" + getEmail() 
+				+ ", id=" + getId()
+				+ ", specialty=" + specialty + "]";
+	}
 }
