@@ -7,5 +7,6 @@ import com.healthcare.model.entities.Specialty;
 
 @Repository
 public interface SpecialtyRepo extends CrudRepository<Specialty, Long> {
-
+	
+	Specialty findByName(String name);
 }
