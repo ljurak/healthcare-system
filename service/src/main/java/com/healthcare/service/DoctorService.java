@@ -2,7 +2,6 @@ package com.healthcare.service;
 
 import java.util.List;
 
-import com.healthcare.model.entities.Doctor;
 import com.healthcare.service.dto.DoctorDTO;
 
 public interface DoctorService {
@@ -23,7 +22,7 @@ public interface DoctorService {
 	 * @return doctor 
 	 * @throws DoctorException
 	 */
-	Doctor getDoctorById(Long id);
+	DoctorDTO getDoctorById(Long id);
 	
 	/**
 	 * Retrieves doctors with matching last name or its part.
