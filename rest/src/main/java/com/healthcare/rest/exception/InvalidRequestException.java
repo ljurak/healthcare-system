@@ -4,8 +4,6 @@ import org.springframework.validation.Errors;
 
 /**
  * Exception thrown when request body has validation errors.
- * 
- * @author ljurak
  */
 public class InvalidRequestException extends RuntimeException {
 	
