@@ -30,6 +30,7 @@ public class DoctorConverterImpl implements DoctorConverter {
 		dto.setAddress(entity.getAddress());
 		dto.setPhoneNumber(entity.getPhoneNumber());
 		dto.setEmail(entity.getEmail());
+		dto.setSpecialty(entity.getSpecialty().getName());
 		return dto;
 	}	
 }
