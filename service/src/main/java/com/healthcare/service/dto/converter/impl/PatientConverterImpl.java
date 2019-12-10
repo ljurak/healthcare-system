@@ -24,6 +24,7 @@ public class PatientConverterImpl implements PatientConverter {
 	@Override
 	public PatientDTO convertFromEntity(Patient entity) {
 		PatientDTO dto = new PatientDTO();
+		dto.setId(entity.getId());
 		dto.setFirstName(entity.getFirstName());
 		dto.setLastName(entity.getLastName());
 		dto.setBirthDate(entity.getBirthDate());

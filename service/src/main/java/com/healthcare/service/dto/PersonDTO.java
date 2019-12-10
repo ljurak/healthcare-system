@@ -8,7 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
-public abstract class PersonDTO {	
+public abstract class PersonDTO {
+	
+	private Long id;
 	
 	@NotBlank
 	@Size(min = 3, max = 40)
@@ -33,6 +35,14 @@ public abstract class PersonDTO {
 	@Email
 	@Size(min = 10, max = 100)
 	private String email;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getFirstName() {
 		return firstName;

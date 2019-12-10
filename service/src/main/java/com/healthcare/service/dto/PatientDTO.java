@@ -4,7 +4,8 @@ public class PatientDTO extends PersonDTO {
 
 	@Override
 	public String toString() {
-		return "PatientDTO [firstName=" + getFirstName() 
+		return "PatientDTO [id=" + getId() 
+				+ ", firstName=" + getFirstName() 
 				+ ", lastName=" + getLastName() 
 				+ ", birthDate=" + getBirthDate() 
 				+ ", address=" + getAddress() 
