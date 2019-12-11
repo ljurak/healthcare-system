@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public abstract class PersonDTO {
@@ -29,7 +30,8 @@ public abstract class PersonDTO {
 	private String address;	
 	
 	@NotBlank
-	@Size(min = 3, max = 40)
+	@Pattern(regexp = "^\\+?[0-9]{9,15}$")
+	@Size(min = 9, max = 20)
 	private String phoneNumber;	
 	
 	@Email
