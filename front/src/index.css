@@ -5,6 +5,7 @@
 html {
 	font-size: 62.5%;
 	--color-main: #9907ab;
+	--color-main-light: rgba(153,7,171,.07);
 }
 
 body {
@@ -146,4 +147,47 @@ body {
 	border: 2px solid var(--color-main);
 	background-color: #fff;
 	color: var(--color-main);
+}
+
+.patients-list-title {
+	margin-top: 4rem;
+	margin-bottom: 1rem;
+	font-size: 2.2rem;
+	text-align: center;
+}
+
+.patients-list {
+	width: 100%;
+	margin-top: 1rem;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+.patients-list-header {
+	font-size: 2rem;
+	font-weight: bold;
+	background-color: var(--color-main);
+	color: #fff;
+}
+
+.patients-list th,
+.patients-list td {
+	padding: 1.5rem 0;
+	border-bottom: 1px solid #000;
+}
+
+.patients-list th {
+	border-bottom: none;
+}
+
+.patients-list tr:nth-of-type(2n) {
+	background-color: var(--color-main-light);
+}
+
+.patients-list .patient-link {
+	text-decoration: none;
+	color: var(--color-main);
+	display: inline-block;
+	width: 100%;
+	font-weight: bold;
 }
