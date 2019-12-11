@@ -23,18 +23,6 @@ const entity = (types, key) => {
 		}
 	};
 
-	const allIds = (state = [], action) => {
-		switch (action.type) {
-			case successAction:
-				return [
-					...state,
-					...action.payload.result
-				];
-			default:
-				return state;
-		}
-	};
-
 	const visibleIds = (state = [], action) => {
 		switch (action.type) {
 			case successAction:
@@ -46,9 +34,14 @@ const entity = (types, key) => {
 
 	return combineReducers({
 		byId,
-		allIds,
 		visibleIds
 	});
 };
+
+export const getVisibleIds = (state) => state.visibleIds;
+
+export const getEntity = (state, id) => state.byId[id];
+
+export const getVisibleEntities = (state) => state.visibleIds.map(id => getEntity(state, id));
 
 export default entity;
