@@ -1,152 +1,95 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import { addPatient } from '../actions';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 class PatientAddForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			firstName: '',
-			lastName: '',
-			birthDate: '',
-			address: '',
-			phoneNumber: '',
-			email: '',
-			firstNameValid: true,
-			lastNameValid: true,
-			birthDateValid: true,
-			addressValid: true,
-			phoneNumberValid: true,
-			emailValid: true
-		};
-	}
 
-	handleSubmit = (e) => {
-		e.preventDefault();
-		if (!this.validateForm()) {
-			return;
+	handleSubmit = (values, actions) => {
+		const patient = { ...values };
+		if (!patient.email) {
+			patient.email = null;
 		}
 
-		let { firstName, lastName, birthDate, address, phoneNumber, email } = this.state;
-		if (!email) {
-			email = null;
-		}
-		const patient = {
-			firstName,
-			lastName,
-			birthDate,
-			address,
-			phoneNumber,
-			email
-		};
-
-		this.props.addPatient(patient);
-	}
-
-	validateLength = (value, min, max) => {
-		if (value.length < min || value.length > max) {
-			return false;
-		}
-		return true;
-	}
-
-	validateFirstName = (e) => {
-		const value = e.target.value;
-		const isValid = this.validateLength(value, 3, 40);
-		this.setState({ firstName: value, firstNameValid: isValid });
-	}
-
-	validateLastName = (e) => {
-		const value = e.target.value;
-		const isValid = this.validateLength(value, 3, 40);
-		this.setState({ lastName: value, lastNameValid: isValid });
-	}
-
-	validateBirthDate = (e) => {
-		const value = e.target.value;
-		const birthDateRegex = /^(19[0-9]{2}|20[0-2][0-9])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-		let isValid = true;
-		if (!birthDateRegex.test(value)) {
-			isValid = false;
-		}
-		this.setState({ birthDate: value, birthDateValid: isValid });
-	}
-
-	validateAddress = (e) => {
-		const value = e.target.value;
-		const isValid = this.validateLength(value, 10, 100);
-		this.setState({ address: value, addressValid: isValid });
-	}
-
-	validatePhoneNumber = (e) => {
-		const value = e.target.value;
-		const phoneRegex = /^\+?[0-9]{9,15}$/;
-		let isValid = true;
-		if (!phoneRegex.test(value)) {
-			isValid = false;
-		}
-		this.setState({ phoneNumber: value, phoneNumberValid: isValid });
-	}
-
-	validateEmail = (e) => {
-		const value = e.target.value;
-		const emailRegex = /^[0-9a-zA-Z_.-]+@[0-9a-zA-Z.-]+\.[a-zA-Z]{2,3}$/i;
-		let isValid = true;
-		if (value.length && !emailRegex.test(value)) {
-			isValid = false;
-		}
-		this.setState({ email: value, emailValid: isValid });
-	}
-
-	validateForm = () => {
-		return this.state.firstName && this.state.firstNameValid && this.state.lastName && this.state.lastNameValid
-			&& this.state.birthDate && this.state.birthDateValid && this.state.address && this.state.addressValid
-			&& this.state.phoneNumber && this.state.phoneNumberValid && this.state.emailValid;
+		this.props.addPatient(patient)
+			.finally(() => {
+				actions.setSubmitting(false);
+				actions.resetForm();
+			});
 	}
 
 	render() {
-		const { firstName, lastName, birthDate, address, phoneNumber, email } = this.state;
-
 		return (
-			<form className="form" onSubmit={this.handleSubmit}>			
-				<div className={'form-row' + (this.state.firstNameValid ? '' : ' error')}>
-					<label htmlFor="firstName">First name*</label>
-					<input id="firstName" name="firstName" type="text" value={firstName} onChange={this.validateFirstName} />
-				</div>
-				<div className={'form-row' + (this.state.lastNameValid ? '' : ' error')}>
-					<label htmlFor="lastName">Last name*</label>
-					<input id="lastName" name="lastName" type="text" value={lastName} onChange={this.validateLastName} />
-				</div>
-				<div className={'form-row' + (this.state.birthDateValid ? '' : ' error')}>
-					<label htmlFor="birthDate">Birth date*</label>
-					<input id="birthDate" name="birthDate" type="text" placeholder="YYYY-MM-DD" value={birthDate} onChange={this.validateBirthDate} />
-				</div>
-				<div className={'form-row' + (this.state.addressValid ? '' : ' error')}>
-					<label htmlFor="address">Address*</label>
-					<input id="address" name="address" type="text" value={address} onChange={this.validateAddress} />
-				</div>
-				<div className={'form-row' + (this.state.phoneNumberValid ? '' : ' error')}>
-					<label htmlFor="phoneNumber">Phone number*</label>
-					<input id="phoneNumber" name="phoneNumber" type="text" value={phoneNumber} onChange={this.validatePhoneNumber} />
-				</div>
-				<div className={'form-row' + (this.state.emailValid ? '' : ' error')}>
-					<label htmlFor="email">Email</label>
-					<input id="email" name="email" type="email" value={email} onChange={this.validateEmail} />
-				</div>
-				<div className="form-row btn">
-					<button className="submit-btn">
-						Add patient
-					</button>
-				</div>		
-			</form>
+			<React.Fragment>
+				<h3 className="patient-add-form-title">Add new patient</h3>
+				<Formik
+					initialValues={{ firstName: '', lastName: '', birthDate: '', address: '', phoneNumber: '', email: ''}}
+					validationSchema={Yup.object({
+						firstName: Yup.string()
+							.min(3, 'Must be 3 characters or more')
+							.max(40, 'Must be 40 characters or less')
+							.required('Required'),
+						lastName: Yup.string()
+							.min(3, 'Must be 3 characters or more')
+							.max(40, 'Must be 40 characters or less')
+							.required('Required'),
+						birthDate: Yup.string()
+							.matches(/^(19[0-9]{2}|20[0-2][0-9])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, 'Must be in format YYYY-MM-DD')
+							.required('Required'),
+						address: Yup.string()
+							.min(10, 'Must be 10 characters or more')
+							.max(100, 'Must be 100 characters or less')
+							.required('Required'),
+						phoneNumber: Yup.string()
+							.matches(/^\+?[0-9]{9,15}$/, 'Must be valid phone number')
+							.required('Required'),
+						email: Yup.string()
+							.email('Must be valid email')
+					})}
+					onSubmit={this.handleSubmit}>
+					
+					{({ errors, touched, isSubmitting }) => (
+						<Form className="form">
+							<div className={'form-row' + (errors.firstName && touched.firstName ? ' error' : '')}>
+								<label htmlFor="firstName">First name*</label>
+								<Field id="firstName" name="firstName" type="text" />
+								<ErrorMessage name="firstName" component="div" className="error" />
+							</div>
+							<div className={'form-row' + (errors.lastName && touched.lastName ? ' error' : '')}>
+								<label htmlFor="lastName">Last name*</label>
+								<Field id="lastName" name="lastName" type="text" />
+								<ErrorMessage name="lastName" component="div" className="error" />
+							</div>
+							<div className={'form-row' + (errors.birthDate && touched.birthDate ? ' error' : '')}>
+								<label htmlFor="birthDate">Birth date*</label>
+								<Field id="birthDate" name="birthDate" type="text" placeholder="YYYY-MM-DD" />
+								<ErrorMessage name="birthDate" component="div" className="error" />
+							</div>
+							<div className={'form-row' + (errors.address && touched.address ? ' error' : '')}>
+								<label htmlFor="address">Address*</label>
+								<Field id="address" name="address" type="text" />
+								<ErrorMessage name="address" component="div" className="error" />
+							</div>
+							<div className={'form-row' + (errors.phoneNumber && touched.phoneNumber ? ' error' : '')}>
+								<label htmlFor="phoneNumber">Phone number*</label>
+								<Field id="phoneNumber" name="phoneNumber" type="text" />
+								<ErrorMessage name="phoneNumber" component="div" className="error" />
+							</div>
+							<div className={'form-row' + (errors.email && touched.email ? ' error' : '')}>
+								<label htmlFor="email">Email</label>
+								<Field id="email" name="email" type="email" />
+								<ErrorMessage name="email" component="div" className="error" />
+							</div>
+							<div className="form-row btn">
+								<button className="submit-btn" type="submit" disabled={isSubmitting}>
+									Add patient
+								</button>
+							</div>
+						</Form>		
+					)}					
+				</Formik>
+			</React.Fragment>
 		);
 	}
 }
 
-const mapDispatchToProps = { addPatient };
-
-export default connect(
-	null, 
-	mapDispatchToProps
-)(PatientAddForm);
+export default PatientAddForm;
