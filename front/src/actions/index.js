@@ -12,6 +12,7 @@ const makeRequestActionCreator = (type) => () => ({
 
 const fetchPatientsRequest = makeRequestActionCreator(actions.FETCH_PATIENTS_REQUEST);
 const fetchDoctorsRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_REQUEST);
+const addPatientRequest = makeRequestActionCreator(actions.ADD_PATIENT_REQUEST);
 
 const makeSuccessActionCreator = (type) => (payload) => ({
 	type,
@@ -20,6 +21,7 @@ const makeSuccessActionCreator = (type) => (payload) => ({
 
 const fetchPatientsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENTS_SUCCESS);
 const fetchDoctorsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_SUCCESS);
+const addPatientSuccess = makeSuccessActionCreator(actions.ADD_PATIENT_SUCCESS);
 
 const makeFailureActionCreator = (type) => (payload) => ({
 	type,
@@ -29,6 +31,7 @@ const makeFailureActionCreator = (type) => (payload) => ({
 
 const fetchPatientsFailure = makeFailureActionCreator(actions.FETCH_PATIENTS_FAILURE);
 const fetchDoctorsFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_FAILURE);
+const addPatientFailure = makeFailureActionCreator(actions.ADD_PATIENT_FAILURE);
 
 // ASYNC ACTION CREATORS
 
@@ -95,6 +98,17 @@ export const fetchDoctorById = (id) => (dispatch, getState) => {
 		.then(
 			response => dispatch(fetchDoctorsSuccess(normalize([ response ], schema.doctorsListSchema))),
 			error => dispatch(fetchDoctorsFailure(error))
+		);
+};
+
+export const addPatient = (patient) => (dispatch) => {
+	dispatch(addPatientRequest());
+
+	return PatientsApi.addPatient(patient)
+		.then(handleApiResponse)
+		.then(
+			response => dispatch(addPatientSuccess(normalize([ response ], schema.patientsListSchema))),
+			error => dispatch(addPatientFailure(error))
 		);
 };
 
