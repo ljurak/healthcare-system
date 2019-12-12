@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../logo.svg';
 import { fetchPatientsByLastname } from '../actions';
 import { connect } from 'react-redux';
 import Header from './Header';
@@ -37,12 +36,6 @@ class App extends React.Component {
                 			<Switch>
                 				<Route path="/patients" component={PatientsPage} />
                 				<Route path="/doctors" component={DoctorsPage} />
-		                    
-			                    <div>
-			                        <ul>
-			                            {this.props.patients.map(patient => <li key={patient.id}>{`${patient.firstName} ${patient.lastName}`}</li>)}
-			                        </ul>
-			                    </div>
 		                    </Switch>
                 		</main>	                	
 	                </div>
