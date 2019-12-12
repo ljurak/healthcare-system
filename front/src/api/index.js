@@ -14,7 +14,7 @@ PatientsApi.fetchPatientById = function(id) {
 	return fetch(`${BASE_API_URL}/patients/${id}`);
 };
 
-PatientsApi.registerPatient = function(patient) {
+PatientsApi.addPatient = function(patient) {
 	return fetch(`${BASE_API_URL}/patients`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
