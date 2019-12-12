@@ -15,12 +15,12 @@ public interface DoctorService {
 	
 	/**
 	 * Retrieves doctor by given id.
-	 * Throws <code>DoctorException</code> if doctor
+	 * Throws <code>DoctorNotFoundException</code> if doctor
 	 * with given id does not exist.
 	 * 
 	 * @param id id
 	 * @return doctor 
-	 * @throws DoctorException
+	 * @throws DoctorNotFoundException
 	 */
 	DoctorDTO getDoctorById(Long id);
 	
