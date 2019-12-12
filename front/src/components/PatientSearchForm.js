@@ -21,10 +21,9 @@ class PatientSearchForm extends React.Component {
 
 		const searchValue = this.state.searchValue;
 		this.props.fetchPatientsByLastname(searchValue);
+		this.props.setShowSearchResults(true);
 
-		this.setState({
-			searchValue: ''
-		});
+		this.setState({	searchValue: ''	});
 	}
 
 	render() {
