@@ -6,28 +6,19 @@ import { PatientsApi, DoctorsApi } from '../api';
 
 // ACTION CREATORS
 
-const makeRequestActionCreator = (type) => () => ({
-	type
-});
+const makeRequestActionCreator = (type) => () => ({	type });
 
 const fetchPatientsRequest = makeRequestActionCreator(actions.FETCH_PATIENTS_REQUEST);
 const fetchDoctorsRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_REQUEST);
 const addPatientRequest = makeRequestActionCreator(actions.ADD_PATIENT_REQUEST);
 
-const makeSuccessActionCreator = (type) => (payload) => ({
-	type,
-	payload
-});
+const makeSuccessActionCreator = (type) => (payload) => ({ type, payload });
 
 const fetchPatientsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENTS_SUCCESS);
 const fetchDoctorsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_SUCCESS);
 const addPatientSuccess = makeSuccessActionCreator(actions.ADD_PATIENT_SUCCESS);
 
-const makeFailureActionCreator = (type) => (payload) => ({
-	type,
-	payload,
-	error: true
-});
+const makeFailureActionCreator = (type) => (payload) => ({ type, payload, error: true});
 
 const fetchPatientsFailure = makeFailureActionCreator(actions.FETCH_PATIENTS_FAILURE);
 const fetchDoctorsFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_FAILURE);
