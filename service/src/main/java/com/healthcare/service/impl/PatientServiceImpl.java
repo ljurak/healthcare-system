@@ -18,7 +18,7 @@ import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.dto.converter.PatientConverter;
 import com.healthcare.service.dto.converter.VisitConverter;
-import com.healthcare.service.exception.PatientException;
+import com.healthcare.service.exception.PatientNotFoundException;
 import com.healthcare.service.exception.VisitException;
 
 @Service
@@ -65,7 +65,7 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public PatientDTO getPatientById(Long id) {
 		Patient patient = patientRepo.findById(id)
-			.orElseThrow(() -> new PatientException("Patient with id: " + id + " does not exist"));
+			.orElseThrow(() -> new PatientNotFoundException("Patient with id: " + id + " does not exist"));
 		return patientConverter.convertFromEntity(patient);
 	}
 	
@@ -79,7 +79,7 @@ public class PatientServiceImpl implements PatientService {
 	@Transactional(readOnly = false)
 	public PatientDTO updatePatient(PatientDTO patientDTO, Long id) {
 		Patient persistedPatient = patientRepo.findById(id)
-				.orElseThrow(() -> new PatientException("Patient with id: " + id + " does not exist"));
+				.orElseThrow(() -> new PatientNotFoundException("Patient with id: " + id + " does not exist"));
 		persistedPatient.setAddress(patientDTO.getAddress());
 		persistedPatient.setPhoneNumber(patientDTO.getPhoneNumber());
 		persistedPatient.setEmail(patientDTO.getEmail());

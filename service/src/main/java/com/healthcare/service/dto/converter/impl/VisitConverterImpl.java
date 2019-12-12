@@ -10,8 +10,8 @@ import com.healthcare.model.repo.DoctorRepo;
 import com.healthcare.model.repo.PatientRepo;
 import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.dto.converter.VisitConverter;
-import com.healthcare.service.exception.DoctorException;
-import com.healthcare.service.exception.PatientException;
+import com.healthcare.service.exception.DoctorNotFoundException;
+import com.healthcare.service.exception.PatientNotFoundException;
 
 @Component
 public class VisitConverterImpl implements VisitConverter {
@@ -30,9 +30,9 @@ public class VisitConverterImpl implements VisitConverter {
 	public Visit convertFromDTO(VisitDTO dto) {
 		Visit entity = new Visit();
 		Patient patient = patientRepo.findById(dto.getPatientId())
-				.orElseThrow(() -> new PatientException("Patient with id: " + dto.getPatientId() + " does not exist"));
+				.orElseThrow(() -> new PatientNotFoundException("Patient with id: " + dto.getPatientId() + " does not exist"));
 		Doctor doctor = doctorRepo.findById(dto.getDoctorId())
-				.orElseThrow(() -> new DoctorException("Doctor with id: " + dto.getDoctorId() + " does not exist"));
+				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + dto.getDoctorId() + " does not exist"));
 		entity.setPatient(patient);
 		entity.setDoctor(doctor);
 		entity.setVisitDate(dto.getVisitDate());

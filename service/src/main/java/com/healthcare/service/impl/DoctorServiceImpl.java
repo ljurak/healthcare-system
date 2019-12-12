@@ -11,7 +11,7 @@ import com.healthcare.model.repo.DoctorRepo;
 import com.healthcare.service.DoctorService;
 import com.healthcare.service.dto.DoctorDTO;
 import com.healthcare.service.dto.converter.DoctorConverter;
-import com.healthcare.service.exception.DoctorException;
+import com.healthcare.service.exception.DoctorNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,7 +35,7 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	public DoctorDTO getDoctorById(Long id) {
 		Doctor doctor = doctorRepo.findById(id)
-				.orElseThrow(() -> new DoctorException("Doctor with id: " + id + " does not exist"));
+				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
 		return doctorConverter.convertFromEntity(doctor);
 	}	
 
