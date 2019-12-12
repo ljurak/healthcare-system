@@ -5,15 +5,28 @@ import PatientAddForm from './PatientAddForm';
 import PatientSearchForm from './PatientSearchForm';
 import PatientsList from './PatientsList';
 import { getVisiblePatients } from '../reducers';
+import { addPatient } from '../actions';
 
 class PatientsPage extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showSearchResults: false
+		};
+	}
+
+	setShowSearchResults = (showResults) => {
+		this.setState({ showSearchResults: showResults });
+	}
+
 	render() {
-		const { patients } = this.props;
+		const { patients, addPatient } = this.props;
+		const { showSearchResults } = this.state;
 		return (
 			<React.Fragment>
-				<PatientAddForm />
-				<PatientSearchForm />
-				<PatientsList patients={patients} />
+				<PatientAddForm addPatient={addPatient} />
+				<PatientSearchForm setShowSearchResults={this.setShowSearchResults} />
+				{ showSearchResults && <PatientsList patients={patients} header="Search Results" /> }
 			</React.Fragment>
 		);
 	}
@@ -23,4 +36,9 @@ const mapStateToProps = (state) => ({
 	patients: getVisiblePatients(state)
 });
 
-export default connect(mapStateToProps)(PatientsPage);
+const mapDispatchToProps = { addPatient };
+
+export default connect(
+	mapStateToProps, 
+	mapDispatchToProps
+)(PatientsPage);
