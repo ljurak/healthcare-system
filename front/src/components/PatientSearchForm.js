@@ -31,12 +31,12 @@ class PatientSearchForm extends React.Component {
 		const searchValue = this.state.searchValue;
 
 		return (
-			<form className="search-form" onSubmit={this.handleSubmit}>
+			<form className="form" onSubmit={this.handleSubmit}>
 				<div className="form-row">
 					<label htmlFor="lastname">Patient's last name</label>
 					<input id="lastname" type="text" value={searchValue} onChange={this.handleChange} />
 				</div>
-				<div className="form-row">
+				<div className="form-row btn">
 					<button className="submit-btn">
 						Search
 					</button>
