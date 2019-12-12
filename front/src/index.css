@@ -6,6 +6,8 @@ html {
 	font-size: 62.5%;
 	--color-main: #9907ab;
 	--color-main-light: rgba(153,7,171,.07);
+	/*--color-main: #7a05a8;
+	--color-main-light: rgba(122,5,168,.07);*/
 }
 
 body {
@@ -110,18 +112,27 @@ body {
 	width: 70%;
 }
 
-.search-form .form-row {
+.form .form-row {
 	margin-bottom: 1.6rem;
 }
 
-.search-form label {
+.form .form-row.error input {
+	background-color: #ffeded;
+	border-color: #d8083e;
+}
+
+.form .form-row.btn {
+	text-align: center;
+}
+
+.form label {
 	display: block;
 	font-size: 1.5rem;
 	margin-bottom: 0.8rem;
 	font-weight: bold;
 }
 
-.search-form input {
+.form input {
 	display: block;
 	width: 100%;
 	padding: 1.2rem;
@@ -132,7 +143,7 @@ body {
 	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
 }
 
-.search-form .submit-btn {
+.form .submit-btn {
 	padding: 1rem 3rem;
 	border: 2px solid transparent;
 	border-radius: 4px;
@@ -143,7 +154,7 @@ body {
 	transition: 0.3s all;
 }
 
-.search-form .submit-btn:hover {
+.form .submit-btn:hover {
 	border: 2px solid var(--color-main);
 	background-color: #fff;
 	color: var(--color-main);
@@ -153,6 +164,7 @@ body {
 	margin-top: 4rem;
 	margin-bottom: 1rem;
 	font-size: 2.2rem;
+	text-transform: uppercase;
 	text-align: center;
 }
 
