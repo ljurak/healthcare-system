@@ -9,12 +9,12 @@ import com.healthcare.model.entities.Visit;
 import com.healthcare.model.repo.DoctorRepo;
 import com.healthcare.model.repo.PatientRepo;
 import com.healthcare.service.dto.VisitDTO;
-import com.healthcare.service.dto.converter.VisitConverter;
+import com.healthcare.service.dto.converter.DTOConverter;
 import com.healthcare.service.exception.DoctorNotFoundException;
 import com.healthcare.service.exception.PatientNotFoundException;
 
 @Component
-public class VisitConverterImpl implements VisitConverter {
+public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 	
 	private PatientRepo patientRepo;
 	

@@ -4,10 +4,10 @@ import org.springframework.stereotype.Component;
 
 import com.healthcare.model.entities.Patient;
 import com.healthcare.service.dto.PatientDTO;
-import com.healthcare.service.dto.converter.PatientConverter;
+import com.healthcare.service.dto.converter.DTOConverter;
 
 @Component
-public class PatientConverterImpl implements PatientConverter {
+public class PatientConverterImpl implements DTOConverter<PatientDTO, Patient> {
 
 	@Override
 	public Patient convertFromDTO(PatientDTO dto) {
