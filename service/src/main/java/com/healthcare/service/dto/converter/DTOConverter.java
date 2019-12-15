@@ -6,13 +6,11 @@ import java.util.stream.Collectors;
 /**
  * Generic interface exposing methods for converting
  * from/to DTOs or entities. 
- * 
- * @author ljurak
  *
  * @param <D> DTO
  * @param <E> entity
  */
-public interface GenericConverter<D, E> {
+public interface DTOConverter<D, E> {
 	
 	E convertFromDTO(D dto);
 	
