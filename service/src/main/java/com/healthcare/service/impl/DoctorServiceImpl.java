@@ -10,7 +10,7 @@ import com.healthcare.model.entities.Doctor;
 import com.healthcare.model.repo.DoctorRepo;
 import com.healthcare.service.DoctorService;
 import com.healthcare.service.dto.DoctorDTO;
-import com.healthcare.service.dto.converter.DoctorConverter;
+import com.healthcare.service.dto.converter.DTOConverter;
 import com.healthcare.service.exception.DoctorNotFoundException;
 
 @Service
@@ -18,10 +18,10 @@ import com.healthcare.service.exception.DoctorNotFoundException;
 public class DoctorServiceImpl implements DoctorService {
 
 	private DoctorRepo doctorRepo;
-	private DoctorConverter doctorConverter;
+	private DTOConverter<DoctorDTO, Doctor> doctorConverter;
 	
 	@Autowired
-	public DoctorServiceImpl(DoctorRepo doctorRepo, DoctorConverter doctorConverter) {
+	public DoctorServiceImpl(DoctorRepo doctorRepo, DTOConverter<DoctorDTO, Doctor> doctorConverter) {
 		this.doctorRepo = doctorRepo;
 		this.doctorConverter = doctorConverter;
 	}

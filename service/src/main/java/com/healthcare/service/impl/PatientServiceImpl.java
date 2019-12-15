@@ -16,8 +16,7 @@ import com.healthcare.model.repo.VisitRepo;
 import com.healthcare.service.PatientService;
 import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
-import com.healthcare.service.dto.converter.PatientConverter;
-import com.healthcare.service.dto.converter.VisitConverter;
+import com.healthcare.service.dto.converter.DTOConverter;
 import com.healthcare.service.exception.PatientNotFoundException;
 import com.healthcare.service.exception.VisitException;
 
@@ -31,16 +30,16 @@ public class PatientServiceImpl implements PatientService {
 	
 	private VisitRepo visitRepo;
 	
-	private PatientConverter patientConverter;
+	private DTOConverter<PatientDTO, Patient> patientConverter;
 	
-	private VisitConverter visitConverter;
+	private DTOConverter<VisitDTO, Visit> visitConverter;
 	
 	@Autowired
 	public PatientServiceImpl(
 			PatientRepo patientRepo, 
 			VisitRepo visitRepo, 
-			PatientConverter patientConverter,
-			VisitConverter visitConverter) {
+			DTOConverter<PatientDTO, Patient> patientConverter,
+			DTOConverter<VisitDTO, Visit> visitConverter) {
 		this.patientRepo = patientRepo;
 		this.visitRepo = visitRepo;
 		this.patientConverter = patientConverter;
