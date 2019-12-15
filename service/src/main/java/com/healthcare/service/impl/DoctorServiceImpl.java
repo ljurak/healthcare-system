@@ -2,6 +2,8 @@ package com.healthcare.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +18,11 @@ import com.healthcare.service.exception.DoctorNotFoundException;
 @Service
 @Transactional(readOnly = true)
 public class DoctorServiceImpl implements DoctorService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DoctorServiceImpl.class);
 
 	private DoctorRepo doctorRepo;
+	
 	private DTOConverter<DoctorDTO, Doctor> doctorConverter;
 	
 	@Autowired
@@ -33,6 +38,15 @@ public class DoctorServiceImpl implements DoctorService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
+	public DoctorDTO addDoctor(DoctorDTO doctorDTO) {
+		LOGGER.info("An attempt to add doctor: {}", doctorDTO);
+		Doctor doctor = doctorRepo.save(doctorConverter.convertFromDTO(doctorDTO));
+		LOGGER.info("Successfully added doctor: {}", doctor);
+		return doctorConverter.convertFromEntity(doctor);
+	}
+	
+	@Override
 	public DoctorDTO getDoctorById(Long id) {
 		Doctor doctor = doctorRepo.findById(id)
 				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
@@ -43,5 +57,18 @@ public class DoctorServiceImpl implements DoctorService {
 	public List<DoctorDTO> getDoctorsByLastName(String lastName) {
 		List<Doctor> doctors = doctorRepo.findByLastNameContainingIgnoreCaseOrderByLastName(lastName);
 		return doctorConverter.convertFromEntity(doctors);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public DoctorDTO updateDoctor(DoctorDTO doctorDTO, Long id) {
+		Doctor persistedDoctor = doctorRepo.findById(id)
+				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
+		persistedDoctor.setAddress(doctorDTO.getAddress());
+		persistedDoctor.setPhoneNumber(doctorDTO.getPhoneNumber());
+		persistedDoctor.setEmail(doctorDTO.getEmail());
+		persistedDoctor = doctorRepo.save(persistedDoctor);
+		LOGGER.info("Successfully updated doctor: {}", persistedDoctor);
+		return doctorConverter.convertFromEntity(persistedDoctor);
 	}	
 }
