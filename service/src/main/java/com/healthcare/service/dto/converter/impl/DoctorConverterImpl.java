@@ -1,14 +1,25 @@
 package com.healthcare.service.dto.converter.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.healthcare.model.entities.Doctor;
+import com.healthcare.model.entities.Specialty;
+import com.healthcare.model.repo.SpecialtyRepo;
 import com.healthcare.service.dto.DoctorDTO;
 import com.healthcare.service.dto.converter.DTOConverter;
+import com.healthcare.service.exception.SpecialtyNotFoundException;
 
 @Component
 public class DoctorConverterImpl implements DTOConverter<DoctorDTO, Doctor> {
 	
+	private SpecialtyRepo specialtyRepo;
+	
+	@Autowired	
+	public DoctorConverterImpl(SpecialtyRepo specialtyRepo) {
+		this.specialtyRepo = specialtyRepo;
+	}
+
 	@Override
 	public Doctor convertFromDTO(DoctorDTO dto) {
 		Doctor entity = new Doctor();
@@ -18,6 +29,9 @@ public class DoctorConverterImpl implements DTOConverter<DoctorDTO, Doctor> {
 		entity.setAddress(dto.getAddress());
 		entity.setPhoneNumber(dto.getPhoneNumber());
 		entity.setEmail(dto.getEmail());
+		Specialty specialty = specialtyRepo.findByName(dto.getSpecialty())
+				.orElseThrow(() -> new SpecialtyNotFoundException("Specialty [" + dto.getSpecialty() + "] does not exist"));
+		entity.setSpecialty(specialty);
 		return entity;
 	}
 
