@@ -9,7 +9,7 @@ public class InvalidRequestException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Errors errors;
+	private final Errors errors;
 	
 	public InvalidRequestException(String message, Errors errors) {
 		super(message);
