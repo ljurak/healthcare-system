@@ -1,6 +1,7 @@
 package com.healthcare.model.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,5 +15,5 @@ public interface SpecialtyRepo extends CrudRepository<Specialty, Long> {
 	@Query("select s from Specialty s")
 	List<Specialty> findAll();
 	
-	Specialty findByName(String name);
+	Optional<Specialty> findByName(String name);
 }
