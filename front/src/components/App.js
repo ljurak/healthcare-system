@@ -1,64 +1,28 @@
 import React from 'react';
-import { fetchPatientsByLastname } from '../actions';
-import { connect } from 'react-redux';
-import Header from './Header';
 import { Switch, Route } from 'react-router-dom';
-import PatientsPage from './PatientsPage';
+import { connect } from 'react-redux';
+
+import Header from './Header';
+import Footer from './Footer';
+import PatientComponent from './PatientComponent';
 import DoctorsPage from './DoctorsPage';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            searchInput: ''
-        }
-    }
+const App = () => (
+    <React.Fragment>
+        <Header />
+        <div className="main-content-wrapper">
+        	<div className="container">
+        		<aside className="sidebar"></aside>
+        		<main className="main-content">
+        			<Switch>
+        				<Route path="/patients" component={PatientComponent} />
+        				<Route path="/doctors" component={DoctorsPage} />
+                    </Switch>
+        		</main>	                	
+            </div>
+        </div>
+        <Footer />
+    </React.Fragment>
+);
 
-    handleChange = e => {
-        this.setState({
-            searchInput: e.target.value
-        });
-    }
-
-    handleSearchFormSubmit = e => {
-        e.preventDefault();
-        this.props.fetchPatientsByLastname(this.state.searchInput);
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                <Header />
-                <div className="main-content-wrapper">
-                	<div className="container">
-                		<aside className="sidebar"></aside>
-                		<main className="main-content">
-                			<Switch>
-                				<Route path="/patients" component={PatientsPage} />
-                				<Route path="/doctors" component={DoctorsPage} />
-		                    </Switch>
-                		</main>	                	
-	                </div>
-                </div>
-                <footer>
-                    <ul>
-                        <li><a>Home Page</a></li>
-                        <li><a>Patients</a></li>
-                        <li><a>Doctors</a></li>
-                        <li><a>Info</a></li>
-                    </ul>
-                </footer>
-            </React.Fragment>
-        );
-    }    
-}
-
-const mapStateToProps = state => {
-    return {
-        patients: state.entities.patients.visibleIds.map(id => state.entities.patients.byId[id])
-    };
-};
-
-const mapDispatchToProps = { fetchPatientsByLastname };
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
