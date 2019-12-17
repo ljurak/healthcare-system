@@ -1,18 +1,26 @@
 import { combineReducers } from 'redux';
 
 import * as actions from '../actions/actionTypes';
-import entity from './entity';
-import * as fromEntities from './entity';
+import patients from './patients';
+import doctors from './doctors';
+import * as fromPatients from './patients';
+import * as fromDoctors from './doctors';
 
 const entities = combineReducers({
-	patients: entity([ actions.FETCH_PATIENTS_REQUEST, actions.FETCH_PATIENTS_SUCCESS, actions.FETCH_PATIENTS_FAILURE ], 'patients'),
-	doctors: entity([ actions.FETCH_DOCTORS_REQUEST, actions.FETCH_DOCTORS_SUCCESS, actions.FETCH_DOCTORS_FAILURE ], 'doctors')
+	patients,
+	doctors
 });
 
 const rootReducer = combineReducers({
 	entities
 });
 
-export const getVisiblePatients = (state) => fromEntities.getVisibleEntities(state.entities.patients);
+export const getVisiblePatients = (state) => fromPatients.getVisiblePatients(state.entities.patients);
+
+export const getPatient = (state, id) => fromPatients.getPatient(state.entities.patients, id);
+
+export const getVisibleDoctors = (state) => fromDoctors.getVisibleDoctors(state.entities.doctors);
+
+export const getDoctor = (state, id) => fromDoctors.getDoctor(state.entities.doctors, id);
 
 export default rootReducer;
