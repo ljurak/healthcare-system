@@ -15,6 +15,7 @@ body {
 	padding: 0;
 	font-family: 'Lato', sans-serif;
 	font-size: 1.6rem;
+	position: relative;
 }
 
 .container {
@@ -96,13 +97,14 @@ body {
 }
 
 .main-content-wrapper {
-	padding-top: 80px;
+	padding-top: 8rem;
+	padding-bottom: 5rem;
+	min-height: 100vh;
 }
 
 .main-content-wrapper .container {
 	display: flex;
 	align-items: stretch;
-	margin-top: 20px;
 }
 
 .sidebar {
@@ -124,7 +126,6 @@ body {
 }
 
 .form .form-row.error input {
-	background-color: #ffeded;
 	border-color: #d8083e;
 }
 
@@ -173,21 +174,23 @@ body {
 }
 
 .patient-add-form-title,
-.patients-list-title {
+.patients-list-title,
+.patient-info-title {
 	margin-top: 4rem;
-	margin-bottom: 1rem;
+	margin-bottom: 0;
 	font-size: 2.2rem;
 	text-transform: uppercase;
 	text-align: center;
 }
 
-.patient-add-form-title {
-	margin-top: 1rem;
+.patient-add-form-title,
+.patient-info-title {
+	margin-top: 3rem;
 }
 
 .patients-list {
 	width: 100%;
-	margin-top: 1rem;
+	margin: 2rem 0;
 	border-collapse: collapse;
 	text-align: center;
 }
@@ -219,4 +222,119 @@ body {
 	display: inline-block;
 	width: 100%;
 	font-weight: bold;
+}
+
+.patients-list .patient-link:hover {
+	text-decoration: underline;
+}
+
+.update-form .form-row {
+	margin-bottom: 1.6rem;
+	display: flex;
+	align-items: center;
+}
+
+.update-form .form-row .error {
+	margin-top: 0.8rem;
+	color: #d8083e;
+	font-style: italic;
+}
+
+.update-form .form-row.error input {
+	border-color: #d8083e;
+}
+
+.update-form .form-row.btn {
+	justify-content: center;
+}
+
+.update-form label {
+	flex-basis: 25%;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.update-form .form-field {
+	flex-basis: 75%;
+}
+
+.update-form input {
+	display: block;
+	width: 100%;
+	padding: 1.2rem;
+	font-size: 1.6rem;
+	color: #000;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
+}
+
+.update-form input:disabled {
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+	pointer-events: none;
+}
+
+.update-form input:focus {
+	border: 1px solid var(--color-main);
+	box-shadow: inset 0 0 5px rgba(153,7,171,.1);
+}
+
+.update-form .submit-btn {
+	padding: 1rem 3rem;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	font-size: 1.8rem;
+	font-weight: bold;
+	background-color: var(--color-main);
+	color: #fff;
+	transition: 0.3s all;
+}
+
+.update-form .submit-btn:hover {
+	border: 2px solid var(--color-main);
+	background-color: #fff;
+	color: var(--color-main);
+}
+
+.page-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 5rem;
+	border-top: 1px solid #999;
+}
+
+.loading {
+	position: relative;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.loading::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 3rem;
+	height: 3rem;
+	border: 2px solid rgba(0,0,0,.6);
+	border-right-color: rgba(0,0,0,1);
+	border-radius: 50%;
+	animation: spinner 0.7s infinite;
+}
+
+@keyframes spinner {
+	0% {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
 }
