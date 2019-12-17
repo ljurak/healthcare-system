@@ -22,11 +22,12 @@ class PatientsPage extends React.Component {
 	render() {
 		const { patients, addPatient } = this.props;
 		const { showSearchResults } = this.state;
+		const path = this.props.match.path;
 		return (
 			<React.Fragment>
 				<PatientAddForm addPatient={addPatient} />
 				<PatientSearchForm setShowSearchResults={this.setShowSearchResults} />
-				{ showSearchResults && <PatientsList patients={patients} header="Search Results" /> }
+				{ showSearchResults && <PatientsList patients={patients} /> }
 			</React.Fragment>
 		);
 	}

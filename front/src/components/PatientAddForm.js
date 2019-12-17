@@ -40,7 +40,7 @@ class PatientAddForm extends React.Component {
 							.max(100, 'Must be 100 characters or less')
 							.required('Required'),
 						phoneNumber: Yup.string()
-							.matches(/^\+?[0-9]{9,15}$/, 'Must be valid phone number')
+							.matches(/^\+?[0-9]{9,15}$/, 'Must be valid phone number (only digits)')
 							.required('Required'),
 						email: Yup.string()
 							.email('Must be valid email')
