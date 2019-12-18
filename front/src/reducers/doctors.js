@@ -75,6 +75,12 @@ export const getDoctor = (state, id) => state.byId[id];
 
 export const getVisibleDoctors = (state) => state.visibleIds.map(id => getDoctor(state, id));
 
+export const getIsFetching = (state) => state.requestInfo.isFetching;
+
+export const getIsAdding = (state) => state.requestInfo.isAdding;
+
+export const getIsUpdating = (state) => state.requestInfo.isUpdating;
+
 export default combineReducers({
 	byId,
 	visibleIds,
