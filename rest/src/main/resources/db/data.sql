@@ -10,7 +10,7 @@ INSERT INTO patients (first_name, last_name, birth_date, address, phone_number, 
 	('Clementina', 'DuBuque', '1975-01-11', '635 Kenmore Court, Manchester, Indiana', '84731276454', 'sherwood@rosamond.me', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 	('Ellis', 'Carr', '1984-06-25', '875 Harrison Avenue, Valle, Wisconsin', '16538766866', 'telly.hoeger@billy.biz', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
-INSERT INTO specialties (name) values
+INSERT INTO specialties (name) VALUES
 	('allergy and immunology'),
 	('dermatology'),
 	('family medicine'),
@@ -33,4 +33,11 @@ INSERT INTO doctors (first_name, last_name, birth_date, address, phone_number, e
 	('Gerhard', 'Schot', '1980-09-04', '43 Walker Street, Baltimore', '83451833577', 'wood@geek.net', 5, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 	('Kendy', 'Moody', '1979-07-09', '43 Walker Street, Baltimore', '25437458732', 'wood@geek.net', 6, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 	('Lares', 'Arpag', '1983-05-02', '43 Walker Street, Baltimore', '72465647845', 'wood@geek.net', 4, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+
+INSERT INTO roles (name) VALUES ('admin');
+
+INSERT INTO users (username, password, first_name, last_name, create_time, update_time) VALUES
+	('admin', '{bcrypt}$2b$10$e/b1Zz12zfjOBM9JfudgueTVvO7PhjBcQyUiyNbHcge0ifKM9Ht6u', 'Kiorn', 'Winuto', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 	
+INSERT INTO users_roles (user_id, role_id) VALUES
+	(1, 1);
