@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { fetchPatientsByLastname } from '../actions';
 
 class PatientSearchForm extends React.Component {
 	constructor(props) {
@@ -20,25 +18,24 @@ class PatientSearchForm extends React.Component {
 		e.preventDefault();
 
 		const searchValue = this.state.searchValue;
-		this.props.fetchPatientsByLastname(searchValue);
-		this.props.setShowSearchResults(true);
-
+		this.props.fetchPatients(searchValue);
 		this.setState({	searchValue: ''	});
 	}
 
 	render() {
 		const searchValue = this.state.searchValue;
+		const { isFetching } = this.props;
 
 		return (
 			<React.Fragment>
-				<h3 className="patients-list-title">Search patients</h3>
+				<h3 className="patients-search-title">Search patients</h3>
 				<form className="form" onSubmit={this.handleSubmit}>
 					<div className="form-row">
 						<label htmlFor="lastname">Patient's last name</label>
 						<input id="lastname" type="text" value={searchValue} onChange={this.handleChange} />
 					</div>
 					<div className="form-row btn">
-						<button className="submit-btn">
+						<button className={'submit-btn' + (isFetching ? ' loading' : '')}>
 							Search
 						</button>
 					</div>
@@ -48,9 +45,4 @@ class PatientSearchForm extends React.Component {
 	}
 }
 
-const mapDispatchToProps = { fetchPatientsByLastname };
-
-export default connect(
-	null,
-	mapDispatchToProps
-)(PatientSearchForm);
+export default PatientSearchForm;

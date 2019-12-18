@@ -18,6 +18,7 @@ class PatientAddForm extends React.Component {
 	}
 
 	render() {
+		const { isAdding } = this.props;
 		return (
 			<React.Fragment>
 				<h3 className="patient-add-form-title">Add new patient</h3>
@@ -80,7 +81,7 @@ class PatientAddForm extends React.Component {
 								<ErrorMessage name="email" component="div" className="error" />
 							</div>
 							<div className="form-row btn">
-								<button className="submit-btn" type="submit" disabled={isSubmitting}>
+								<button className={'submit-btn' + (isAdding ? ' loading' : '')} type="submit" disabled={isSubmitting}>
 									Add patient
 								</button>
 							</div>
