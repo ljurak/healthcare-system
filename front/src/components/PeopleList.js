@@ -1,11 +1,11 @@
 import React from 'react';
 
-import PatientsListItem from './PatientsListItem';
+import PeopleListItem from './PeopleListItem';
 
-const PatientsList = ({ patients }) => {
+const PeopleList = ({ people, baseUrl }) => {
 	return (
-		<table className="patients-list">
-			<thead className="patients-list-header">
+		<table className="people-list">
+			<thead className="people-list-header">
 				<tr>
 					<th>Full name</th>
 					<th>Birth date</th>
@@ -14,10 +14,10 @@ const PatientsList = ({ patients }) => {
 				</tr>
 			</thead>
 			<tbody>
-				{patients.map(patient => <PatientsListItem key={patient.id} patient={patient} />)}
+				{people.map(person => <PeopleListItem key={person.id} person={person} baseUrl={baseUrl} />)}
 			</tbody>
 		</table>
 	);
 };
 
-export default PatientsList;
+export default PeopleList;

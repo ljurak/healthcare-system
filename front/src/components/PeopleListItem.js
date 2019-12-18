@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const PatientsListItem = ({ patient }) => {
+const PeopleListItem = ({ person, baseUrl }) => {
 	return (
 		<tr>
 			<td>
-				<Link className="patient-link" to={`/patients/${patient.id}`}>{`${patient.firstName} ${patient.lastName}`}</Link>
+				<Link className="person-link" to={`${baseUrl}/${person.id}`}>{`${person.firstName} ${person.lastName}`}</Link>
 			</td>
-			<td>{patient.birthDate}</td>
-			<td>{patient.address}</td>
-			<td>{patient.phoneNumber}</td>
+			<td>{person.birthDate}</td>
+			<td>{person.address}</td>
+			<td>{person.phoneNumber}</td>
 		</tr>
 	);
 };
 
-export default PatientsListItem;
+export default PeopleListItem;
