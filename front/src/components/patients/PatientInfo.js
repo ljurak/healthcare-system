@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { getPatient } from '../reducers';
-import { updatePatient } from '../actions';
+import { getPatient } from '../../reducers';
+import { updatePatient } from '../../actions';
 
 class PatientInfo extends React.Component {
 	constructor(props) {

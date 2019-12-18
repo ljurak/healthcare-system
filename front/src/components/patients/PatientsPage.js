@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import PatientAddForm from './PatientAddForm';
 import PatientSearchForm from './PatientSearchForm';
-import PatientsList from './PatientsList';
-import { getVisiblePatients, getIsFetchingPatients, getIsAddingPatient } from '../reducers';
-import { addPatient, fetchPatientsByLastname } from '../actions';
+import PatientsList from '../PatientsList';
+import { getVisiblePatients, getIsFetchingPatients, getIsAddingPatient } from '../../reducers';
+import { addPatient, fetchPatientsByLastname } from '../../actions';
 
 const PatientsPage = ({ patients, isFetching, isAdding, fetchPatientsByLastname, addPatient }) => (
 	<React.Fragment>
