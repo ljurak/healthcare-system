@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import PatientAddForm from './PatientAddForm';
 import PatientSearchForm from './PatientSearchForm';
-import PatientsList from '../PatientsList';
+import PeopleList from '../PeopleList';
 import { getVisiblePatients, getIsFetchingPatients, getIsAddingPatient } from '../../reducers';
 import { addPatient, fetchPatientsByLastname } from '../../actions';
 
@@ -12,7 +12,7 @@ const PatientsPage = ({ patients, isFetching, isAdding, fetchPatientsByLastname,
 		<PatientAddForm isAdding={isAdding} addPatient={addPatient} />
 		<PatientSearchForm isFetching={isFetching} fetchPatients={fetchPatientsByLastname} />
 		{ patients.length > 0
-			? (<PatientsList patients={patients} />)
+			? (<PeopleList people={patients} baseUrl="/patients" />)
 			: (<div className="patients-search-info">No results</div>) 
 		}
 	</React.Fragment>
