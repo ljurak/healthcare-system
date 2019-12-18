@@ -4,40 +4,30 @@ import { connect } from 'react-redux';
 import PatientAddForm from './PatientAddForm';
 import PatientSearchForm from './PatientSearchForm';
 import PatientsList from './PatientsList';
-import { getVisiblePatients } from '../reducers';
-import { addPatient } from '../actions';
+import { getVisiblePatients, getIsFetchingPatients, getIsAddingPatient } from '../reducers';
+import { addPatient, fetchPatientsByLastname } from '../actions';
 
-class PatientsPage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			showSearchResults: false
-		};
-	}
-
-	setShowSearchResults = (showResults) => {
-		this.setState({ showSearchResults: showResults });
-	}
-
-	render() {
-		const { patients, addPatient } = this.props;
-		const { showSearchResults } = this.state;
-		const path = this.props.match.path;
-		return (
-			<React.Fragment>
-				<PatientAddForm addPatient={addPatient} />
-				<PatientSearchForm setShowSearchResults={this.setShowSearchResults} />
-				{ showSearchResults && <PatientsList patients={patients} /> }
-			</React.Fragment>
-		);
-	}
-}
+const PatientsPage = ({ patients, isFetching, isAdding, fetchPatientsByLastname, addPatient }) => (
+	<React.Fragment>
+		<PatientAddForm isAdding={isAdding} addPatient={addPatient} />
+		<PatientSearchForm isFetching={isFetching} fetchPatients={fetchPatientsByLastname} />
+		{ patients.length > 0
+			? (<PatientsList patients={patients} />)
+			: (<div className="patients-search-info">No results</div>) 
+		}
+	</React.Fragment>
+);
 
 const mapStateToProps = (state) => ({
-	patients: getVisiblePatients(state)
+	patients: getVisiblePatients(state),
+	isFetching: getIsFetchingPatients(state),
+	isAdding: getIsAddingPatient(state)
 });
 
-const mapDispatchToProps = { addPatient };
+const mapDispatchToProps = { 
+	addPatient, 
+	fetchPatientsByLastname 
+};
 
 export default connect(
 	mapStateToProps, 
