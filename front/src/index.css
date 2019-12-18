@@ -195,35 +195,35 @@ body {
 	font-style: italic;
 }
 
-.patients-list {
+.people-list {
 	width: 100%;
 	margin: 2rem 0;
 	border-collapse: collapse;
 	text-align: center;
 }
 
-.patients-list-header {
+.people-list-header {
 	font-size: 2rem;
 	font-weight: bold;
 	background-color: var(--color-main);
 	color: #fff;
 }
 
-.patients-list th,
-.patients-list td {
+.people-list th,
+.people-list td {
 	padding: 1.5rem 0;
 	border-bottom: 1px solid #000;
 }
 
-.patients-list th {
+.people-list th {
 	border-bottom: none;
 }
 
-.patients-list tr:nth-of-type(2n) {
+.people-list tr:nth-of-type(2n) {
 	background-color: var(--color-main-light);
 }
 
-.patients-list .patient-link {
+.people-list .person-link {
 	text-decoration: none;
 	color: var(--color-main);
 	display: inline-block;
@@ -231,7 +231,7 @@ body {
 	font-weight: bold;
 }
 
-.patients-list .patient-link:hover {
+.people-list .person-link:hover {
 	text-decoration: underline;
 }
 
