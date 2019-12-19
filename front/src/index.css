@@ -116,6 +116,15 @@ body {
 	width: 70%;
 }
 
+.login-form-wrapper {
+	width: 50%;
+	padding: 0 2rem;
+	margin: 8rem auto 0;
+	border: 1px solid #aaa;
+	border-radius: 0.5rem;
+	box-shadow: 0 0 5px rgba(0,0,0,.1);
+}
+
 .form .form-row {
 	margin-bottom: 1.6rem;
 }
@@ -176,7 +185,8 @@ body {
 
 .patient-add-form-title,
 .patients-search-title,
-.patient-info-title {
+.patient-info-title,
+.login-form-title {
 	margin-top: 4rem;
 	margin-bottom: 0;
 	font-size: 2.2rem;
@@ -185,7 +195,8 @@ body {
 }
 
 .patient-add-form-title,
-.patient-info-title {
+.patient-info-title,
+.login-form-title {
 	margin-top: 3rem;
 }
 
