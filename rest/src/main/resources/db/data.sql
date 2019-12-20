@@ -34,7 +34,7 @@ INSERT INTO doctors (first_name, last_name, birth_date, address, phone_number, e
 	('Kendy', 'Moody', '1979-07-09', '43 Walker Street, Baltimore', '25437458732', 'wood@geek.net', 6, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 	('Lares', 'Arpag', '1983-05-02', '43 Walker Street, Baltimore', '72465647845', 'wood@geek.net', 4, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
-INSERT INTO roles (name) VALUES ('admin');
+INSERT INTO roles (name) VALUES ('ROLE_ADMIN'), ('ROLE_USER');
 
 INSERT INTO users (username, password, first_name, last_name, create_time, update_time) VALUES
 	('admin', '{bcrypt}$2b$10$e/b1Zz12zfjOBM9JfudgueTVvO7PhjBcQyUiyNbHcge0ifKM9Ht6u', 'Kiorn', 'Winuto', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
