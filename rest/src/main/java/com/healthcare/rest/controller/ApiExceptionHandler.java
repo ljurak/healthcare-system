@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.healthcare.rest.exception.ApiError;
 import com.healthcare.rest.exception.FieldValidationError;
@@ -16,12 +18,13 @@ import com.healthcare.service.exception.DoctorNotFoundException;
 import com.healthcare.service.exception.PatientNotFoundException;
 
 @RestControllerAdvice
-public class ApiExceptionHandler {
+@CrossOrigin
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler({ PatientNotFoundException.class, DoctorNotFoundException.class })
 	public ResponseEntity<ApiError> handlePatientNotFoundException(RuntimeException ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
-		return new ResponseEntity<ApiError>(apiError, apiError.getStatus());
+		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
 	
 	@ExceptionHandler(InvalidRequestException.class)
@@ -41,6 +44,6 @@ public class ApiExceptionHandler {
 		
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		apiError.setFieldErrors(fieldValidationErrors);
-		return new ResponseEntity<ApiError>(apiError, apiError.getStatus());
+		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
 }
