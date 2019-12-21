@@ -72,7 +72,13 @@ body {
 	color: #000;
 }
 
-.page-nav-list-item a::before {
+.page-nav-list-item a.login-btn {
+	font-size: 1.6rem;
+	border: 2px solid var(--color-main);
+	border-radius: 2rem;
+}
+
+.page-nav-list-item a:not(.login-btn)::before {
 	content: '';
 	display: block;
 	height: 3px;
@@ -90,11 +96,15 @@ body {
 	color: var(--color-main);
 }
 
-.page-nav-list-item a.active::before,
-.page-nav-list-item a:hover::before {
+.page-nav-list-item a.active:not(.login-btn)::before,
+.page-nav-list-item a:not(.login-btn):hover::before {
 	left: 1.5rem;
 	right: 1.5rem;
 	opacity: 1;
+}
+
+.page-nav-list-item a:focus {
+	outline: none;
 }
 
 .main-content-wrapper {
@@ -119,7 +129,7 @@ body {
 .login-form-wrapper {
 	width: 50%;
 	padding: 0 2rem;
-	margin: 8rem auto 0;
+	margin: 8rem auto 2rem;
 	border: 1px solid #aaa;
 	border-radius: 0.5rem;
 	box-shadow: 0 0 5px rgba(0,0,0,.1);
