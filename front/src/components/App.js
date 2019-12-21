@@ -1,11 +1,13 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Header from './Header';
 import Footer from './Footer';
+import MainContent from './MainContent';
 import PatientComponent from './patients/PatientComponent';
 import DoctorsPage from './DoctorsPage';
 import LoginPage from './LoginPage';
+import PrivateRoute from './PrivateRoute';
 
 const App = () => (
     <React.Fragment>
@@ -15,9 +17,11 @@ const App = () => (
         		<aside className="sidebar"></aside>
         		<main className="main-content">
         			<Switch>
-                        <Route path="/info" component={LoginPage} />
-        				<Route path="/patients" component={PatientComponent} />
-        				<Route path="/doctors" component={DoctorsPage} />
+                        <PrivateRoute exact path="/" component={MainContent} />
+                        <PrivateRoute path="/patients" component={PatientComponent} />
+                        <PrivateRoute path="/doctors" component={DoctorsPage} />
+                        <Route path="/login" component={LoginPage} />
+                        <Redirect from="*" to="/" />
                     </Switch>
         		</main>	                	
             </div>
