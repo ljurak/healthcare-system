@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import patients from './patients';
 import doctors from './doctors';
+import authentication from './authentication';
 import * as fromPatients from './patients';
 import * as fromDoctors from './doctors';
 
@@ -11,7 +12,8 @@ const entities = combineReducers({
 });
 
 const rootReducer = combineReducers({
-	entities
+	entities,
+	authentication
 });
 
 export const getVisiblePatients = (state) => fromPatients.getVisiblePatients(state.entities.patients);
