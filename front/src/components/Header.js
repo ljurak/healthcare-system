@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom'; 
+import { connect } from 'react-redux';
 
-const Header = () => {
+const Header = ({ isLoggedIn }) => {
 	return (
 		<header className="page-header">
 			<div className="container">	
@@ -20,7 +21,10 @@ const Header = () => {
 			            	<NavLink to="/doctors">Doctors</NavLink>
 			            </li>
 			            <li className="page-nav-list-item">
-			            	<NavLink to="/info">Info</NavLink>
+			            	{ isLoggedIn 
+			            		? <NavLink to="/login" className="login-btn">Logout</NavLink>
+			            		: <NavLink to="/login" className="login-btn">Login</NavLink>
+			            	}
 			            </li>
 			        </ul>
 	            </nav>
@@ -29,4 +33,10 @@ const Header = () => {
 	);
 };
 
-export default Header;
+const mapStateToProps = (state) => ({
+	isLoggedIn: state.authentication.isLoggedIn
+});
+
+export default connect(
+	mapStateToProps
+)(Header);
