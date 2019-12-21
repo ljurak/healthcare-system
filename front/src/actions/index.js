@@ -2,7 +2,7 @@ import { normalize } from 'normalizr';
 
 import * as actions from './actionTypes';
 import * as schema from './schema';
-import { PatientsApi, DoctorsApi } from '../api';
+import { PatientsApi, DoctorsApi, LoginApi } from '../api';
 
 // ACTION CREATORS
 
@@ -12,6 +12,7 @@ const fetchPatientsRequest = makeRequestActionCreator(actions.FETCH_PATIENTS_REQ
 const fetchDoctorsRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_REQUEST);
 const addPatientRequest = makeRequestActionCreator(actions.ADD_PATIENT_REQUEST);
 const updatePatientRequest = makeRequestActionCreator(actions.UPDATE_PATIENT_REQUEST);
+const loginRequest = makeRequestActionCreator(actions.LOGIN_REQUEST);
 
 const makeSuccessActionCreator = (type) => (payload) => ({ type, payload });
 
@@ -19,6 +20,7 @@ const fetchPatientsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENTS_SUC
 const fetchDoctorsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_SUCCESS);
 const addPatientSuccess = makeSuccessActionCreator(actions.ADD_PATIENT_SUCCESS);
 const updatePatientSuccess = makeSuccessActionCreator(actions.UPDATE_PATIENT_SUCCESS);
+const loginSuccess = makeSuccessActionCreator(actions.LOGIN_SUCCESS);
 
 const makeFailureActionCreator = (type) => (payload) => ({ type, payload, error: true});
 
@@ -26,6 +28,12 @@ const fetchPatientsFailure = makeFailureActionCreator(actions.FETCH_PATIENTS_FAI
 const fetchDoctorsFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_FAILURE);
 const addPatientFailure = makeFailureActionCreator(actions.ADD_PATIENT_FAILURE);
 const updatePatientFailure = makeFailureActionCreator(actions.UPDATE_PATIENT_FAILURE);
+const loginFailure = makeFailureActionCreator(actions.LOGIN_FAILURE);
+
+export const logout = () => {
+	localStorage.removeItem('token');
+	return { type: actions.LOGOUT };
+};
 
 // ASYNC ACTION CREATORS
 
@@ -114,6 +122,20 @@ export const updatePatient = (patient, id) => (dispatch) => {
 		.then(
 			response => dispatch(updatePatientSuccess(normalize([ response ], schema.patientsListSchema))),
 			error => dispatch(updatePatientFailure(error))
+		);
+};
+
+export const login = (user) => (dispatch) => {
+	dispatch(loginRequest());
+
+	return LoginApi.login(user)
+		.then(handleApiResponse)
+		.then(
+			response => {
+				localStorage.setItem('token', response.token);
+				dispatch(loginSuccess(response));
+			}, 
+			error => dispatch(loginFailure(error))
 		);
 };
 
