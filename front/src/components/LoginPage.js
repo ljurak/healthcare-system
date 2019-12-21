@@ -1,10 +1,28 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { connect } from 'react-redux';
 import * as Yup from 'yup';
 
+import { login, logout } from '../actions';
+
 class LoginPage extends React.Component {
+	constructor(props) {
+		super(props);
+		this.props.logout();
+	}
+
+	handleSubmit = (values, actions) => {
+		const user = { ...values };
+
+		this.props.login(user)
+			.finally(() => {
+				actions.setSubmitting(false);
+				actions.resetForm();
+			});
+	}
 
 	render() {
+		const { isLogging } = this.props;
 		return (
 			<div className="login-form-wrapper">
 				<h3 className="login-form-title">Sign in</h3>
@@ -20,7 +38,7 @@ class LoginPage extends React.Component {
 							.max(40, 'Must be 40 characters or less')
 							.required('Required')
 					})}
-					onSubmit={() => {}}>
+					onSubmit={this.handleSubmit}>
 					
 					{({ errors, touched, isSubmitting }) => (
 						<Form className="form">
@@ -35,7 +53,7 @@ class LoginPage extends React.Component {
 								<ErrorMessage name="password" component="div" className="error" />
 							</div>
 							<div className="form-row btn">
-								<button className="submit-btn" type="submit" disabled={isSubmitting}>
+								<button className={'submit-btn' + (isLogging ? ' loading' : '')} type="submit" disabled={isSubmitting}>
 									Sign in
 								</button>
 							</div>
@@ -47,4 +65,15 @@ class LoginPage extends React.Component {
 	}
 };
 
-export default LoginPage;
+const mapStateToProps = (state) => {
+	return {
+		isLogging: state.authentication.isLogging
+	};
+};
+
+const mapDispatchToProps = { login, logout };
+
+export default connect(
+	mapStateToProps, 
+	mapDispatchToProps)
+(LoginPage);
