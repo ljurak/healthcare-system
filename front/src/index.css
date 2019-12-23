@@ -196,6 +196,7 @@ body {
 .patient-add-form-title,
 .patients-search-title,
 .patient-info-title,
+.patient-visit-form-title,
 .login-form-title {
 	margin-top: 4rem;
 	margin-bottom: 0;
@@ -208,6 +209,10 @@ body {
 .patient-info-title,
 .login-form-title {
 	margin-top: 3rem;
+}
+
+.patient-visit-form-title {
+	margin-bottom: 1rem;
 }
 
 .patients-search-info {
@@ -326,6 +331,72 @@ body {
 	color: var(--color-main);
 }
 
+.add-visit-form .form-row {
+	margin-bottom: 1.6rem;
+	display: flex;
+	align-items: center;
+}
+
+.add-visit-form .form-row.btn {
+	justify-content: center;
+}
+
+.add-visit-form .form-row .error {
+	margin-top: 0.8rem;
+	color: #d8083e;
+	font-style: italic;
+}
+
+.add-visit-form .form-row.error input,
+.add-visit-form .form-row.error select {
+	border-color: #d8083e;
+}
+
+.add-visit-form label {
+	flex-basis: 25%;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.add-visit-form .form-field {
+	flex-basis: 75%;
+}
+
+.add-visit-form input,
+.add-visit-form select {
+	display: block;
+	width: 100%;
+	padding: 1.2rem;
+	font-size: 1.6rem;
+	color: #000;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
+}
+
+.add-visit-form input:focus,
+.add-visit-form select:focus {
+	border: 1px solid var(--color-main);
+	box-shadow: inset 0 0 5px rgba(153,7,171,.1);
+}
+
+.add-visit-form .submit-btn {
+	padding: 1rem 3rem;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	font-size: 1.8rem;
+	font-weight: bold;
+	background-color: var(--color-main);
+	color: #fff;
+	transition: 0.3s all;
+}
+
+.add-visit-form .submit-btn:hover {
+	border: 2px solid var(--color-main);
+	background-color: #fff;
+	color: var(--color-main);
+}
+
 .page-footer {
 	position: absolute;
 	bottom: 0;
@@ -356,6 +427,10 @@ body {
 	border-right-color: rgba(0,0,0,1);
 	border-radius: 50%;
 	animation: spinner 0.7s infinite;
+}
+
+.form-row .react-datepicker-wrapper {
+	display: block;
 }
 
 @keyframes spinner {
