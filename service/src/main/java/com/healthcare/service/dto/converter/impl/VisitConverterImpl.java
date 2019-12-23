@@ -44,6 +44,7 @@ public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 	@Override
 	public VisitDTO convertFromEntity(Visit entity) {
 		VisitDTO dto = new VisitDTO();
+		dto.setId(entity.getId());
 		dto.setPatientId(entity.getPatient().getId());
 		dto.setDoctorId(entity.getDoctor().getId());
 		dto.setVisitDate(entity.getVisitDate());

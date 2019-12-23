@@ -11,6 +11,8 @@ import com.healthcare.model.entities.VisitStatus;
 
 public class VisitDTO {
 	
+	private Long id;
+	
 	@NotNull
 	@Positive
 	private Long patientId;
@@ -27,6 +29,14 @@ public class VisitDTO {
 	private LocalTime visitTime;
 	
 	private VisitStatus status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Long getPatientId() {
 		return patientId;

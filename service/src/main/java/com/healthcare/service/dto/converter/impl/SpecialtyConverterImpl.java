@@ -11,14 +11,15 @@ public class SpecialtyConverterImpl implements DTOConverter<SpecialtyDTO, Specia
 
 	@Override
 	public Specialty convertFromDTO(SpecialtyDTO dto) {
-		Specialty specialty = new Specialty();
-		specialty.setName(dto.getName());
-		return specialty;
+		Specialty entity = new Specialty();
+		entity.setName(dto.getName());
+		return entity;
 	}
 
 	@Override
 	public SpecialtyDTO convertFromEntity(Specialty entity) {
 		SpecialtyDTO dto = new SpecialtyDTO();
+		dto.setId(entity.getId());
 		dto.setName(entity.getName());
 		return dto;
 	}	
