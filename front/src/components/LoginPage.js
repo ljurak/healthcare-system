@@ -1,28 +1,25 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
 
-import { login, logout } from '../actions';
+import { login } from '../actions';
 
 class LoginPage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.props.logout();
-	}
-
 	handleSubmit = (values, actions) => {
 		const user = { ...values };
-
-		this.props.login(user)
-			.finally(() => {
-				actions.setSubmitting(false);
-				actions.resetForm();
-			});
+		this.props.login(user);
 	}
 
 	render() {
-		const { isLogging } = this.props;
+		const { isLogging, isLoggedIn } = this.props;
+		const { from } = this.props.location.state || { from: { pathname: '/' } };
+
+		if (isLoggedIn) {
+			return <Redirect to={from} />;
+		}
+
 		return (
 			<div className="login-form-wrapper">
 				<h3 className="login-form-title">Sign in</h3>
@@ -40,7 +37,7 @@ class LoginPage extends React.Component {
 					})}
 					onSubmit={this.handleSubmit}>
 					
-					{({ errors, touched, isSubmitting }) => (
+					{({ errors, touched }) => (
 						<Form className="form">
 							<div className={'form-row' + (errors.username && touched.username ? ' error' : '')}>
 								<label htmlFor="username">Username*</label>
@@ -53,7 +50,7 @@ class LoginPage extends React.Component {
 								<ErrorMessage name="password" component="div" className="error" />
 							</div>
 							<div className="form-row btn">
-								<button className={'submit-btn' + (isLogging ? ' loading' : '')} type="submit" disabled={isSubmitting}>
+								<button className={'submit-btn' + (isLogging ? ' loading' : '')} type="submit" disabled={isLogging}>
 									Sign in
 								</button>
 							</div>
@@ -66,12 +63,14 @@ class LoginPage extends React.Component {
 };
 
 const mapStateToProps = (state) => {
+	const { isLogging, isLoggedIn } = state.authentication;
 	return {
-		isLogging: state.authentication.isLogging
+		isLogging,
+		isLoggedIn
 	};
 };
 
-const mapDispatchToProps = { login, logout };
+const mapDispatchToProps = { login };
 
 export default connect(
 	mapStateToProps, 
