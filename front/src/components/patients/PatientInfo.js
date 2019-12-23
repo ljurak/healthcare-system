@@ -1,20 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { getPatient } from '../../reducers';
-import { updatePatient } from '../../actions';
-
 class PatientInfo extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 
 	handleSubmit = (values, actions) => {
 		const patient = { ...this.props.patient };
-		const patientId = this.props.match.params.patientId;
 
 		patient.address = values.address;
 		patient.phoneNumber = values.phoneNumber;
@@ -23,14 +14,22 @@ class PatientInfo extends React.Component {
 			patient.email = null;
 		}
 
-		this.props.updatePatient(patient, patientId)
+		this.props.updatePatient(patient, patient.id)
 			.finally(() => {
 				actions.setSubmitting(false);
 			});
 	}
 
 	render() {
-		const { firstName, lastName, birthDate, address, phoneNumber, email = '' } = { ...this.props.patient } || {};
+		const patient = this.props.patient;
+		if (!patient) {
+			return <div>Loading...</div>;
+		}
+
+		let { firstName, lastName, birthDate, address, phoneNumber, email } = patient;
+		if (!email) {
+			email = '';
+		}
 
 		return (
 			<React.Fragment>
@@ -105,15 +104,4 @@ class PatientInfo extends React.Component {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
-	return {
-		patient: getPatient(state, ownProps.match.params.patientId)
-	};
-};
-
-const mapDispatchToProps = { updatePatient };
-
-export default withRouter(connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(PatientInfo));
+export default PatientInfo;
