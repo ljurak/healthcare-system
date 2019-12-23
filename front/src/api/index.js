@@ -58,8 +58,32 @@ DoctorsApi.fetchDoctorsByLastname = function(lastname) {
 	});
 };
 
+DoctorsApi.fetchDoctorsBySpecialty = function(specialty) {
+	return fetch(`${BASE_API_URL}/doctors?specialty=${specialty}`, {
+		headers: createAuthorizationHeader()
+	});
+};
+
 DoctorsApi.fetchDoctorById = function(id) {
 	return fetch(`${BASE_API_URL}/doctors/${id}`, {
+		headers: createAuthorizationHeader()
+	});
+};
+
+const VisitsApi = {};
+
+VisitsApi.addVisit = function(visit, patientId) {
+	return fetch(`${BASE_API_URL}/patients/${patientId}/visits`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', ...createAuthorizationHeader() },
+		body: JSON.stringify(visit)
+	});
+};
+
+const SpecialtiesApi = {};
+
+SpecialtiesApi.fetchSpecialties = function() {
+	return fetch(`${BASE_API_URL}/specialties`, {
 		headers: createAuthorizationHeader()
 	});
 };
@@ -74,4 +98,4 @@ LoginApi.login = function(user) {
 	});
 }
 
-export { PatientsApi, DoctorsApi, LoginApi };
+export { PatientsApi, DoctorsApi, VisitsApi, SpecialtiesApi, LoginApi };
