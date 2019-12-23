@@ -60,6 +60,12 @@ public class DoctorServiceImpl implements DoctorService {
 	}
 	
 	@Override
+	public List<DoctorDTO> getDoctorsBySpecialty(String specialty) {
+		List<Doctor> doctors = doctorRepo.findBySpecialty(specialty);
+		return doctorConverter.convertFromEntity(doctors);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public DoctorDTO updateDoctor(DoctorDTO doctorDTO, Long id) {
 		Doctor persistedDoctor = doctorRepo.findById(id)

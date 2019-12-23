@@ -61,6 +61,11 @@ public class DoctorApi {
 		return doctorService.getDoctorsByLastName(lastname);
 	}
 	
+	@GetMapping(params = "specialty")
+	public List<DoctorDTO> getDoctorsBySpecialty(@RequestParam String specialty) {
+		return doctorService.getDoctorsBySpecialty(specialty);
+	}
+	
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DoctorDTO updateDoctor(@RequestBody @Valid DoctorDTO doctorDTO, BindingResult result, @PathVariable long id) {
 		if (result.hasErrors()) {

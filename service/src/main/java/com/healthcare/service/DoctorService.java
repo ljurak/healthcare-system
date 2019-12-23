@@ -41,6 +41,14 @@ public interface DoctorService {
 	List<DoctorDTO> getDoctorsByLastName(String lastName);
 	
 	/**
+	 * Retrieves doctors with given specialty.
+	 * 
+	 * @param specialty doctor's specialty
+	 * @return list of doctors
+	 */
+	List<DoctorDTO> getDoctorsBySpecialty(String specialty);
+	
+	/**
 	 * Updates doctor data.
 	 * Throws <code>DoctorNotFoundException</code> if doctor
 	 * with given id does not exist.
