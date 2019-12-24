@@ -89,7 +89,7 @@ export const fetchPatientById = (id) => (dispatch, getState) => {
 	return PatientsApi.fetchPatientById(id)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(fetchPatientSuccess(normalize([ response ], schema.patientsListSchema))),
+			response => dispatch(fetchPatientSuccess(normalize(response, schema.patientSchema))),
 			error => dispatch(fetchPatientFailure(error))
 		);
 };
@@ -100,7 +100,7 @@ export const addPatient = (patient) => (dispatch) => {
 	return PatientsApi.addPatient(patient)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(addPatientSuccess(normalize([ response ], schema.patientsListSchema))),
+			response => dispatch(addPatientSuccess(normalize(response, schema.patientSchema))),
 			error => dispatch(addPatientFailure(error))
 		);
 };
@@ -111,7 +111,7 @@ export const updatePatient = (patient, id) => (dispatch) => {
 	return PatientsApi.updatePatient(patient, id)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(updatePatientSuccess(normalize([ response ], schema.patientsListSchema))),
+			response => dispatch(updatePatientSuccess(normalize(response, schema.patientSchema))),
 			error => dispatch(updatePatientFailure(error))
 		);
 };
@@ -172,7 +172,7 @@ export const fetchDoctorById = (id) => (dispatch, getState) => {
 	return DoctorsApi.fetchDoctorById(id)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(fetchDoctorSuccess(normalize([ response ], schema.doctorsListSchema))),
+			response => dispatch(fetchDoctorSuccess(normalize(response, schema.doctorSchema))),
 			error => dispatch(fetchDoctorFailure(error))
 		);
 };
@@ -183,7 +183,7 @@ export const addDoctor = (doctor) => (dispatch) => {
 	return DoctorsApi.addDoctor(doctor)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(addDoctorSuccess(normalize([ response ], schema.doctorsListSchema))),
+			response => dispatch(addDoctorSuccess(normalize(response, schema.doctorSchema))),
 			error => dispatch(addDoctorFailure(error))
 		);
 };
@@ -194,7 +194,7 @@ export const updateDoctor = (doctor, id) => (dispatch) => {
 	return DoctorsApi.updateDoctor(doctor, id)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(updateDoctorSuccess(normalize([ response ], schema.doctorsListSchema))),
+			response => dispatch(updateDoctorSuccess(normalize(response, schema.doctorSchema))),
 			error => dispatch(updateDoctorFailure(error))
 		);
 };
