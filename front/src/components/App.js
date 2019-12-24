@@ -5,7 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import MainContent from './MainContent';
 import PatientComponent from './patients/PatientComponent';
-import DoctorsPage from './DoctorsPage';
+import DoctorComponent from './doctors/DoctorComponent';
 import LoginPage from './LoginPage';
 import PrivateRoute from './PrivateRoute';
 
@@ -19,7 +19,7 @@ const App = () => (
         			<Switch>
                         <PrivateRoute exact path="/" component={MainContent} />
                         <PrivateRoute path="/patients" component={PatientComponent} />
-                        <PrivateRoute path="/doctors" component={DoctorsPage} />
+                        <PrivateRoute path="/doctors" component={DoctorComponent} />
                         <Route path="/login" component={LoginPage} />
                         <Redirect from="*" to="/" />
                     </Switch>
