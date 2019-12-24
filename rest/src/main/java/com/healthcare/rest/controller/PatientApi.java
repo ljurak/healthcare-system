@@ -43,7 +43,7 @@ public class PatientApi {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public PatientDTO processPatientRegistration(@RequestBody @Valid PatientDTO patientDTO, BindingResult result) {
+	public PatientDTO registerPatient(@RequestBody @Valid PatientDTO patientDTO, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
@@ -81,6 +81,7 @@ public class PatientApi {
 	 * @throws VisitException if visit at given time is not available 
 	 */
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.CREATED)
 	public VisitDTO addVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
