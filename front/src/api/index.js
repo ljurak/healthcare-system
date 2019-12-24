@@ -70,6 +70,22 @@ DoctorsApi.fetchDoctorById = function(id) {
 	});
 };
 
+DoctorsApi.addDoctor = function(doctor) {
+	return fetch(`${BASE_API_URL}/doctors`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', ...createAuthorizationHeader() },
+		body: JSON.stringify(doctor)
+	});
+};
+
+DoctorsApi.updateDoctor = function(doctor, id) {
+	return fetch(`${BASE_API_URL}/doctors/${id}`, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json', ...createAuthorizationHeader() },
+		body: JSON.stringify(doctor)
+	});
+};
+
 const VisitsApi = {};
 
 VisitsApi.addVisit = function(visit, patientId) {
