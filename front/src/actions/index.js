@@ -54,6 +54,10 @@ export const logout = () => {
 	return { type: actions.LOGOUT };
 };
 
+export const clearAlert = () => {
+	return { type: actions.CLEAR_ALERT };
+}
+
 // ASYNC ACTION CREATORS
 
 // PATIENTS

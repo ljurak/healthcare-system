@@ -4,9 +4,11 @@ import patients from './patients';
 import doctors from './doctors';
 import specialties from './specialties';
 import authentication from './authentication';
+import alert from './alert';
 import * as fromPatients from './patients';
 import * as fromDoctors from './doctors';
 import * as fromSpecialties from './specialties';
+import * as fromAlert from './alert';
 
 const entities = combineReducers({
 	patients,
@@ -16,7 +18,8 @@ const entities = combineReducers({
 
 const rootReducer = combineReducers({
 	entities,
-	authentication
+	authentication,
+	alert
 });
 
 export const getVisiblePatients = (state) => fromPatients.getVisiblePatients(state.entities.patients);
@@ -44,5 +47,9 @@ export const getIsAddingDoctor = (state) => fromDoctors.getIsAdding(state.entiti
 export const getIsUpdatingDoctor = (state) => fromDoctors.getIsUpdating(state.entities.doctors);
 
 export const getIsFetchingSpecialties = (state) => fromSpecialties.getIsFetching(state.entities.specialties);
+
+export const getPatientsAlert = (state) => fromAlert.getPatientsAlert(state.alert);
+
+export const getDoctorsAlert = (state) => fromAlert.getDoctorsAlert(state.alert);
 
 export default rootReducer;

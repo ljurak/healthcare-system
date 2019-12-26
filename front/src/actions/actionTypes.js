@@ -55,3 +55,6 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 // Log out user
 export const LOGOUT = 'LOGOUT';
+
+// Clear alert
+export const CLEAR_ALERT = 'CLEAR_ALERT';
