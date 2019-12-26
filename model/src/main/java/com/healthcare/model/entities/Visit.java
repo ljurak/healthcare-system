@@ -33,6 +33,9 @@ public class Visit {
 	@JoinColumn(name = "doctor_id", nullable = false)
 	private Doctor doctor;
 	
+	@Column(name = "description", length = 4000)
+	private String description;
+	
 	@Column(name = "visit_date", nullable = false)
 	private LocalDate visitDate;
 	
@@ -73,6 +76,14 @@ public class Visit {
 
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public LocalDate getVisitDate() {

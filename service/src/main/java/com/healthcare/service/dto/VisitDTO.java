@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import com.healthcare.model.entities.VisitStatus;
 
@@ -20,6 +21,9 @@ public class VisitDTO {
 	@NotNull
 	@Positive
 	private Long doctorId;
+	
+	@Size(max = 4000)
+	private String description;
 	
 	@NotNull
 	@Future
@@ -54,6 +58,14 @@ public class VisitDTO {
 		this.doctorId = doctorId;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public LocalDate getVisitDate() {
 		return visitDate;
 	}
@@ -70,11 +82,11 @@ public class VisitDTO {
 		this.visitTime = visitTime;
 	}
 
-	public VisitStatus getVisitStatus() {
+	public VisitStatus getStatus() {
 		return status;
 	}
 
-	public void setVisitStatus(VisitStatus visitStatus) {
+	public void setStatus(VisitStatus visitStatus) {
 		this.status = visitStatus;
 	}
 

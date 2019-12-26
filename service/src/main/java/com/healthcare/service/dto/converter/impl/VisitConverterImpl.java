@@ -35,9 +35,10 @@ public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + dto.getDoctorId() + " does not exist"));
 		entity.setPatient(patient);
 		entity.setDoctor(doctor);
+		entity.setDescription(dto.getDescription());
 		entity.setVisitDate(dto.getVisitDate());
 		entity.setVisitTime(dto.getVisitTime());
-		entity.setStatus(dto.getVisitStatus());
+		entity.setStatus(dto.getStatus());
 		return entity;
 	}
 
@@ -47,9 +48,10 @@ public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 		dto.setId(entity.getId());
 		dto.setPatientId(entity.getPatient().getId());
 		dto.setDoctorId(entity.getDoctor().getId());
+		dto.setDescription(entity.getDescription());
 		dto.setVisitDate(entity.getVisitDate());
 		dto.setVisitTime(entity.getVisitTime());
-		dto.setVisitStatus(entity.getStatus());
+		dto.setStatus(entity.getStatus());
 		return dto;
 	}	
 }
