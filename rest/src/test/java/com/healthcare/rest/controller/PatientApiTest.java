@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.healthcare.rest.security.SecurityConfig;
 import com.healthcare.service.PatientService;
+import com.healthcare.service.VisitService;
 import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.exception.PatientNotFoundException;
@@ -36,13 +37,34 @@ import com.healthcare.service.exception.PatientNotFoundException;
 )
 public class PatientApiTest {
 	
-	private static String validPatientJsonString;
+	private final String validPatientJsonString = "{"
+			+ "\"firstName\":\"Mike\","
+			+ "\"lastName\":\"Kent\","
+			+ "\"birthDate\":\"1992-04-19\","
+			+ "\"address\":\"345 Valid Road\","
+			+ "\"phoneNumber\":\"5461239834\","
+			+ "\"email\":null}";
 	
-	private static String invalidPatientJsonString;
+	private final String invalidPatientJsonString = "{"
+			+ "\"firstName\":\"Mike\","
+			+ "\"birthDate\":\"1992-04-19\","
+			+ "\"address\":\"345 Valid Road\","
+			+ "\"phoneNumber\":\"5461239834\","
+			+ "\"email\":null}";
 	
-	private static String notReadableDateJsonString;
+	private final String notReadableDateJsonString = "{"
+			+ "\"firstName\":\"Mike\","
+			+ "\"lastName\":\"Kent\","
+			+ "\"birthDate\":\"19ec-0h-19\","
+			+ "\"address\":\"345 Valid Road\","
+			+ "\"phoneNumber\":\"5461239834\","
+			+ "\"email\":null}";
 	
-	private static String validVisitJsonString;
+	private final String validVisitJsonString = "{"
+			+ "\"patientId\":\"8\","
+			+ "\"doctorId\":\"3\","
+			+ "\"visitDate\":\"2021-10-24\","
+			+ "\"visitTime\":\"12:00\"}";
 	
 	private static PatientDTO patientDTO;
 	
@@ -54,37 +76,11 @@ public class PatientApiTest {
 	@MockBean
 	private PatientService patientService;
 	
-	@BeforeAll
-	public static void init() {
-		validPatientJsonString = "{"
-				+ "\"firstName\":\"Mike\","
-				+ "\"lastName\":\"Kent\","
-				+ "\"birthDate\":\"1992-04-19\","
-				+ "\"address\":\"345 Valid Road\","
-				+ "\"phoneNumber\":\"5461239834\","
-				+ "\"email\":null}";
-		
-		invalidPatientJsonString = "{"
-				+ "\"firstName\":\"Mike\","
-				+ "\"birthDate\":\"1992-04-19\","
-				+ "\"address\":\"345 Valid Road\","
-				+ "\"phoneNumber\":\"5461239834\","
-				+ "\"email\":null}";
-		
-		notReadableDateJsonString = "{"
-				+ "\"firstName\":\"Mike\","
-				+ "\"lastName\":\"Kent\","
-				+ "\"birthDate\":\"19ec-0h-19\","
-				+ "\"address\":\"345 Valid Road\","
-				+ "\"phoneNumber\":\"5461239834\","
-				+ "\"email\":null}";
-		
-		validVisitJsonString = "{"
-				+ "\"patientId\":\"8\","
-				+ "\"doctorId\":\"3\","
-				+ "\"visitDate\":\"2021-10-24\","
-				+ "\"visitTime\":\"12:00\"}";
+	@MockBean
+	private VisitService visitService;
 	
+	@BeforeAll
+	public static void init() {	
 		patientDTO = new PatientDTO();
 		patientDTO.setId(1L);
 		patientDTO.setFirstName("Mike");
@@ -226,7 +222,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn201WhenSendingValidVisitPostRequest() throws Exception {
 		// given
-		when(patientService.addVisit(any())).thenReturn(visitDTO);
+		when(visitService.addVisit(any())).thenReturn(visitDTO);
 		
 		// when
 		mockMvc.perform(post("/patients/8/visits")

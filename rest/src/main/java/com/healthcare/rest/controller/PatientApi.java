@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.PatientService;
+import com.healthcare.service.VisitService;
 import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
 
@@ -31,9 +32,12 @@ public class PatientApi {
 	
 	private PatientService patientService;
 	
+	private VisitService visitService;
+	
 	@Autowired
-	public PatientApi(PatientService patientService) {
+	public PatientApi(PatientService patientService, VisitService visitService) {
 		this.patientService = patientService;
+		this.visitService = visitService;
 	}
 	
 	@GetMapping
@@ -88,7 +92,7 @@ public class PatientApi {
 		}
 		
 		visitDTO.setPatientId(id);		
-		VisitDTO registeredVisit = patientService.addVisit(visitDTO);
+		VisitDTO registeredVisit = visitService.addVisit(visitDTO);
 		return registeredVisit;
 	}
 }
