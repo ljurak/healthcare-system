@@ -32,7 +32,7 @@ class PatientDetailsPage extends React.Component {
 	}
 
 	render() {
-		const { patient, patientId, specialties, isUpdating, fetchDoctors, updatePatient, addVisit, alert, clearAlert } = this.props;
+		const { patient, patientId, specialties, isUpdating, fetchDoctorsBySpecialty, updatePatient, addVisit, alert, clearAlert } = this.props;
 
 		return (
 			<React.Fragment>
