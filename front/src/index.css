@@ -454,6 +454,36 @@ body {
 	line-height: 3rem;
 }
 
+.alert-box {
+	font-style: italic;
+	color: #333;
+	margin-bottom: 1.6rem;
+	padding: 1rem 5rem 1rem 1rem;
+	text-align: left; 
+	background-color: var(--color-main-light);
+	border: 1px solid var(--color-main);
+	border-radius: 4px;
+	position: relative;
+}
+
+.alert-box .close-btn {
+	color: #fff;
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding: 0.5rem 0.8rem;
+	position: absolute;
+	top: 50%;
+	right: 1rem;
+	transform: translateY(-50%);
+	background-color: var(--color-main);
+	border: none;
+	border-radius: 4px;
+}
+
+.alert-box .close-btn:hover {
+	opacity: 0.8;
+}
+
 @keyframes spinner {
 	0% {
 		transform: translate(-50%, -50%) rotate(0deg);
