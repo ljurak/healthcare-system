@@ -18,7 +18,7 @@ class PatientAddForm extends React.Component {
 	}
 
 	render() {
-		const { isAdding } = this.props;
+		const { isAdding, alert, clearAlert } = this.props;
 		return (
 			<React.Fragment>
 				<h3 className="patient-add-form-title">Add new patient</h3>
@@ -80,6 +80,12 @@ class PatientAddForm extends React.Component {
 								<Field id="email" name="email" type="email" />
 								<ErrorMessage name="email" component="div" className="error" />
 							</div>
+							{ alert.add && 
+								<div className="alert-box">
+									<span>{alert.add}</span>
+									<button className="close-btn" type="button" onClick={e => clearAlert()}>X</button>
+								</div>
+							}
 							<div className="form-row btn">
 								<button className={'submit-btn' + (isAdding ? ' loading' : '')} type="submit" disabled={isSubmitting}>
 									Add patient
