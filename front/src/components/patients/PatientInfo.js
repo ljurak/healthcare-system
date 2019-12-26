@@ -21,7 +21,7 @@ class PatientInfo extends React.Component {
 	}
 
 	render() {
-		const { patient, isUpdating } = this.props;
+		const { patient, isUpdating, alert, clearAlert } = this.props;
 		if (!patient) {
 			return <div>Loading...</div>;
 		}
@@ -91,6 +91,12 @@ class PatientInfo extends React.Component {
 									<ErrorMessage name="email" component="div" className="error" />
 								</div>
 							</div>
+							{ alert.update && 
+								<div className="alert-box">
+									<span>{alert.update}</span>
+									<button className="close-btn" type="button" onClick={e => clearAlert()}>X</button>
+								</div>
+							}
 							<div className="form-row btn">
 								<button className={'submit-btn' + (isUpdating ? ' loading' : '')} type="submit" disabled={isSubmitting}>
 									Update patient							
