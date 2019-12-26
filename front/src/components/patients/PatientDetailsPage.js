@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PatientInfo from './PatientInfo';
 import PatientVisitAddForm from './PatientVisitAddForm';
 import { fetchPatientById, fetchDoctorsBySpecialty, fetchSpecialties, updatePatient, addVisit } from '../../actions';
-import { getPatient, getVisibleSpecialties } from '../../reducers';
+import { getPatient, getVisibleSpecialties, getIsUpdatingPatient } from '../../reducers';
 
 class PatientDetailsPage extends React.Component {
 	componentDidMount() {
@@ -25,7 +25,8 @@ class PatientDetailsPage extends React.Component {
 			<React.Fragment>
 				<PatientInfo 
 					patient={this.props.patient} 
-					updatePatient={this.props.updatePatient} />
+					updatePatient={this.props.updatePatient}
+					isUpdating={this.props.isUpdating} />
 				<PatientVisitAddForm
 					patientId={this.props.patientId}
 					specialties={this.props.specialties} 
@@ -41,6 +42,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		patientId,
 		patient: getPatient(state, patientId),
+		isUpdating: getIsUpdatingPatient(state),
 		specialties: getVisibleSpecialties(state)
 	};
 };

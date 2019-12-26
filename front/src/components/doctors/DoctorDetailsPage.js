@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import DoctorInfo from './DoctorInfo';
 import { fetchDoctorById, updateDoctor } from '../../actions';
-import { getDoctor } from '../../reducers';
+import { getDoctor, getIsUpdatingDoctor } from '../../reducers';
 
 class DoctorDetailsPage extends React.Component {
 	componentDidMount() {
@@ -23,7 +23,8 @@ class DoctorDetailsPage extends React.Component {
 			<React.Fragment>
 				<DoctorInfo 
 					doctor={this.props.doctor} 
-					updateDoctor={this.props.updateDoctor} />
+					updateDoctor={this.props.updateDoctor}
+					isUpdating={this.props.isUpdating} />
 			</React.Fragment>
 		);
 	}
@@ -34,6 +35,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		doctorId,
 		doctor: getDoctor(state, doctorId),
+		isUpdating: getIsUpdatingDoctor(state)
 	};
 };
 

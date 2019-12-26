@@ -21,7 +21,7 @@ class PatientInfo extends React.Component {
 	}
 
 	render() {
-		const patient = this.props.patient;
+		const { patient, isUpdating } = this.props;
 		if (!patient) {
 			return <div>Loading...</div>;
 		}
@@ -92,7 +92,7 @@ class PatientInfo extends React.Component {
 								</div>
 							</div>
 							<div className="form-row btn">
-								<button className="submit-btn" type="submit" disabled={isSubmitting}>
+								<button className={'submit-btn' + (isUpdating ? ' loading' : '')} type="submit" disabled={isSubmitting}>
 									Update patient							
 								</button>
 							</div>
