@@ -17,6 +17,7 @@ class PatientVisitAddForm extends React.Component {
 		visit.doctorId = values.doctor;
 		visit.visitDate = moment(values.visitDate).format('YYYY-MM-DD');
 		visit.visitTime = moment(values.visitTime).format('HH:mm');
+		visit.description = values.description;
 
 		this.props.addVisit(visit, patientId)
 			.finally(() => {
@@ -31,7 +32,7 @@ class PatientVisitAddForm extends React.Component {
 			<React.Fragment>
 				<h3 className="patient-visit-form-title">Add new visit</h3>
 				<Formik
-					initialValues={{ visitDate: '', visitTime: '', specialty: '', doctor: ''}}
+					initialValues={{ visitDate: '', visitTime: '', specialty: '', doctor: '', description: ''}}
 					validationSchema={Yup.object({
 						visitDate: Yup.date()
 							.required('Required').nullable(),
@@ -41,7 +42,9 @@ class PatientVisitAddForm extends React.Component {
 								return moment(value).isBetween(moment('08:00', 'HH:mm'), moment('15:00', 'HH:mm'), 'hour', '[]');
 							}),
 						doctor: Yup.number()
-							.required('Required')
+							.required('Required'),
+						description: Yup.string()
+							.max(4000, 'Must be 4000 characters or less')
 					})}
 					onSubmit={this.handleSubmit}>
 					
@@ -84,7 +87,14 @@ class PatientVisitAddForm extends React.Component {
 										<Field id="doctor" name="doctor" component={DoctorsField} />
 										<ErrorMessage name="doctor" component="div" className="error" />
 									</div>
-								</div>								
+								</div>
+								<div className={'form-row' + (errors.description && touched.description ? ' error' : '')}>
+									<label htmlFor="description">Description</label>
+									<div className="form-field">
+										<Field id="description" name="description" as="textarea" />
+										<ErrorMessage name="description" component="div" className="error" />
+									</div>
+								</div>							
 								<div className="form-row btn">
 									<button className={'submit-btn' + (isAdding ? ' loading' : '')} type="submit" disabled={isSubmitting}>
 										Add visit
