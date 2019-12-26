@@ -60,15 +60,4 @@ public interface PatientService {
 	 * @return list of patient's visits 
 	 */
 	List<VisitDTO> getPatientVisits(Long id);
-	
-	/**
-	 * Adds visit for a patient to the specified doctor
-	 * at a specified time. If appointment at given time
-	 * is not possible throws <code>VisitException</code>
-	 * 
-	 * @param visit visit to be added
-	 * @return added visit
-	 * @throws VisitException
-	 */
-	VisitDTO addVisit(VisitDTO visit);
 }

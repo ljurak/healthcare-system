@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.healthcare.model.entities.Patient;
 import com.healthcare.model.entities.Visit;
-import com.healthcare.model.entities.VisitStatus;
 import com.healthcare.model.repo.PatientRepo;
 import com.healthcare.model.repo.VisitRepo;
 import com.healthcare.service.PatientService;
@@ -18,7 +17,6 @@ import com.healthcare.service.dto.PatientDTO;
 import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.dto.converter.DTOConverter;
 import com.healthcare.service.exception.PatientNotFoundException;
-import com.healthcare.service.exception.VisitException;
 
 @Service
 @Transactional(readOnly = true)
@@ -91,28 +89,5 @@ public class PatientServiceImpl implements PatientService {
 	public List<VisitDTO> getPatientVisits(Long id) {
 		List<Visit> visits = visitRepo.findVisitsByPatient(id);
 		return visitConverter.convertFromEntity(visits);
-	}
-
-	@Override
-	@Transactional(readOnly = false)
-	public VisitDTO addVisit(VisitDTO visitDTO) {
-		LOGGER.info("An attempt to add visit: {}", visitDTO);
-		boolean isVisitAvailable = checkVisitAvailability(visitDTO);
-		if (isVisitAvailable) {
-			Visit visit = visitConverter.convertFromDTO(visitDTO);
-			visit.setStatus(VisitStatus.ACTIVE);
-			Visit registeredVisit = visitRepo.save(visit);
-			LOGGER.info("Successfully registered visit: {}", visit);
-			return visitConverter.convertFromEntity(registeredVisit);
-		} else {
-			LOGGER.info("Unable to add visit: {}", visitDTO);
-			throw new VisitException("Visit at given time is not available");
-		}
-	}
-	
-	private boolean checkVisitAvailability(VisitDTO visitDTO) {
-		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTime(
-				visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
-		return existingVisit == null;
 	}
 }
