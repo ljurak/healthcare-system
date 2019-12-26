@@ -19,12 +19,18 @@ import com.healthcare.rest.exception.FieldValidationError;
 import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.exception.DoctorNotFoundException;
 import com.healthcare.service.exception.PatientNotFoundException;
+import com.healthcare.service.exception.SpecialtyNotFoundException;
+import com.healthcare.service.exception.VisitNotFoundException;
 
 @RestControllerAdvice
 @CrossOrigin
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
-	@ExceptionHandler({ PatientNotFoundException.class, DoctorNotFoundException.class })
+	@ExceptionHandler({ 
+		PatientNotFoundException.class, 
+		DoctorNotFoundException.class, 
+		VisitNotFoundException.class, 
+		SpecialtyNotFoundException.class })
 	public ResponseEntity<ApiError> handlePatientNotFoundException(RuntimeException ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return new ResponseEntity<>(apiError, apiError.getStatus());
