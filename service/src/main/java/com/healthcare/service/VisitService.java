@@ -34,7 +34,15 @@ public interface VisitService {
 	 * @param patientId id of a patient
 	 * @return list of visits
 	 */
-	List<VisitDTO> getVisitByPatientId(Long patientId);
+	List<VisitDTO> getVisitsByPatientId(Long patientId);
+	
+	/**
+	 * Retrieves visits for a doctor with given id.
+	 * 
+	 * @param doctorId id of a doctor
+	 * @return list of visits
+	 */
+	List<VisitDTO> getVisitsByDoctorId(Long doctorId);
 	
 	/**
 	 * Updates visit data.

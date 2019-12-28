@@ -64,8 +64,14 @@ public class VisitServiceImpl implements VisitService {
 	}
 
 	@Override
-	public List<VisitDTO> getVisitByPatientId(Long patientId) {
+	public List<VisitDTO> getVisitsByPatientId(Long patientId) {
 		List<Visit> visits = visitRepo.findVisitsByPatient(patientId);
+		return visitConverter.convertFromEntity(visits);
+	}
+	
+	@Override
+	public List<VisitDTO> getVisitsByDoctorId(Long doctorId) {
+		List<Visit> visits = visitRepo.findVisitsByDoctor(doctorId);
 		return visitConverter.convertFromEntity(visits);
 	}
 
@@ -79,5 +85,5 @@ public class VisitServiceImpl implements VisitService {
 		persistedVisit = visitRepo.save(persistedVisit);
 		LOGGER.info("Successfully updated visit: {}", persistedVisit);
 		return visitConverter.convertFromEntity(persistedVisit);
-	}	
+	}
 }
