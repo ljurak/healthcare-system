@@ -88,6 +88,18 @@ DoctorsApi.updateDoctor = function(doctor, id) {
 
 const VisitsApi = {};
 
+VisitsApi.fetchVisitsByPatient = function(patientId) {
+	return fetch(`${BASE_API_URL}/patients/${patientId}/visits`, {
+		headers: createAuthorizationHeader()
+	});
+};
+
+VisitsApi.fetchVisitsByDoctor = function(doctorId) {
+	return fetch(`${BASE_API_URL}/doctors/${doctorId}/visits`, {
+		headers: createAuthorizationHeader()
+	});
+};
+
 VisitsApi.addVisit = function(visit, patientId) {
 	return fetch(`${BASE_API_URL}/patients/${patientId}/visits`, {
 		method: 'POST',
