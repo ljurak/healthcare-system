@@ -3,17 +3,21 @@ import { connect } from 'react-redux';
 
 import PatientInfo from './PatientInfo';
 import PatientVisitAddForm from './PatientVisitAddForm';
+import VisitsList from '../VisitsList';
 import { 
 	fetchPatientById, 
 	fetchDoctorsBySpecialty, 
-	fetchSpecialties, 
+	fetchSpecialties,
+	fetchVisitsByPatientId,
 	updatePatient, 
 	addVisit, 
 	clearAlert } from '../../actions';
 import { 
 	getPatient, 
-	getVisibleSpecialties, 
-	getIsUpdatingPatient, 
+	getVisibleSpecialties,
+	getVisibleVisits,
+	getIsUpdatingPatient,
+	getIsFetchingVisits,
 	getPatientsAlert } from '../../reducers';
 
 class PatientDetailsPage extends React.Component {
@@ -21,6 +25,7 @@ class PatientDetailsPage extends React.Component {
 	componentDidMount() {
 		const { patientId } = this.props.match.params;
 		this.props.fetchPatientById(patientId);
+		this.props.fetchVisitsByPatientId(patientId);
 		this.props.fetchSpecialties();
 	}
 
@@ -28,18 +33,30 @@ class PatientDetailsPage extends React.Component {
 		if (this.props.patient !== prevProps.patient) {
 			const { patientId } = this.props.match.params;
 			this.props.fetchPatientById(patientId);
+			this.props.fetchVisitsByPatientId(patientId);
 		}
 	}
 
 	render() {
-		const { patient, patientId, specialties, isUpdating, fetchDoctorsBySpecialty, updatePatient, addVisit, alert, clearAlert } = this.props;
+		const { 
+			patient, 
+			patientId, 
+			specialties,
+			visits,
+			isFetchingVisits,
+			isUpdatingPatient, 
+			fetchDoctorsBySpecialty,
+			updatePatient, 
+			addVisit, 
+			alert, 
+			clearAlert } = this.props;
 
 		return (
 			<React.Fragment>
 				<PatientInfo 
 					patient={patient} 
 					updatePatient={updatePatient}
-					isUpdating={isUpdating}
+					isUpdating={isUpdatingPatient}
 					alert={alert}
 					clearAlert={clearAlert} />
 				<PatientVisitAddForm
@@ -47,6 +64,13 @@ class PatientDetailsPage extends React.Component {
 					specialties={specialties} 
 					fetchDoctors={fetchDoctorsBySpecialty}
 					addVisit={addVisit} />
+				<h3 className="visits-list-title">Patient's visits</h3>
+				{ isFetchingVisits 
+					? (<div className="visits-search-info">Loading visits...</div>)
+					: (visits.length > 0)
+						? (<VisitsList visits={visits} />)
+						: (<div className="visits-search-info">No visits</div>) 
+				}
 			</React.Fragment>
 		);
 	}
@@ -57,8 +81,10 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		patientId,
 		patient: getPatient(state, patientId),
-		isUpdating: getIsUpdatingPatient(state),
+		isUpdatingPatient: getIsUpdatingPatient(state),
 		specialties: getVisibleSpecialties(state),
+		visits: getVisibleVisits(state),
+		isFetchingVisits: getIsFetchingVisits(state),
 		alert: getPatientsAlert(state)
 	};
 };
@@ -66,7 +92,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = { 
 	fetchPatientById, 
 	fetchDoctorsBySpecialty, 
-	fetchSpecialties, 
+	fetchSpecialties,
+	fetchVisitsByPatientId,
 	updatePatient,
 	addVisit,
 	clearAlert
