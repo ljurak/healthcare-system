@@ -6,19 +6,23 @@ const patients = (state = {}, action) => {
 	switch (action.type) {
 		case actions.ADD_PATIENT_SUCCESS:
 			return {
-				add: 'Successfully added new patient'
+				add: 'Successfully added new patient',
+				type: 'alert-success'
 			};
 		case actions.ADD_PATIENT_FAILURE:
 			return {
-				add: 'Oups. Error occured. Patient wasn\'t added'
+				add: action.payload.message,
+				type: 'alert-failure'
 			};
 		case actions.UPDATE_PATIENT_SUCCESS:
 			return {
-				update: 'Successfully updated patient'
+				update: 'Successfully updated patient',
+				type: 'alert-success'
 			};
 		case actions.UPDATE_PATIENT_FAILURE:
 			return {
-				update: 'Oups. Error occured. Patient wasn\'t updated'
+				update: action.payload.message,
+				type: 'alert-failure'
 			};
 		case actions.ADD_PATIENT_REQUEST:
 		case actions.UPDATE_PATIENT_REQUEST:
@@ -33,22 +37,41 @@ const doctors = (state = {}, action) => {
 	switch (action.type) {
 		case actions.ADD_DOCTOR_SUCCESS:
 			return {
-				add: 'Successfully added new doctor'
+				add: 'Successfully added new doctor',
+				type: 'alert-success'
 			};
 		case actions.ADD_DOCTOR_FAILURE:
 			return {
-				add: 'Oups. Error occured. Doctor wasn\'t added'
+				add: action.payload.message,
+				type: 'alert-failure'
 			};
 		case actions.UPDATE_DOCTOR_SUCCESS:
 			return {
-				update: 'Successfully updated doctor'
+				update: 'Successfully updated doctor',
+				type: 'alert-success'
 			};
 		case actions.UPDATE_DOCTOR_FAILURE:
 			return {
-				update: 'Oups. Error occured. Doctor wasn\'t updated'
+				update: action.payload.message,
+				type: 'alert-failure'
 			};
 		case actions.ADD_DOCTOR_REQUEST:
 		case actions.UPDATE_DOCTOR_REQUEST:
+		case actions.CLEAR_ALERT:
+			return {};
+		default:
+			return state;
+	}
+};
+
+const authentication = (state = {}, action) => {
+	switch (action.type) {
+		case actions.LOGIN_FAILURE:
+			return {
+				message: action.payload.message,
+				type: 'alert-failure'
+			};
+		case actions.LOGIN_REQUEST:
 		case actions.CLEAR_ALERT:
 			return {};
 		default:
@@ -60,7 +83,10 @@ export const getPatientsAlert = (state) => state.patients;
 
 export const getDoctorsAlert = (state) => state.doctors;
 
+export const getAuthenticationAlert = (state) => state.authentication;
+
 export default combineReducers({
 	patients,
-	doctors
+	doctors,
+	authentication
 });
