@@ -3,7 +3,6 @@ package com.healthcare.service;
 import java.util.List;
 
 import com.healthcare.service.dto.PatientDTO;
-import com.healthcare.service.dto.VisitDTO;
 
 public interface PatientService {
 	
@@ -52,12 +51,4 @@ public interface PatientService {
 	 * @throws PatientNotFoundException
 	 */
 	PatientDTO updatePatient(PatientDTO patientDTO, Long id);
-	
-	/**
-	 * Retrieves list of specified patient's visits.
-	 * 
-	 * @param id patient id
-	 * @return list of patient's visits 
-	 */
-	List<VisitDTO> getPatientVisits(Long id);
 }

@@ -9,12 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.healthcare.model.entities.Patient;
-import com.healthcare.model.entities.Visit;
 import com.healthcare.model.repo.PatientRepo;
-import com.healthcare.model.repo.VisitRepo;
 import com.healthcare.service.PatientService;
 import com.healthcare.service.dto.PatientDTO;
-import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.dto.converter.DTOConverter;
 import com.healthcare.service.exception.PatientNotFoundException;
 
@@ -26,22 +23,14 @@ public class PatientServiceImpl implements PatientService {
 	
 	private PatientRepo patientRepo;	
 	
-	private VisitRepo visitRepo;
-	
 	private DTOConverter<PatientDTO, Patient> patientConverter;
-	
-	private DTOConverter<VisitDTO, Visit> visitConverter;
 	
 	@Autowired
 	public PatientServiceImpl(
-			PatientRepo patientRepo, 
-			VisitRepo visitRepo, 
-			DTOConverter<PatientDTO, Patient> patientConverter,
-			DTOConverter<VisitDTO, Visit> visitConverter) {
+			PatientRepo patientRepo,
+			DTOConverter<PatientDTO, Patient> patientConverter) {
 		this.patientRepo = patientRepo;
-		this.visitRepo = visitRepo;
 		this.patientConverter = patientConverter;
-		this.visitConverter = visitConverter;
 	}
 	
 	@Override
@@ -84,10 +73,4 @@ public class PatientServiceImpl implements PatientService {
 		LOGGER.info("Successfully updated patient: {}", persistedPatient);
 		return patientConverter.convertFromEntity(persistedPatient);
 	}	
-	
-	@Override
-	public List<VisitDTO> getPatientVisits(Long id) {
-		List<Visit> visits = visitRepo.findVisitsByPatient(id);
-		return visitConverter.convertFromEntity(visits);
-	}
 }
