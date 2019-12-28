@@ -120,10 +120,44 @@ body {
 
 .sidebar {
 	width: 30%;
+	padding: 3rem 1rem;
 }
 
 .main-content {
 	width: 70%;
+	padding: 0 2rem;
+}
+
+.sidebar figure {
+	margin: 0;
+}
+
+.sidebar .photo {
+	width: 100%;
+	height: auto;
+}
+
+.sidebar .system-info {
+	font-size: 1.8rem;
+	font-weight: bold;
+	margin: 2rem 0;
+	text-transform: uppercase;
+}
+
+.sidebar .group-info-title {
+	text-decoration: underline;
+}
+
+.sidebar .group-info-list {
+	list-style-type: none;
+	margin: 1rem 0 2rem;
+	padding: 0 2rem;
+	font-style: italic;
+	color: #555;
+}
+
+.sidebar .group-info-list li {
+	margin-bottom: 0.5rem;
 }
 
 .login-form-wrapper {
@@ -200,6 +234,7 @@ body {
 .patients-search-title,
 .patient-info-title,
 .patient-visit-form-title,
+.visits-list-title,
 .doctor-add-form-title,
 .doctors-search-title,
 .doctor-info-title,
@@ -224,20 +259,24 @@ body {
 }
 
 .patients-search-info,
-.doctors-search-info {
+.doctors-search-info,
+.visits-search-info {
+	margin-top: 2rem;
 	margin-bottom: 2rem;
 	font-size: 1.6rem;
 	font-style: italic;
 }
 
-.people-list {
+.people-list,
+.visits-list {
 	width: 100%;
 	margin: 2rem 0;
 	border-collapse: collapse;
 	text-align: center;
 }
 
-.people-list-header {
+.people-list-header,
+.visits-list-header {
 	font-size: 2rem;
 	font-weight: bold;
 	background-color: var(--color-main);
@@ -245,16 +284,20 @@ body {
 }
 
 .people-list th,
-.people-list td {
+.visits-list th,
+.people-list td,
+.visits-list td {
 	padding: 1.5rem 0;
 	border-bottom: 1px solid #000;
 }
 
-.people-list th {
+.people-list th,
+.visits-list th {
 	border-bottom: none;
 }
 
-.people-list tr:nth-of-type(2n) {
+.people-list tr:nth-of-type(2n),
+.visits-list tr:nth-of-type(2n) {
 	background-color: var(--color-main-light);
 }
 
@@ -463,10 +506,18 @@ body {
 	margin-bottom: 1.6rem;
 	padding: 1rem 5rem 1rem 1rem;
 	text-align: left; 
-	background-color: var(--color-main-light);
-	border: 1px solid var(--color-main);
 	border-radius: 4px;
 	position: relative;
+}
+
+.alert-box.alert-success {
+	background-color: var(--color-main-light);
+	border: 1px solid var(--color-main);
+}
+
+.alert-box.alert-failure {
+	background-color: #ffeded;
+	border: 1px solid #db083e;
 }
 
 .alert-box .close-btn {
@@ -478,9 +529,16 @@ body {
 	top: 50%;
 	right: 1rem;
 	transform: translateY(-50%);
-	background-color: var(--color-main);
 	border: none;
 	border-radius: 4px;
+}
+
+.alert-box.alert-success .close-btn {
+	background-color: var(--color-main);
+}
+
+.alert-box.alert-failure .close-btn {
+	background-color: #db083e;
 }
 
 .alert-box .close-btn:hover {
