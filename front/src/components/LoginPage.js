@@ -4,7 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
 
-import { login } from '../actions';
+import { login, clearAlert } from '../actions';
+import { getAuthenticationAlert } from '../reducers';
 
 class LoginPage extends React.Component {
 	handleSubmit = (values, actions) => {
@@ -13,7 +14,7 @@ class LoginPage extends React.Component {
 	}
 
 	render() {
-		const { isLogging, isLoggedIn } = this.props;
+		const { isLogging, isLoggedIn, alert, clearAlert } = this.props;
 		const { from } = this.props.location.state || { from: { pathname: '/' } };
 
 		if (isLoggedIn) {
@@ -49,6 +50,12 @@ class LoginPage extends React.Component {
 								<Field id="password" name="password" type="password" />
 								<ErrorMessage name="password" component="div" className="error" />
 							</div>
+							{ alert.message && 
+								<div className={`alert-box ${alert.type}`}>
+									<span>{alert.message}</span>
+									<button className="close-btn" type="button" onClick={e => clearAlert()}>X</button>
+								</div>
+							}
 							<div className="form-row btn">
 								<button className={'submit-btn' + (isLogging ? ' loading' : '')} type="submit" disabled={isLogging}>
 									Sign in
@@ -66,11 +73,12 @@ const mapStateToProps = (state) => {
 	const { isLogging, isLoggedIn } = state.authentication;
 	return {
 		isLogging,
-		isLoggedIn
+		isLoggedIn,
+		alert: getAuthenticationAlert(state)
 	};
 };
 
-const mapDispatchToProps = { login };
+const mapDispatchToProps = { login, clearAlert };
 
 export default connect(
 	mapStateToProps, 
