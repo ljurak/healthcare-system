@@ -98,7 +98,7 @@ class DoctorInfo extends React.Component {
 								</div>
 							</div>
 							{ alert.update && 
-								<div className="alert-box">
+								<div className={`alert-box ${alert.type}`}>
 									<span>{alert.update}</span>
 									<button className="close-btn" type="button" onClick={e => clearAlert()}>X</button>
 								</div>

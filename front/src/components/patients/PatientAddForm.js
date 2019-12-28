@@ -81,7 +81,7 @@ class PatientAddForm extends React.Component {
 								<ErrorMessage name="email" component="div" className="error" />
 							</div>
 							{ alert.add && 
-								<div className="alert-box">
+								<div className={`alert-box ${alert.type}`}>
 									<span>{alert.add}</span>
 									<button className="close-btn" type="button" onClick={e => clearAlert()}>X</button>
 								</div>
