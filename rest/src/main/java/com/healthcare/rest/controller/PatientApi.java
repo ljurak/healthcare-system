@@ -78,7 +78,7 @@ public class PatientApi {
 	
 	@GetMapping("/{id}/visits")
 	public List<VisitDTO> getPatientVisits(@PathVariable long id) {
-		return patientService.getPatientVisits(id);
+		return visitService.getVisitsByPatientId(id);
 	}
 	
 	/**
