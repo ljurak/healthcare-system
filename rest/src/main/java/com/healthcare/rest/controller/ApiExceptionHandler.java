@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,7 +33,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		DoctorNotFoundException.class, 
 		VisitNotFoundException.class, 
 		SpecialtyNotFoundException.class })
-	public ResponseEntity<ApiError> handlePatientNotFoundException(RuntimeException ex) {
+	public ResponseEntity<ApiError> handleEntityNotFoundException(RuntimeException ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
@@ -54,6 +56,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		apiError.setFieldErrors(fieldValidationErrors);
 		return new ResponseEntity<>(apiError, apiError.getStatus());
+	}
+	
+	@ExceptionHandler(AuthenticationException.class)
+	public ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException ex) {
+		String message;
+		if (ex instanceof BadCredentialsException) {
+			message = "Incorrect username or password";
+		} else {
+			message = ex.getMessage();
+		}
+		
+		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, message);
+		return new ResponseEntity<ApiError>(apiError, apiError.getStatus());
 	}
 	
 	@Override
