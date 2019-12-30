@@ -30,7 +30,7 @@ class PatientDetailsPage extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.patient !== prevProps.patient) {
+		if (this.props.match.params.patientId !== prevProps.match.params.patientId) {
 			const { patientId } = this.props.match.params;
 			this.props.fetchPatientById(patientId);
 			this.props.fetchVisitsByPatientId(patientId);
