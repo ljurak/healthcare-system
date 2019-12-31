@@ -53,49 +53,35 @@ class DoctorInfo extends React.Component {
 					{({ errors, touched, isSubmitting }) => (
 						<Form className="update-form">
 							<div className="form-row">
-								<label htmlFor="firstName">First name</label>
-								<div className="form-field">
-									<Field id="firstName" name="firstName" type="text" disabled={true} />
-								</div>
+								<label htmlFor="firstName">First name</label>								
+								<Field id="firstName" name="firstName" type="text" disabled={true} />								
 							</div>
 							<div className="form-row">
-								<label htmlFor="lastName">Last name</label>
-								<div className="form-field">
-									<Field id="lastName" name="lastName" type="text" disabled={true} />
-								</div>
+								<label htmlFor="lastName">Last name</label>								
+								<Field id="lastName" name="lastName" type="text" disabled={true} />								
 							</div>
 							<div className="form-row">
-								<label htmlFor="specialty">Specialty</label>
-								<div className="form-field">
-									<Field id="specialty" name="specialty" type="text" disabled={true} />
-								</div>
+								<label htmlFor="specialty">Specialty</label>								
+								<Field id="specialty" name="specialty" type="text" disabled={true} />								
 							</div>
 							<div className="form-row">
-								<label htmlFor="birthDate">Birth date</label>
-								<div className="form-field">
-									<Field id="birthDate" name="birthDate" type="text" disabled={true} />
-								</div>
+								<label htmlFor="birthDate">Birth date</label>								
+								<Field id="birthDate" name="birthDate" type="text" disabled={true} />								
 							</div>
 							<div className={'form-row' + (errors.address && touched.address ? ' error' : '')}>
-								<label htmlFor="address">Address*</label>
-								<div className="form-field">
-									<Field id="address" name="address" type="text" />
-									<ErrorMessage name="address" component="div" className="error" />
-								</div>
+								<label htmlFor="address">Address*</label>								
+								<Field id="address" name="address" type="text" />
+								<ErrorMessage name="address" component="div" className="error" />								
 							</div>
 							<div className={'form-row' + (errors.phoneNumber && touched.phoneNumber ? ' error' : '')}>
-								<label htmlFor="phoneNumber">Phone number*</label>
-								<div className="form-field">
-									<Field id="phoneNumber" name="phoneNumber" type="text" />
-									<ErrorMessage name="phoneNumber" component="div" className="error" />
-								</div>
+								<label htmlFor="phoneNumber">Phone number*</label>								
+								<Field id="phoneNumber" name="phoneNumber" type="text" />
+								<ErrorMessage name="phoneNumber" component="div" className="error" />								
 							</div>
 							<div className={'form-row' + (errors.email && touched.email ? ' error' : '')}>
-								<label htmlFor="email">Email</label>
-								<div className="form-field">
-									<Field id="email" name="email" type="email" />
-									<ErrorMessage name="email" component="div" className="error" />
-								</div>
+								<label htmlFor="email">Email</label>								
+								<Field id="email" name="email" type="email" />
+								<ErrorMessage name="email" component="div" className="error" />								
 							</div>
 							{ alert.update && 
 								<div className={`alert-box ${alert.type}`}>

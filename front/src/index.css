@@ -442,10 +442,13 @@ body {
 .update-form .form-row {
 	margin-bottom: 1.6rem;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 }
 
 .update-form .form-row .error {
+	flex-basis: 100%;
+	padding-left: 25%;
 	margin-top: 0.8rem;
 	color: #d8083e;
 	font-style: italic;
@@ -465,13 +468,9 @@ body {
 	font-weight: bold;
 }
 
-.update-form .form-field {
-	flex-basis: 75%;
-}
-
 .update-form input {
 	display: block;
-	width: 100%;
+	flex-basis: 75%;
 	padding: 1.2rem;
 	font-size: 1.6rem;
 	color: #000;
