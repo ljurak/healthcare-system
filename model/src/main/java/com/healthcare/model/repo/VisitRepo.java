@@ -17,6 +17,9 @@ public interface VisitRepo extends CrudRepository<Visit, Long> {
 	@Query("select v from Visit v where v.doctor.id = :doctorId and v.visitDate = :date and v.visitTime = :time")
 	Visit findVisitByDoctorAndDateTime(@Param("doctorId") Long doctorId, @Param("date") LocalDate date, @Param("time") LocalTime time);
 	
+	@Query("select v from Visit v where v.doctor.id = :doctorId and v.visitDate = :date and v.visitTime = :time and v.status != 'CANCELLED'")
+	Visit findVisitByDoctorAndDateTimeNotCancelled(@Param("doctorId") Long doctorId, @Param("date") LocalDate date, @Param("time") LocalTime time);
+	
 	@Query("select v from Visit v where v.patient.id = :patientId order by v.visitDate, v.visitTime")
 	List<Visit> findVisitsByPatient(@Param("patientId") Long patientId);
 	

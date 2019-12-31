@@ -38,7 +38,7 @@ public class VisitServiceImpl implements VisitService {
 	@Transactional(readOnly = false)
 	public VisitDTO addVisit(VisitDTO visitDTO) {
 		LOGGER.info("An attempt to add visit: {}", visitDTO);
-		validateVisit(visitDTO);
+		validateNewVisit(visitDTO);
 		
 		Visit visit = visitConverter.convertFromDTO(visitDTO);
 		visit.setStatus(VisitStatus.ACTIVE);
@@ -47,13 +47,13 @@ public class VisitServiceImpl implements VisitService {
 		return visitConverter.convertFromEntity(registeredVisit);
 	}
 	
-	private void validateVisit(VisitDTO visitDTO) {
+	private void validateNewVisit(VisitDTO visitDTO) {
 		LocalDateTime visitDateTime = LocalDateTime.of(visitDTO.getVisitDate(), visitDTO.getVisitTime());
 		if (visitDateTime.isBefore(LocalDateTime.now())) {
 			LOGGER.info("Unable to add visit: {}", visitDTO);
 			throw new VisitException("Cannot add visit with past date");
 		}
-		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTime(
+		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTimeNotCancelled(
 				visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
 		if (existingVisit != null) {
 			LOGGER.info("Unable to add visit: {}", visitDTO);
@@ -85,10 +85,22 @@ public class VisitServiceImpl implements VisitService {
 	public VisitDTO updateVisit(VisitDTO visitDTO) {
 		Visit persistedVisit = visitRepo.findById(visitDTO.getId())
 				.orElseThrow(() -> new VisitNotFoundException("Visit with id: " + visitDTO.getId() + " does not exist"));
+		validateExistingVisit(persistedVisit, visitDTO);
 		persistedVisit.setStatus(visitDTO.getStatus());
 		persistedVisit.setDescription(visitDTO.getDescription());
 		persistedVisit = visitRepo.save(persistedVisit);
 		LOGGER.info("Successfully updated visit: {}", persistedVisit);
 		return visitConverter.convertFromEntity(persistedVisit);
+	}
+	
+	private void validateExistingVisit(Visit visit, VisitDTO visitDTO) {
+		if (visit.getStatus() == VisitStatus.CANCELLED && visitDTO.getStatus() != VisitStatus.CANCELLED) {
+			Visit existingVisit = visitRepo.findVisitByDoctorAndDateTimeNotCancelled(
+					visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
+			if (existingVisit != null) {
+				LOGGER.info("Unable to update visit: {}", visitDTO);
+				throw new VisitException("Visit at given time is not available");
+			}
+		}
 	}
 }
