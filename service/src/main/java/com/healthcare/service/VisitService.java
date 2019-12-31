@@ -50,9 +50,8 @@ public interface VisitService {
 	 * with given id does not exist.
 	 * 
 	 * @param visitDTO visit to be updated
-	 * @param id visit id
 	 * @return updated visit
 	 * @throws VisitNotFoundException
 	 */
-	VisitDTO updateVisit(VisitDTO visitDTO, Long id);	
+	VisitDTO updateVisit(VisitDTO visitDTO);	
 }

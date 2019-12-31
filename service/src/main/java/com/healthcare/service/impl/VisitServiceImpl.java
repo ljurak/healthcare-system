@@ -1,5 +1,6 @@
 package com.healthcare.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,23 +38,27 @@ public class VisitServiceImpl implements VisitService {
 	@Transactional(readOnly = false)
 	public VisitDTO addVisit(VisitDTO visitDTO) {
 		LOGGER.info("An attempt to add visit: {}", visitDTO);
-		boolean isVisitAvailable = checkVisitAvailability(visitDTO);
-		if (isVisitAvailable) {
-			Visit visit = visitConverter.convertFromDTO(visitDTO);
-			visit.setStatus(VisitStatus.ACTIVE);
-			Visit registeredVisit = visitRepo.save(visit);
-			LOGGER.info("Successfully registered visit: {}", registeredVisit);
-			return visitConverter.convertFromEntity(registeredVisit);
-		} else {
+		validateVisit(visitDTO);
+		
+		Visit visit = visitConverter.convertFromDTO(visitDTO);
+		visit.setStatus(VisitStatus.ACTIVE);
+		Visit registeredVisit = visitRepo.save(visit);
+		LOGGER.info("Successfully registered visit: {}", registeredVisit);
+		return visitConverter.convertFromEntity(registeredVisit);
+	}
+	
+	private void validateVisit(VisitDTO visitDTO) {
+		LocalDateTime visitDateTime = LocalDateTime.of(visitDTO.getVisitDate(), visitDTO.getVisitTime());
+		if (visitDateTime.isBefore(LocalDateTime.now())) {
+			LOGGER.info("Unable to add visit: {}", visitDTO);
+			throw new VisitException("Cannot add visit with past date");
+		}
+		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTime(
+				visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
+		if (existingVisit != null) {
 			LOGGER.info("Unable to add visit: {}", visitDTO);
 			throw new VisitException("Visit at given time is not available");
 		}
-	}
-	
-	private boolean checkVisitAvailability(VisitDTO visitDTO) {
-		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTime(
-				visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
-		return existingVisit == null;
 	}
 
 	@Override
@@ -77,9 +82,9 @@ public class VisitServiceImpl implements VisitService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public VisitDTO updateVisit(VisitDTO visitDTO, Long id) {
-		Visit persistedVisit = visitRepo.findById(id)
-				.orElseThrow(() -> new VisitNotFoundException("Visit with id: " + id + " does not exist"));
+	public VisitDTO updateVisit(VisitDTO visitDTO) {
+		Visit persistedVisit = visitRepo.findById(visitDTO.getId())
+				.orElseThrow(() -> new VisitNotFoundException("Visit with id: " + visitDTO.getId() + " does not exist"));
 		persistedVisit.setStatus(visitDTO.getStatus());
 		persistedVisit.setDescription(visitDTO.getDescription());
 		persistedVisit = visitRepo.save(persistedVisit);
