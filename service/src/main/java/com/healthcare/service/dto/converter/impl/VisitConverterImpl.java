@@ -47,7 +47,9 @@ public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 		VisitDTO dto = new VisitDTO();
 		dto.setId(entity.getId());
 		dto.setPatientId(entity.getPatient().getId());
+		dto.setPatientName(entity.getPatient().getFirstName() + " " + entity.getPatient().getLastName());
 		dto.setDoctorId(entity.getDoctor().getId());
+		dto.setDoctorName(entity.getDoctor().getFirstName() + " " + entity.getDoctor().getLastName());
 		dto.setDescription(entity.getDescription());
 		dto.setVisitDate(entity.getVisitDate());
 		dto.setVisitTime(entity.getVisitTime());
