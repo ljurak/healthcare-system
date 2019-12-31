@@ -26,7 +26,7 @@ class VisitsListItem extends React.Component {
 					Date: <i>{visit.visitDate + ' ' + visit.visitTime.substr(0,5)}</i>
 				</div>
 				<div className="visits-list-item-doctor">
-					Doctor: <i>{visit.doctorId}</i>
+					Doctor: <i>{visit.doctorName}</i>
 				</div>
 				{showEditForm && <VisitEditForm visit={visit} />}
 				<button className="show-info-btn" type="button" onClick={this.handleClick}><i className="icon-down-open"></i></button>
