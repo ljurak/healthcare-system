@@ -108,6 +108,14 @@ VisitsApi.addVisit = function(visit, patientId) {
 	});
 };
 
+VisitsApi.updateVisit = function(visit, patientId) {
+	return fetch(`${BASE_API_URL}/patients/${patientId}/visits`, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json', ...createAuthorizationHeader() },
+		body: JSON.stringify(visit)
+	});
+};
+
 const SpecialtiesApi = {};
 
 SpecialtiesApi.fetchSpecialties = function() {

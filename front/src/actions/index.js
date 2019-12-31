@@ -20,6 +20,7 @@ const updatePatientRequest = makeRequestActionCreator(actions.UPDATE_PATIENT_REQ
 const addDoctorRequest = makeRequestActionCreator(actions.ADD_DOCTOR_REQUEST);
 const updateDoctorRequest = makeRequestActionCreator(actions.UPDATE_DOCTOR_REQUEST);
 const addVisitRequest = makeRequestActionCreator(actions.ADD_VISIT_REQUEST);
+const updateVisitRequest = makeRequestActionCreator(actions.UPDATE_VISIT_REQUEST);
 const loginRequest = makeRequestActionCreator(actions.LOGIN_REQUEST);
 
 const makeSuccessActionCreator = (type) => (payload) => ({ type, payload });
@@ -35,6 +36,7 @@ const updatePatientSuccess = makeSuccessActionCreator(actions.UPDATE_PATIENT_SUC
 const addDoctorSuccess = makeSuccessActionCreator(actions.ADD_DOCTOR_SUCCESS);
 const updateDoctorSuccess = makeSuccessActionCreator(actions.UPDATE_DOCTOR_SUCCESS);
 const addVisitSuccess = makeSuccessActionCreator(actions.ADD_VISIT_SUCCESS);
+const updateVisitSuccess = makeSuccessActionCreator(actions.UPDATE_VISIT_SUCCESS);
 const loginSuccess = makeSuccessActionCreator(actions.LOGIN_SUCCESS);
 
 const makeFailureActionCreator = (type) => (payload) => ({ type, payload, error: true});
@@ -50,6 +52,7 @@ const updatePatientFailure = makeFailureActionCreator(actions.UPDATE_PATIENT_FAI
 const addDoctorFailure = makeFailureActionCreator(actions.ADD_DOCTOR_FAILURE);
 const updateDoctorFailure = makeFailureActionCreator(actions.UPDATE_DOCTOR_FAILURE);
 const addVisitFailure = makeFailureActionCreator(actions.ADD_VISIT_FAILURE);
+const updateVisitFailure = makeFailureActionCreator(actions.UPDATE_VISIT_FAILURE);
 const loginFailure = makeFailureActionCreator(actions.LOGIN_FAILURE);
 
 export const logout = () => {
@@ -233,6 +236,17 @@ export const addVisit = (visit, patientId) => (dispatch) => {
 		.then(
 			response => dispatch(addVisitSuccess(normalize([ response ], schema.visitsListSchema))),
 			error => dispatch(addVisitFailure(error))
+		);
+};
+
+export const updateVisit = (visit, patientId) => (dispatch) => {
+	dispatch(updateVisitRequest());
+
+	return VisitsApi.updateVisit(visit, patientId)
+		.then(handleApiResponse)
+		.then(
+			response => dispatch(updateVisitSuccess(normalize([ response ], schema.visitsListSchema))),
+			error => dispatch(updateVisitFailure(error))
 		);
 };
 
