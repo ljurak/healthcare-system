@@ -350,6 +350,10 @@ body {
 	opacity: 0.8;
 }
 
+.visits-list-item .show-info-btn:focus {
+	outline: none;
+}
+
 .visits-list-item .show-info-btn i {
 	display: flex;
 	justify-content: center;
