@@ -18,7 +18,9 @@ import {
 	getVisibleVisits,
 	getIsUpdatingPatient,
 	getIsFetchingVisits,
-	getPatientsAlert } from '../../reducers';
+	getIsAddingVisit,
+	getPatientsAlert,
+	getVisitsAlert } from '../../reducers';
 
 class PatientDetailsPage extends React.Component {
 	
@@ -47,8 +49,10 @@ class PatientDetailsPage extends React.Component {
 			isUpdatingPatient, 
 			fetchDoctorsBySpecialty,
 			updatePatient, 
-			addVisit, 
-			alert, 
+			addVisit,
+			isAddingVisit,
+			patientsAlert,
+			visitsAlert,
 			clearAlert } = this.props;
 
 		return (
@@ -57,13 +61,16 @@ class PatientDetailsPage extends React.Component {
 					patient={patient} 
 					updatePatient={updatePatient}
 					isUpdating={isUpdatingPatient}
-					alert={alert}
+					alert={patientsAlert}
 					clearAlert={clearAlert} />
 				<PatientVisitAddForm
 					patientId={patientId}
 					specialties={specialties} 
 					fetchDoctors={fetchDoctorsBySpecialty}
-					addVisit={addVisit} />
+					addVisit={addVisit}
+					isAdding={isAddingVisit}
+					alert={visitsAlert}
+					clearAlert={clearAlert} />
 				<h3 className="visits-list-title">Patient's visits</h3>
 				{ isFetchingVisits 
 					? (<div className="visits-search-info">Loading visits...</div>)
@@ -85,7 +92,9 @@ const mapStateToProps = (state, ownProps) => {
 		specialties: getVisibleSpecialties(state),
 		visits: getVisibleVisits(state),
 		isFetchingVisits: getIsFetchingVisits(state),
-		alert: getPatientsAlert(state)
+		isAddingVisit: getIsAddingVisit(state),
+		patientsAlert: getPatientsAlert(state),
+		visitsAlert: getVisitsAlert(state)
 	};
 };
 

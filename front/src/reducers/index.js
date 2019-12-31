@@ -65,6 +65,8 @@ export const getPatientsAlert = (state) => fromAlert.getPatientsAlert(state.aler
 
 export const getDoctorsAlert = (state) => fromAlert.getDoctorsAlert(state.alert);
 
+export const getVisitsAlert = (state) => fromAlert.getVisitsAlert(state.alert);
+
 export const getAuthenticationAlert = (state) => fromAlert.getAuthenticationAlert(state.alert);
 
 export default rootReducer;
