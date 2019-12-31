@@ -3,7 +3,6 @@ package com.healthcare.service.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -18,15 +17,18 @@ public class VisitDTO {
 	@Positive
 	private Long patientId;
 	
+	private String patientName;
+	
 	@NotNull
 	@Positive
 	private Long doctorId;
+	
+	private String doctorName;
 	
 	@Size(max = 4000)
 	private String description;
 	
 	@NotNull
-	@Future
 	private LocalDate visitDate;
 	
 	@NotNull
@@ -50,12 +52,28 @@ public class VisitDTO {
 		this.patientId = patientId;
 	}
 
+	public String getPatientName() {
+		return patientName;
+	}
+
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
+	}
+
 	public Long getDoctorId() {
 		return doctorId;
 	}
 
 	public void setDoctorId(Long doctorId) {
 		this.doctorId = doctorId;
+	}
+	
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
 	}
 
 	public String getDescription() {
