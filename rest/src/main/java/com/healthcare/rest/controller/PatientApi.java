@@ -72,7 +72,8 @@ public class PatientApi {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		PatientDTO updatedPatient = patientService.updatePatient(patientDTO, id);
+		patientDTO.setId(id);
+		PatientDTO updatedPatient = patientService.updatePatient(patientDTO);
 		return updatedPatient;
 	}
 	
@@ -81,9 +82,6 @@ public class PatientApi {
 		return visitService.getVisitsByPatientId(id);
 	}
 	
-	/**
-	 * @throws VisitException if visit at given time is not available 
-	 */
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public VisitDTO addVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
@@ -94,5 +92,16 @@ public class PatientApi {
 		visitDTO.setPatientId(id);		
 		VisitDTO registeredVisit = visitService.addVisit(visitDTO);
 		return registeredVisit;
+	}
+	
+	@PutMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public VisitDTO updateVisit(@RequestBody @Valid VisitDTO visitDTO, BindingResult result, @PathVariable long id) {
+		if (result.hasErrors()) {
+			throw new InvalidRequestException("Invalid data format", result);
+		}
+		
+		visitDTO.setPatientId(id);		
+		VisitDTO updatedVisit = visitService.updateVisit(visitDTO);
+		return updatedVisit;
 	}
 }

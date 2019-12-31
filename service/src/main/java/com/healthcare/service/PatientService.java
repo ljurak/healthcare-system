@@ -46,9 +46,8 @@ public interface PatientService {
 	 * with given id does not exist.
 	 * 
 	 * @param patient patient to be updated
-	 * @param id patient id
 	 * @return updated patient
 	 * @throws PatientNotFoundException
 	 */
-	PatientDTO updatePatient(PatientDTO patientDTO, Long id);
+	PatientDTO updatePatient(PatientDTO patientDTO);
 }
