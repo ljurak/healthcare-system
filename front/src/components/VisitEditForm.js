@@ -77,7 +77,7 @@ class VisitEditForm extends React.Component {
 								</Field>
 								<ErrorMessage name="status" component="div" className="error" />
 							</div>
-							{ alert.update && 
+							{ alert.update && alert.visitId === visit.id && 
 								<div className={`alert-box ${alert.type}`}>
 									<span>{alert.update}</span>
 									<button className="close-btn" type="button" onClick={e => clearAlert()}>X</button>

@@ -79,11 +79,13 @@ const visits = (state = {}, action) => {
 		case actions.UPDATE_VISIT_SUCCESS:
 			return {
 				update: 'Successfully updated visit',
+				visitId: action.payload.result,
 				type: 'alert-success'
 			};
 		case actions.UPDATE_VISIT_FAILURE:
 			return {
 				update: action.payload.message,
+				visitId: action.payload.result,
 				type: 'alert-failure'
 			};
 		case actions.ADD_VISIT_REQUEST:
