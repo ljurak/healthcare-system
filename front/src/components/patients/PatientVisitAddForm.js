@@ -39,7 +39,7 @@ class PatientVisitAddForm extends React.Component {
 						visitTime: Yup.date()
 							.required('Required').nullable()
 							.test('is-in-range', 'Time out of range', function(value) {
-								return moment(value).isBetween(moment('08:00', 'HH:mm'), moment('15:00', 'HH:mm'), 'hour', '[]');
+								return moment(value).isBetween(moment('08:00', 'HH:mm'), moment('19:00', 'HH:mm'), 'hour', '[]');
 							}),
 						doctor: Yup.number()
 							.required('Required'),
@@ -55,7 +55,7 @@ class PatientVisitAddForm extends React.Component {
 						};
 
 						return (
-							<Form className="add-visit-form">
+							<Form className="visit-add-form">
 								<div className={'form-row' + (errors.visitDate && touched.visitDate ? ' error' : '')}>
 									<label htmlFor="date">Visit date*</label>
 									<div className="form-field">
