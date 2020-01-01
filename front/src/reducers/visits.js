@@ -20,6 +20,12 @@ const visibleIds = (state = [], action) => {
 	switch (action.type) {
 		case actions.FETCH_VISITS_SUCCESS:
 			return action.payload.result;
+		case actions.ADD_VISIT_SUCCESS:
+			return [
+				action.payload.result,
+				...state
+				
+			];
 		default:
 			return state;
 	}	
