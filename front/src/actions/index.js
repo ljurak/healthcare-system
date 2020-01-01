@@ -234,7 +234,7 @@ export const addVisit = (visit, patientId) => (dispatch) => {
 	return VisitsApi.addVisit(visit, patientId)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(addVisitSuccess(normalize([ response ], schema.visitsListSchema))),
+			response => dispatch(addVisitSuccess(normalize(response, schema.visitSchema))),
 			error => dispatch(addVisitFailure(error))
 		);
 };
@@ -245,7 +245,7 @@ export const updateVisit = (visit, patientId) => (dispatch) => {
 	return VisitsApi.updateVisit(visit, patientId)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(updateVisitSuccess(normalize([ response ], schema.visitsListSchema))),
+			response => dispatch(updateVisitSuccess(normalize(response, schema.visitSchema))),
 			error => dispatch(updateVisitFailure(error))
 		);
 };
