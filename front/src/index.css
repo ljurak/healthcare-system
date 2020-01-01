@@ -312,6 +312,8 @@ body {
 }
 
 .visits-list-item {
+	display: flex;
+	flex-wrap: wrap;
 	padding: 1rem;
 	margin-bottom: 1rem;
 	position: relative;
@@ -321,9 +323,11 @@ body {
 }
 
 .visits-list-item-date,
+.visits-list-item-status,
 .visits-list-item-doctor {
 	margin-bottom: 0.8rem;
-} 
+	width: 40%;
+}
 
 .visits-list-item .show-info-btn {
 	position: absolute;
@@ -362,6 +366,7 @@ body {
 
 .visit-list-item-details {
 	border-top: 1px solid #aaa;
+	width: 100%;
 }
 
 .visit-update-form {
@@ -406,6 +411,10 @@ body {
 	border: 1px solid #aaa;
 	border-radius: 2px;
 	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
+}
+
+.visit-update-form textarea {
+	min-height: 10rem; 
 }
 
 .visit-update-form input:disabled {
@@ -508,41 +517,41 @@ body {
 	color: var(--color-main);
 }
 
-.add-visit-form .form-row {
+.visit-add-form .form-row {
 	margin-bottom: 1.6rem;
 	display: flex;
 	align-items: center;
 }
 
-.add-visit-form .form-row.btn {
+.visit-add-form .form-row.btn {
 	justify-content: center;
 }
 
-.add-visit-form .form-row .error {
+.visit-add-form .form-row .error {
 	margin-top: 0.8rem;
 	color: #d8083e;
 	font-style: italic;
 }
 
-.add-visit-form .form-row.error input,
-.add-visit-form .form-row.error select,
-.add-visit-form .form-row.error textarea {
+.visit-add-form .form-row.error input,
+.visit-add-form .form-row.error select,
+.visit-add-form .form-row.error textarea {
 	border-color: #d8083e;
 }
 
-.add-visit-form label {
+.visit-add-form label {
 	flex-basis: 25%;
 	font-size: 1.5rem;
 	font-weight: bold;
 }
 
-.add-visit-form .form-field {
+.visit-add-form .form-field {
 	flex-basis: 75%;
 }
 
-.add-visit-form input,
-.add-visit-form select,
-.add-visit-form textarea {
+.visit-add-form input,
+.visit-add-form select,
+.visit-add-form textarea {
 	display: block;
 	width: 100%;
 	padding: 1.2rem;
@@ -553,14 +562,18 @@ body {
 	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
 }
 
-.add-visit-form input:focus,
-.add-visit-form select:focus,
-.add-visit-form textarea:focus {
+.visit-add-form textarea {
+	min-height: 10rem; 
+}
+
+.visit-add-form input:focus,
+.visit-add-form select:focus,
+.visit-add-form textarea:focus {
 	border: 1px solid var(--color-main);
 	box-shadow: inset 0 0 5px rgba(153,7,171,.1);
 }
 
-.add-visit-form .submit-btn {
+.visit-add-form .submit-btn {
 	padding: 1rem 3rem;
 	border: 2px solid transparent;
 	border-radius: 4px;
@@ -571,7 +584,7 @@ body {
 	transition: 0.3s all;
 }
 
-.add-visit-form .submit-btn:hover {
+.visit-add-form .submit-btn:hover {
 	border: 2px solid var(--color-main);
 	background-color: #fff;
 	color: var(--color-main);
