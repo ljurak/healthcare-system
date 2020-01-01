@@ -16,7 +16,7 @@ const TimePickerField = ({ id, name, value, onChange, onBlur }) => {
 	minTime.setHours(8);
 	minTime.setMinutes(0);
 	const maxTime = new Date();
-	maxTime.setHours(15);
+	maxTime.setHours(19);
 	maxTime.setMinutes(0);
 	
 
