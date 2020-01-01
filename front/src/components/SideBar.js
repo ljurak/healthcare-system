@@ -15,7 +15,7 @@ const SideBar = () => (
 		</ul>
 		<div className="group-info-title">Doctors</div>
 		<ul className="group-info-list">
-			<li>Adding doctors to the system</li>
+			<li>Registering new doctors</li>
 			<li>Managing doctors data</li>
 			<li>Browsing visits</li>
 		</ul>
