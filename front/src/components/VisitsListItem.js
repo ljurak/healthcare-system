@@ -25,6 +25,9 @@ class VisitsListItem extends React.Component {
 				<div className="visits-list-item-date">
 					Date: <i>{visit.visitDate + ' ' + visit.visitTime.substr(0,5)}</i>
 				</div>
+				<div className="visits-list-item-status">
+					Status: {visit.status}
+				</div>
 				<div className="visits-list-item-doctor">
 					Doctor: <i>{visit.doctorName}</i>
 				</div>
