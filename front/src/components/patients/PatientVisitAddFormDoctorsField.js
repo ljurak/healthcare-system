@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { getVisibleDoctors } from '../../reducers';
 
-const DoctorsField = ({ id, field, doctors }) => (
+const PatientVisitAddFormDoctorsField = ({ id, field, doctors }) => (
 	<select id={id} {...field}>
 		<option value="">-- Choose a doctor --</option>
 		{doctors.map(doctor => (
@@ -20,4 +20,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
 	mapStateToProps
-)(DoctorsField);
+)(PatientVisitAddFormDoctorsField);
