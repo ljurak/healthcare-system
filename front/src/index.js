@@ -14,6 +14,7 @@ import './css/headers.css';
 import './css/react-datepicker.css';
 import './css/sidebar.css';
 import './css/page-footer.css';
+import './css/alert-box.css';
 import './css/loading.css';
 
 import { clearAlert } from './actions';
