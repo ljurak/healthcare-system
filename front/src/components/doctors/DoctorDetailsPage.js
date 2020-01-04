@@ -2,13 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import DoctorInfo from './DoctorInfo';
+import DoctorVisitSearchForm from './DoctorVisitSearchForm';
 import { 
 	fetchDoctorById, 
+	fetchVisitsByDoctorId,
 	updateDoctor, 
 	clearAlert } from '../../actions';
 import { 
 	getDoctor, 
 	getIsUpdatingDoctor, 
+	getIsFetchingVisits,
 	getDoctorsAlert } from '../../reducers';
 
 class DoctorDetailsPage extends React.Component {
@@ -19,23 +22,35 @@ class DoctorDetailsPage extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.doctor !== prevProps.doctor) {
+		if (this.props.match.params.doctorId !== prevProps.match.params.doctorId) {
 			const { doctorId } = this.props.match.params;
 			this.props.fetchDoctorById(doctorId);
 		}
 	}
 
 	render() {
-		const { doctor, isUpdating, updateDoctor, alert, clearAlert } = this.props;
+		const { 
+			doctor,
+			doctorId, 
+			isUpdatingDoctor, 
+			updateDoctor,
+			fetchVisitsByDoctorId, 
+			isFetchingVisits,
+			alert, 
+			clearAlert, } = this.props;
 
 		return (
 			<React.Fragment>
 				<DoctorInfo 
 					doctor={doctor} 
 					updateDoctor={updateDoctor}
-					isUpdating={isUpdating}
+					isUpdating={isUpdatingDoctor}
 					alert={alert}
 					clearAlert={clearAlert} />
+				<DoctorVisitSearchForm
+					doctorId={doctorId}
+					fetchVisits={fetchVisitsByDoctorId}
+					isFetching={isFetchingVisits} />
 			</React.Fragment>
 		);
 	}
@@ -46,13 +61,15 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		doctorId,
 		doctor: getDoctor(state, doctorId),
-		isUpdating: getIsUpdatingDoctor(state),
+		isUpdatingDoctor: getIsUpdatingDoctor(state),
+		isFetchingVisits: getIsFetchingVisits(state),
 		alert: getDoctorsAlert(state)
 	};
 };
 
 const mapDispatchToProps = { 
-	fetchDoctorById,   
+	fetchDoctorById,
+	fetchVisitsByDoctorId, 
 	updateDoctor,
 	clearAlert
 };
