@@ -3,8 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import * as moment from 'moment';
 
-import DatePickerField from '../DatePickerField';
-import TimePickerField from '../TimePickerField';
+import DatePickerField from './PatientVisitAddFormDatePickerField';
+import TimePickerField from './PatientVisitAddFormTimePickerField';
 import DoctorsField from './DoctorsField';
 
 class PatientVisitAddForm extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const TimePickerField = ({ id, name, value, onChange, onBlur }) => {
+const PatientVisitAddFormTimePickerField = ({ id, name, value, onChange, onBlur }) => {
 
 	const handleChange = (value) => {
 		onChange(name, value);
@@ -39,4 +39,4 @@ const TimePickerField = ({ id, name, value, onChange, onBlur }) => {
 	);	
 };
 
-export default TimePickerField;
+export default PatientVisitAddFormTimePickerField;

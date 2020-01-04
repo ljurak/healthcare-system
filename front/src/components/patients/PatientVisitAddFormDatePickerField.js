@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const DatePickerField = ({ id, name, value, onChange, onBlur }) => {
+const PatientVisitAddFormDatePickerField = ({ id, name, value, onChange, onBlur }) => {
 
 	const handleChange = (value) => {
 		onChange(name, value);
@@ -31,4 +31,4 @@ const DatePickerField = ({ id, name, value, onChange, onBlur }) => {
 	);	
 };
 
-export default DatePickerField;
+export default PatientVisitAddFormDatePickerField;
