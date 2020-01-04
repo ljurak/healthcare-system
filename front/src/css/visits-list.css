@@ -1,0 +1,61 @@
+.visits-list {
+	margin: 2rem 0;
+}
+
+.visits-list-item {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	position: relative;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
+}
+
+.visits-list-item-date,
+.visits-list-item-status,
+.visits-list-item-doctor {
+	margin-bottom: 0.8rem;
+	width: 40%;
+}
+
+.visits-list-item .show-info-btn {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+	border: none;
+	border-radius: 50%;
+	background-color: var(--color-main);
+	color: #fff;
+	font-size: 1.6rem;
+	width: 3rem;
+	height: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: transform 0.3s;
+}
+
+.visits-list-item.opened .show-info-btn {
+	transform: rotate(180deg);
+}
+
+.visits-list-item .show-info-btn:hover {
+	opacity: 0.8;
+}
+
+.visits-list-item .show-info-btn:focus {
+	outline: none;
+}
+
+.visits-list-item .show-info-btn i {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.visit-list-item-details {
+	border-top: 1px solid #aaa;
+	width: 100%;
+}

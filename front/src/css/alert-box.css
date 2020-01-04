@@ -1,0 +1,44 @@
+.alert-box {
+	font-style: italic;
+	color: #333;
+	margin-bottom: 1.6rem;
+	padding: 1rem 5rem 1rem 1rem;
+	text-align: left; 
+	border-radius: 4px;
+	position: relative;
+}
+
+.alert-box.alert-success {
+	background-color: var(--color-main-light);
+	border: 1px solid var(--color-main);
+}
+
+.alert-box.alert-failure {
+	background-color: #ffeded;
+	border: 1px solid #db083e;
+}
+
+.alert-box .close-btn {
+	color: #fff;
+	font-size: 1.2rem;
+	font-weight: bold;
+	padding: 0.5rem 0.8rem;
+	position: absolute;
+	top: 50%;
+	right: 1rem;
+	transform: translateY(-50%);
+	border: none;
+	border-radius: 4px;
+}
+
+.alert-box.alert-success .close-btn {
+	background-color: var(--color-main);
+}
+
+.alert-box.alert-failure .close-btn {
+	background-color: #db083e;
+}
+
+.alert-box .close-btn:hover {
+	opacity: 0.8;
+}

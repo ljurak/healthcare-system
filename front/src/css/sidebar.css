@@ -1,0 +1,36 @@
+.sidebar {
+	width: 30%;
+	padding: 3rem 1rem;
+}
+
+.sidebar figure {
+	margin: 0;
+}
+
+.sidebar .photo {
+	width: 100%;
+	height: auto;
+}
+
+.sidebar .system-info {
+	font-size: 1.8rem;
+	font-weight: bold;
+	margin: 2rem 0;
+	text-transform: uppercase;
+}
+
+.sidebar .group-info-title {
+	text-decoration: underline;
+}
+
+.sidebar .group-info-list {
+	list-style-type: none;
+	margin: 1rem 0 2rem;
+	padding: 0 2rem;
+	font-style: italic;
+	color: #555;
+}
+
+.sidebar .group-info-list li {
+	margin-bottom: 0.5rem;
+}

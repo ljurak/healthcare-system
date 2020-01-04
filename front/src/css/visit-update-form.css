@@ -1,0 +1,78 @@
+.visit-update-form {
+	padding-top: 1.6rem;
+}
+
+.visit-update-form .form-row {
+	margin-bottom: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.visit-update-form .form-row .error {
+	flex-basis: 100%;
+	padding-left: 25%;
+	margin-top: 0.8rem;
+	color: #d8083e;
+	font-style: italic;
+}
+
+.visit-update-form .form-row.error input,
+.visit-update-form .form-row.error textarea,
+.visit-update-form .form-row.error select {
+	border-color: #d8083e;
+}
+
+.visit-update-form label {
+	flex-basis: 25%;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.visit-update-form input,
+.visit-update-form textarea,
+.visit-update-form select {
+	display: block;
+	flex-basis: 75%;
+	padding: 0.8rem;
+	font-size: 1.6rem;
+	color: #000;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
+}
+
+.visit-update-form textarea {
+	min-height: 10rem; 
+}
+
+.visit-update-form input:disabled {
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+	pointer-events: none;
+}
+
+.visit-update-form input:focus,
+.visit-update-form textarea:focus,
+.visit-update-form select:focus {
+	border: 1px solid var(--color-main);
+	box-shadow: inset 0 0 5px rgba(153,7,171,.1);
+}
+
+.visit-update-form .submit-btn {
+	padding: 0.8rem 1.6rem;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	font-size: 1.6rem;
+	font-weight: bold;
+	background-color: var(--color-main);
+	color: #fff;
+	transition: 0.3s all;
+}
+
+.visit-update-form .submit-btn:hover {
+	border: 2px solid var(--color-main);
+	background-color: #fff;
+	color: var(--color-main);
+}

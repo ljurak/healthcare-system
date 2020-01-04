@@ -1,0 +1,60 @@
+.form .form-row {
+	margin-bottom: 1.6rem;
+}
+
+.form .form-row .error {
+	margin-top: 0.8rem;
+	color: #d8083e;
+	font-style: italic;
+}
+
+.form .form-row.error input,
+.form .form-row.error select {
+	border-color: #d8083e;
+}
+
+.form .form-row.btn {
+	text-align: center;
+}
+
+.form label {
+	display: block;
+	font-size: 1.5rem;
+	margin-bottom: 0.8rem;
+	font-weight: bold;
+}
+
+.form input,
+.form select {
+	display: block;
+	width: 100%;
+	padding: 1.2rem;
+	font-size: 1.6rem;
+	color: #555;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	box-shadow: inset 0 0 5px rgba(0,0,0,.1);
+}
+
+.form input:focus,
+.form select:focus {
+	border: 1px solid var(--color-main);
+	box-shadow: inset 0 0 5px rgba(153,7,171,.1);
+}
+
+.form .submit-btn {
+	padding: 1rem 3rem;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	font-size: 1.8rem;
+	font-weight: bold;
+	background-color: var(--color-main);
+	color: #fff;
+	transition: 0.3s all;
+}
+
+.form .submit-btn:hover {
+	border: 2px solid var(--color-main);
+	background-color: #fff;
+	color: var(--color-main);
+}

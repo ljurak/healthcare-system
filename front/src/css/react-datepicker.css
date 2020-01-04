@@ -1,0 +1,15 @@
+.form-row .react-datepicker-wrapper {
+	display: block;
+}
+
+.form-row .react-datepicker,
+.form-row .react-datepicker__current-month,
+.form-row .react-datepicker-time__header {
+	font-size: 1.6rem;
+}
+
+.form-row .react-datepicker__day,
+.form-row .react-datepicker__day-name {
+	width: 3rem;
+	line-height: 3rem;
+}

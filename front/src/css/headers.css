@@ -1,0 +1,29 @@
+.patient-add-form-title,
+.patients-search-title,
+.patient-info-title,
+.patient-visit-form-title,
+.visits-list-title,
+.visit-search-form-title,
+.doctor-add-form-title,
+.doctors-search-title,
+.doctor-info-title,
+.login-form-title {
+	margin-top: 4rem;
+	margin-bottom: 0;
+	font-size: 2.2rem;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.patient-add-form-title,
+.patient-info-title,
+.doctor-add-form-title,
+.doctor-info-title,
+.login-form-title {
+	margin-top: 3rem;
+}
+
+.patient-visit-form-title,
+.visit-search-form-title {
+	margin-bottom: 1rem;
+}

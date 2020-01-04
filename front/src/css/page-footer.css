@@ -1,0 +1,11 @@
+.page-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 5rem;
+	border-top: 1px solid var(--color-main);
+}

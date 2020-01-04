@@ -1,0 +1,39 @@
+.people-list {
+	width: 100%;
+	margin: 2rem 0;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+.people-list-header {
+	font-size: 2rem;
+	font-weight: bold;
+	background-color: var(--color-main);
+	color: #fff;
+}
+
+.people-list th,
+.people-list td {
+	padding: 1.5rem 0;
+	border-bottom: 1px solid #000;
+}
+
+.people-list th {
+	border-bottom: none;
+}
+
+.people-list tr:nth-of-type(2n) {
+	background-color: var(--color-main-light);
+}
+
+.people-list .person-link {
+	text-decoration: none;
+	color: var(--color-main);
+	display: inline-block;
+	width: 100%;
+	font-weight: bold;
+}
+
+.people-list .person-link:hover {
+	text-decoration: underline;
+}
