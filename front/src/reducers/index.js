@@ -37,7 +37,7 @@ export const getVisibleSpecialties = (state) => fromSpecialties.getVisibleSpecia
 
 export const getSpecialty = (state, id) => fromSpecialties.getSpecialty(state.entities.specialties, id);
 
-export const getVisibleVisits = (state) => fromVisits.getVisibleVisits(state.entities.visits);
+export const getVisiblePatientVisits = (state) => fromVisits.getVisiblePatientVisits(state.entities.visits);
 
 export const getVisit = (state, id) => fromVisits.getVisit(state.entities.visits, id);
 

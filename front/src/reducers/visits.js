@@ -4,7 +4,7 @@ import * as actions from '../actions/actionTypes';
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
-		case actions.FETCH_VISITS_SUCCESS:
+		case actions.FETCH_PATIENT_VISITS_SUCCESS:
 		case actions.ADD_VISIT_SUCCESS:
 		case actions.UPDATE_VISIT_SUCCESS:
 			return {
@@ -16,9 +16,9 @@ const byId = (state = {}, action) => {
 	}
 };
 
-const visibleIds = (state = [], action) => {
+const visiblePatientIds = (state = [], action) => {
 	switch (action.type) {
-		case actions.FETCH_VISITS_SUCCESS:
+		case actions.FETCH_PATIENT_VISITS_SUCCESS:
 			return action.payload.result;
 		case actions.ADD_VISIT_SUCCESS:
 			return [
@@ -33,13 +33,13 @@ const visibleIds = (state = [], action) => {
 
 const requestInfo = (state = { isFetching: false, isAdding: false, isUpdating: false }, action) => {
 	switch (action.type) {
-		case actions.FETCH_VISITS_REQUEST:
+		case actions.FETCH_PATIENT_VISITS_REQUEST:
 			return {
 				...state,
 				isFetching: true
 			};
-		case actions.FETCH_VISITS_SUCCESS:
-		case actions.FETCH_VISITS_FAILURE:
+		case actions.FETCH_PATIENT_VISITS_SUCCESS:
+		case actions.FETCH_PATIENT_VISITS_FAILURE:
 			return {
 				...state,
 				isFetching: false
@@ -71,11 +71,11 @@ const requestInfo = (state = { isFetching: false, isAdding: false, isUpdating: f
 	}
 };
 
-export const getVisibleIds = (state) => state.visibleIds;
+export const getVisiblePatientIds = (state) => state.visiblePatientIds;
 
 export const getVisit = (state, id) => state.byId[id];
 
-export const getVisibleVisits = (state) => state.visibleIds.map(id => getVisit(state, id));
+export const getVisiblePatientVisits = (state) => state.visiblePatientIds.map(id => getVisit(state, id));
 
 export const getIsFetching = (state) => state.requestInfo.isFetching;
 
@@ -85,6 +85,6 @@ export const getIsUpdating = (state) => state.requestInfo.isUpdating;
 
 export default combineReducers({
 	byId,
-	visibleIds,
+	visiblePatientIds,
 	requestInfo
 });

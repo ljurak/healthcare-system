@@ -15,7 +15,7 @@ import {
 import { 
 	getPatient, 
 	getVisibleSpecialties,
-	getVisibleVisits,
+	getVisiblePatientVisits,
 	getIsUpdatingPatient,
 	getIsFetchingVisits,
 	getIsAddingVisit,
@@ -90,7 +90,7 @@ const mapStateToProps = (state, ownProps) => {
 		patient: getPatient(state, patientId),
 		isUpdatingPatient: getIsUpdatingPatient(state),
 		specialties: getVisibleSpecialties(state),
-		visits: getVisibleVisits(state),
+		visits: getVisiblePatientVisits(state),
 		isFetchingVisits: getIsFetchingVisits(state),
 		isAddingVisit: getIsAddingVisit(state),
 		patientsAlert: getPatientsAlert(state),

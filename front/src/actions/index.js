@@ -14,7 +14,7 @@ const fetchPatientRequest = makeRequestActionCreator(actions.FETCH_PATIENT_REQUE
 const fetchDoctorsRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_REQUEST);
 const fetchDoctorRequest = makeRequestActionCreator(actions.FETCH_DOCTOR_REQUEST);
 const fetchSpecialtiesRequest = makeRequestActionCreator(actions.FETCH_SPECIALTIES_REQUEST);
-const fetchVisitsRequest = makeRequestActionCreator(actions.FETCH_VISITS_REQUEST);
+const fetchPatientVisitsRequest = makeRequestActionCreator(actions.FETCH_PATIENT_VISITS_REQUEST);
 const addPatientRequest = makeRequestActionCreator(actions.ADD_PATIENT_REQUEST);
 const updatePatientRequest = makeRequestActionCreator(actions.UPDATE_PATIENT_REQUEST);
 const addDoctorRequest = makeRequestActionCreator(actions.ADD_DOCTOR_REQUEST);
@@ -30,7 +30,7 @@ const fetchPatientSuccess = makeSuccessActionCreator(actions.FETCH_PATIENT_SUCCE
 const fetchDoctorsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_SUCCESS);
 const fetchDoctorSuccess = makeSuccessActionCreator(actions.FETCH_DOCTOR_SUCCESS);
 const fetchSpecialtiesSuccess = makeSuccessActionCreator(actions.FETCH_SPECIALTIES_SUCCESS);
-const fetchVisitsSuccess = makeSuccessActionCreator(actions.FETCH_VISITS_SUCCESS);
+const fetchPatientVisitsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENT_VISITS_SUCCESS);
 const addPatientSuccess = makeSuccessActionCreator(actions.ADD_PATIENT_SUCCESS);
 const updatePatientSuccess = makeSuccessActionCreator(actions.UPDATE_PATIENT_SUCCESS);
 const addDoctorSuccess = makeSuccessActionCreator(actions.ADD_DOCTOR_SUCCESS);
@@ -46,7 +46,7 @@ const fetchPatientFailure = makeFailureActionCreator(actions.FETCH_PATIENT_FAILU
 const fetchDoctorsFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_FAILURE);
 const fetchDoctorFailure = makeFailureActionCreator(actions.FETCH_DOCTOR_FAILURE);
 const fetchSpecialtiesFailure = makeFailureActionCreator(actions.FETCH_SPECIALTIES_FAILURE);
-const fetchVisitsFailure = makeFailureActionCreator(actions.FETCH_VISITS_FAILURE);
+const fetchPatientVisitsFailure = makeFailureActionCreator(actions.FETCH_PATIENT_VISITS_FAILURE);
 const addPatientFailure = makeFailureActionCreator(actions.ADD_PATIENT_FAILURE);
 const updatePatientFailure = makeFailureActionCreator(actions.UPDATE_PATIENT_FAILURE);
 const addDoctorFailure = makeFailureActionCreator(actions.ADD_DOCTOR_FAILURE);
@@ -62,7 +62,7 @@ export const logout = () => {
 
 export const clearAlert = () => {
 	return { type: actions.CLEAR_ALERT };
-}
+};
 
 // ASYNC ACTION CREATORS
 
@@ -218,13 +218,13 @@ export const fetchSpecialties = () => (dispatch, getState) => {
 // VISITS
 
 export const fetchVisitsByPatientId = (patientId) => (dispatch) => {
-	dispatch(fetchVisitsRequest());
+	dispatch(fetchPatientVisitsRequest());
 
 	return VisitsApi.fetchVisitsByPatient(patientId)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(fetchVisitsSuccess(normalize(response, schema.visitsListSchema))),
-			error => dispatch(fetchVisitsFailure(error))
+			response => dispatch(fetchPatientVisitsSuccess(normalize(response, schema.visitsListSchema))),
+			error => dispatch(fetchPatientVisitsFailure(error))
 		);
 };
 
