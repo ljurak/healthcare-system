@@ -15,6 +15,7 @@ const fetchDoctorsRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_REQUE
 const fetchDoctorRequest = makeRequestActionCreator(actions.FETCH_DOCTOR_REQUEST);
 const fetchSpecialtiesRequest = makeRequestActionCreator(actions.FETCH_SPECIALTIES_REQUEST);
 const fetchPatientVisitsRequest = makeRequestActionCreator(actions.FETCH_PATIENT_VISITS_REQUEST);
+const fetchDoctorVisitsRequest = makeRequestActionCreator(actions.FETCH_DOCTOR_VISITS_REQUEST);
 const addPatientRequest = makeRequestActionCreator(actions.ADD_PATIENT_REQUEST);
 const updatePatientRequest = makeRequestActionCreator(actions.UPDATE_PATIENT_REQUEST);
 const addDoctorRequest = makeRequestActionCreator(actions.ADD_DOCTOR_REQUEST);
@@ -31,6 +32,7 @@ const fetchDoctorsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_SUCCE
 const fetchDoctorSuccess = makeSuccessActionCreator(actions.FETCH_DOCTOR_SUCCESS);
 const fetchSpecialtiesSuccess = makeSuccessActionCreator(actions.FETCH_SPECIALTIES_SUCCESS);
 const fetchPatientVisitsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENT_VISITS_SUCCESS);
+const fetchDoctorVisitsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTOR_VISITS_SUCCESS);
 const addPatientSuccess = makeSuccessActionCreator(actions.ADD_PATIENT_SUCCESS);
 const updatePatientSuccess = makeSuccessActionCreator(actions.UPDATE_PATIENT_SUCCESS);
 const addDoctorSuccess = makeSuccessActionCreator(actions.ADD_DOCTOR_SUCCESS);
@@ -47,6 +49,7 @@ const fetchDoctorsFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_FAILU
 const fetchDoctorFailure = makeFailureActionCreator(actions.FETCH_DOCTOR_FAILURE);
 const fetchSpecialtiesFailure = makeFailureActionCreator(actions.FETCH_SPECIALTIES_FAILURE);
 const fetchPatientVisitsFailure = makeFailureActionCreator(actions.FETCH_PATIENT_VISITS_FAILURE);
+const fetchDoctorVisitsFailure = makeFailureActionCreator(actions.FETCH_DOCTOR_VISITS_FAILURE);
 const addPatientFailure = makeFailureActionCreator(actions.ADD_PATIENT_FAILURE);
 const updatePatientFailure = makeFailureActionCreator(actions.UPDATE_PATIENT_FAILURE);
 const addDoctorFailure = makeFailureActionCreator(actions.ADD_DOCTOR_FAILURE);
@@ -225,6 +228,17 @@ export const fetchVisitsByPatientId = (patientId) => (dispatch) => {
 		.then(
 			response => dispatch(fetchPatientVisitsSuccess(normalize(response, schema.visitsListSchema))),
 			error => dispatch(fetchPatientVisitsFailure(error))
+		);
+};
+
+export const fetchVisitsByDoctorId = (patientId, startDate, endDate) => (dispatch) => {
+	dispatch(fetchDoctorVisitsRequest());
+
+	return VisitsApi.fetchVisitsByDoctor(patientId, startDate, endDate)
+		.then(handleApiResponse)
+		.then(
+			response => dispatch(fetchDoctorVisitsSuccess(normalize(response, schema.visitsListSchema))),
+			error => dispatch(fetchDoctorVisitsFailure(error))
 		);
 };
 

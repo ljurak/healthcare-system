@@ -94,8 +94,8 @@ VisitsApi.fetchVisitsByPatient = function(patientId) {
 	});
 };
 
-VisitsApi.fetchVisitsByDoctor = function(doctorId) {
-	return fetch(`${BASE_API_URL}/doctors/${doctorId}/visits`, {
+VisitsApi.fetchVisitsByDoctor = function(doctorId, startDate, endDate) {
+	return fetch(`${BASE_API_URL}/doctors/${doctorId}/visits?startDate=${startDate}&endDate=${endDate}`, {
 		headers: createAuthorizationHeader()
 	});
 };
