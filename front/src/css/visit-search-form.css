@@ -22,6 +22,7 @@
 .visit-search-form .form-row.btn {
 	text-align: center;
 	width: 100%;
+	margin-bottom: 0;
 }
 
 .visit-search-form label {
