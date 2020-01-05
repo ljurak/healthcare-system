@@ -9,6 +9,8 @@ const byId = (state = {}, action) => {
 				...state,
 				...action.payload.entities.specialties
 			};
+		case actions.LOGOUT:
+			return {};
 		default:
 			return state;
 	}
@@ -18,6 +20,8 @@ const visibleIds = (state = [], action) => {
 	switch (action.type) {
 		case actions.FETCH_SPECIALTIES_SUCCESS:
 			return action.payload.result;
+		case actions.LOGOUT:
+			return [];
 		default:
 			return state;
 	}

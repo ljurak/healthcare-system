@@ -12,6 +12,8 @@ const byId = (state = {}, action) => {
 				...state,
 				...action.payload.entities.doctors
 			};
+		case actions.LOGOUT:
+			return {};
 		default:
 			return state;
 	}
@@ -21,6 +23,8 @@ const visibleIds = (state = [], action) => {
 	switch (action.type) {
 		case actions.FETCH_DOCTORS_SUCCESS:
 			return action.payload.result;
+		case actions.LOGOUT:
+			return [];
 		default:
 			return state;
 	}
