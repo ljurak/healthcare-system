@@ -1,5 +1,6 @@
 package com.healthcare.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -77,6 +78,12 @@ public class VisitServiceImpl implements VisitService {
 	@Override
 	public List<VisitDTO> getVisitsByDoctorId(Long doctorId) {
 		List<Visit> visits = visitRepo.findVisitsByDoctor(doctorId);
+		return visitConverter.convertFromEntity(visits);
+	}
+	
+	@Override
+	public List<VisitDTO> getVisitsByDoctorIdBetweenDates(Long doctorId, LocalDate startDate, LocalDate endDate) {
+		List<Visit> visits = visitRepo.findVisitsByDoctorBetweenDates(doctorId, startDate, endDate);
 		return visitConverter.convertFromEntity(visits);
 	}
 

@@ -1,10 +1,13 @@
 package com.healthcare.rest.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.DoctorService;
+import com.healthcare.service.VisitService;
 import com.healthcare.service.dto.DoctorDTO;
+import com.healthcare.service.dto.VisitDTO;
 
 @RestController
 @RequestMapping("/doctors")
@@ -29,10 +34,13 @@ import com.healthcare.service.dto.DoctorDTO;
 public class DoctorApi {
 	
 	private DoctorService doctorService;
+	
+	private VisitService visitService;
 
 	@Autowired
-	public DoctorApi(DoctorService doctorService) {
+	public DoctorApi(DoctorService doctorService, VisitService visitService) {
 		this.doctorService = doctorService;
+		this.visitService = visitService;
 	}
 	
 	@GetMapping
@@ -52,7 +60,7 @@ public class DoctorApi {
 	}
 	
 	@GetMapping("/{id}")
-	public DoctorDTO getDoctor(@PathVariable Long id) {
+	public DoctorDTO getDoctor(@PathVariable long id) {
 		return doctorService.getDoctorById(id);
 	}
 	
@@ -74,5 +82,13 @@ public class DoctorApi {
 		
 		DoctorDTO updatedDoctor = doctorService.updateDoctor(doctorDTO, id);
 		return updatedDoctor;
+	}
+	
+	@GetMapping(path = "/{id}/visits", params = { "startDate", "endDate" })
+	public List<VisitDTO> getDoctorVisitsBetweenDates(
+			@PathVariable long id, 
+			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate startDate, 
+			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+		return visitService.getVisitsByDoctorIdBetweenDates(id, startDate, endDate);
 	}
 }

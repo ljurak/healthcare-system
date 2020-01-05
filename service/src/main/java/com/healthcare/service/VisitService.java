@@ -1,5 +1,6 @@
 package com.healthcare.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.healthcare.service.dto.VisitDTO;
@@ -43,6 +44,17 @@ public interface VisitService {
 	 * @return list of visits
 	 */
 	List<VisitDTO> getVisitsByDoctorId(Long doctorId);
+	
+	/**
+	 * Retrieves visits for a doctor with given id
+	 * between specified dates.
+	 * 
+	 * @param doctorId id of a doctor
+	 * @param startDate 
+	 * @param endDate
+	 * @return list of visits
+	 */
+	List<VisitDTO> getVisitsByDoctorIdBetweenDates(Long doctorId, LocalDate startDate, LocalDate endDate);
 	
 	/**
 	 * Updates visit data.
