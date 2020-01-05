@@ -57,43 +57,33 @@ class PatientVisitAddForm extends React.Component {
 						return (
 							<Form className="visit-add-form">
 								<div className={'form-row' + (errors.visitDate && touched.visitDate ? ' error' : '')}>
-									<label htmlFor="date">Visit date*</label>
-									<div className="form-field">
-										<DatePickerField id="visitDate" name="visitDate" value={values.visitDate} onChange={setFieldValue} onBlur={handleBlur} />
-										<ErrorMessage name="visitDate" component="div" className="error" />
-									</div>
+									<label htmlFor="date">Visit date*</label>							
+									<DatePickerField id="visitDate" name="visitDate" value={values.visitDate} onChange={setFieldValue} onBlur={handleBlur} />
+									<ErrorMessage name="visitDate" component="div" className="error" />									
 								</div>
 								<div className={'form-row' + (errors.visitTime && touched.visitTime ? ' error' : '')}>
-									<label htmlFor="date">Visit time*</label>
-									<div className="form-field">
-										<TimePickerField id="visitTime" name="visitTime" value={values.visitTime} onChange={setFieldValue} onBlur={handleBlur} />
-										<ErrorMessage name="visitTime" component="div" className="error" />
-									</div>
+									<label htmlFor="date">Visit time*</label>									
+									<TimePickerField id="visitTime" name="visitTime" value={values.visitTime} onChange={setFieldValue} onBlur={handleBlur} />
+									<ErrorMessage name="visitTime" component="div" className="error" />									
 								</div>								
 								<div className="form-row">
-									<label htmlFor="specialty">Doctor's specialty</label>
-									<div className="form-field">
-										<Field id="specialty" name="specialty" as="select" onChange={handleSpecialtyChange}>
-											<option value="">-- Choose a specialty --</option>
-											{this.props.specialties.map(specialty => (
-												<option key={specialty.id} value={specialty.name}>{specialty.name}</option>
-											))}
-										</Field>
-									</div>
+									<label htmlFor="specialty">Doctor's specialty</label>									
+									<Field id="specialty" name="specialty" as="select" onChange={handleSpecialtyChange}>
+										<option value="">-- Choose a specialty --</option>
+										{this.props.specialties.map(specialty => (
+											<option key={specialty.id} value={specialty.name}>{specialty.name}</option>
+										))}
+									</Field>									
 								</div>
 								<div className={'form-row' + (errors.doctor && touched.doctor ? ' error' : '')}>
-									<label htmlFor="doctor">Doctor*</label>
-									<div className="form-field">
-										<Field id="doctor" name="doctor" component={DoctorsField} />
-										<ErrorMessage name="doctor" component="div" className="error" />
-									</div>
+									<label htmlFor="doctor">Doctor*</label>									
+									<Field id="doctor" name="doctor" component={DoctorsField} />
+									<ErrorMessage name="doctor" component="div" className="error" />									
 								</div>
 								<div className={'form-row' + (errors.description && touched.description ? ' error' : '')}>
-									<label htmlFor="description">Description</label>
-									<div className="form-field">
-										<Field id="description" name="description" as="textarea" />
-										<ErrorMessage name="description" component="div" className="error" />
-									</div>
+									<label htmlFor="description">Description</label>									
+									<Field id="description" name="description" as="textarea" />
+									<ErrorMessage name="description" component="div" className="error" />									
 								</div>
 								{ alert.add && 
 									<div className={`alert-box ${alert.type}`}>

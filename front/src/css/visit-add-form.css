@@ -1,6 +1,7 @@
 .visit-add-form .form-row {
 	margin-bottom: 1.6rem;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 }
 
@@ -9,6 +10,8 @@
 }
 
 .visit-add-form .form-row .error {
+	flex-basis: 100%;
+	padding-left: 25%;
 	margin-top: 0.8rem;
 	color: #d8083e;
 	font-style: italic;
@@ -20,21 +23,25 @@
 	border-color: #d8083e;
 }
 
+.visit-add-form .form-row .react-datepicker-wrapper {
+	flex-basis: 75%;
+}
+
+.visit-add-form .form-row .react-datepicker-wrapper input {
+	width: 100%;
+}
+
 .visit-add-form label {
 	flex-basis: 25%;
 	font-size: 1.5rem;
 	font-weight: bold;
 }
 
-.visit-add-form .form-field {
-	flex-basis: 75%;
-}
-
 .visit-add-form input,
 .visit-add-form select,
 .visit-add-form textarea {
 	display: block;
-	width: 100%;
+	flex-basis: 75%;
 	padding: 1.2rem;
 	font-size: 1.6rem;
 	color: #000;
