@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 
 import DoctorInfo from './DoctorInfo';
 import DoctorVisitSearchForm from './DoctorVisitSearchForm';
+import VisitsList from '../VisitsList';
 import { 
 	fetchDoctorById, 
 	fetchVisitsByDoctorId,
 	updateDoctor, 
 	clearAlert } from '../../actions';
 import { 
-	getDoctor, 
+	getDoctor,
+	getVisibleDoctorVisits,
 	getIsUpdatingDoctor, 
 	getIsFetchingVisits,
 	getDoctorsAlert } from '../../reducers';
@@ -31,7 +33,8 @@ class DoctorDetailsPage extends React.Component {
 	render() {
 		const { 
 			doctor,
-			doctorId, 
+			doctorId,
+			visits,
 			isUpdatingDoctor, 
 			updateDoctor,
 			fetchVisitsByDoctorId, 
@@ -51,6 +54,13 @@ class DoctorDetailsPage extends React.Component {
 					doctorId={doctorId}
 					fetchVisits={fetchVisitsByDoctorId}
 					isFetching={isFetchingVisits} />
+				<h3 className="visits-list-title">Doctor's visits</h3>
+				{ isFetchingVisits
+					? (<div className="visits-search-info">Loading visits...</div>)
+					: (visits.length > 0)
+						? (<VisitsList visits={visits} renderForPatient={false} />)
+						: (<div className="visits-search-info">No visits</div>)
+				}
 			</React.Fragment>
 		);
 	}
@@ -61,6 +71,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		doctorId,
 		doctor: getDoctor(state, doctorId),
+		visits: getVisibleDoctorVisits(state),
 		isUpdatingDoctor: getIsUpdatingDoctor(state),
 		isFetchingVisits: getIsFetchingVisits(state),
 		alert: getDoctorsAlert(state)
