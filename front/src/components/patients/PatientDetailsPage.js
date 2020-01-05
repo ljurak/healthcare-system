@@ -75,7 +75,7 @@ class PatientDetailsPage extends React.Component {
 				{ isFetchingVisits 
 					? (<div className="visits-search-info">Loading visits...</div>)
 					: (visits.length > 0)
-						? (<VisitsList visits={visits} />)
+						? (<VisitsList visits={visits} renderForPatient={true} />)
 						: (<div className="visits-search-info">No visits</div>) 
 				}
 			</React.Fragment>

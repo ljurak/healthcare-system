@@ -18,7 +18,7 @@ class VisitsListItem extends React.Component {
 	}
 
 	render() {
-		const visit = this.props.visit;
+		const { visit, renderForPatient } = this.props;
 		const showEditForm = this.state.showEditForm;
 		return (
 			<div className={'visits-list-item' + (showEditForm ? ' opened' : '')}>
@@ -28,8 +28,11 @@ class VisitsListItem extends React.Component {
 				<div className="visits-list-item-status">
 					Status: {visit.status}
 				</div>
-				<div className="visits-list-item-doctor">
-					Doctor: <i>{visit.doctorName}</i>
+				<div className={renderForPatient ? 'visits-list-item-doctor' : 'visits-list-item-patient'}>
+					{ renderForPatient
+						? (<span>Doctor: <i>{visit.doctorName}</i></span>)
+						: (<span>Patient: <i>{visit.patientName}</i></span>)
+					}
 				</div>
 				{showEditForm && <VisitEditForm visit={visit} />}
 				<button className="show-info-btn" type="button" onClick={this.handleClick}><i className="icon-down-open"></i></button>
