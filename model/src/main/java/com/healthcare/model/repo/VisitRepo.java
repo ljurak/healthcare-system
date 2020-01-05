@@ -25,4 +25,7 @@ public interface VisitRepo extends CrudRepository<Visit, Long> {
 	
 	@Query("select v from Visit v where v.doctor.id = :doctorId order by v.visitDate, v.visitTime")
 	List<Visit> findVisitsByDoctor(@Param("doctorId") Long doctorId);
+	
+	@Query("select v from Visit v where v.doctor.id = :doctorId and v.visitDate between :startDate and :endDate order by v.visitDate, v.visitTime")
+	List<Visit> findVisitsByDoctorBetweenDates(@Param("doctorId") Long id, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
