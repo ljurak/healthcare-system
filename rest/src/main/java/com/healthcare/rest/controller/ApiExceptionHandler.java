@@ -22,6 +22,7 @@ import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.exception.DoctorNotFoundException;
 import com.healthcare.service.exception.PatientNotFoundException;
 import com.healthcare.service.exception.SpecialtyNotFoundException;
+import com.healthcare.service.exception.VisitException;
 import com.healthcare.service.exception.VisitNotFoundException;
 
 @RestControllerAdvice
@@ -35,6 +36,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		SpecialtyNotFoundException.class })
 	public ResponseEntity<ApiError> handleEntityNotFoundException(RuntimeException ex) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+		return new ResponseEntity<>(apiError, apiError.getStatus());
+	}
+	
+	@ExceptionHandler(VisitException.class)
+	public ResponseEntity<ApiError> handleVisitException(VisitException ex) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
 	
