@@ -117,7 +117,7 @@ public class PatientApiTest {
 	}
 	
 	@Test
-	public void shouldReturn201WhenSendingValidPostRequest() throws Exception {
+	public void shouldReturn201WhenSendingValidPatientPostRequest() throws Exception {
 		// given
 		when(patientService.registerPatient(any())).thenReturn(patientDTO);
 		
@@ -133,7 +133,7 @@ public class PatientApiTest {
 	}
 	
 	@Test
-	public void shouldReturn400WhenSendingInvalidPostRequest() throws Exception {
+	public void shouldReturn400WhenSendingInvalidPatientPostRequest() throws Exception {
 		// given
 		when(patientService.registerPatient(any())).thenReturn(patientDTO);
 		
@@ -212,7 +212,7 @@ public class PatientApiTest {
 	}
 	
 	@Test
-	public void shouldReturn200WhenSendingPutRequest() throws Exception {
+	public void shouldReturn200WhenSendingUpdatePatientPutRequest() throws Exception {
 		// given
 		when(patientService.updatePatient(any())).thenReturn(patientDTO);
 		
