@@ -66,6 +66,11 @@ public class PatientApiTest {
 			+ "\"visitDate\":\"2021-10-24\","
 			+ "\"visitTime\":\"12:00\"}";
 	
+	private final String invalidVisitJsonString = "{"
+			+ "\"patientId\":\"8\","
+			+ "\"visitDate\":\"2021-10-24\","
+			+ "\"visitTime\":\"12:00\"}";
+	
 	private static PatientDTO patientDTO;
 	
 	private static VisitDTO visitDTO;
@@ -193,20 +198,23 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn404WhenSendingGetRequestAndPatientDoesNotExist() throws Exception {
 		// given
-		when(patientService.getPatientById(2L)).thenThrow(PatientNotFoundException.class);
+		when(patientService.getPatientById(any())).thenAnswer(invocation -> { 
+			throw new PatientNotFoundException("Patient with id: " + invocation.getArgument(0) + " does not exist"); 
+		});
 		
 		// when
 		mockMvc.perform(get("/patients/{id}", 2L))
 		
 		// then
 		.andExpect(status().isNotFound())
-		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.message", Matchers.is("Patient with id: 2 does not exist")));
 	}
 	
 	@Test
 	public void shouldReturn200WhenSendingPutRequest() throws Exception {
 		// given
-		when(patientService.updatePatient(any(), any())).thenReturn(patientDTO);
+		when(patientService.updatePatient(any())).thenReturn(patientDTO);
 		
 		// when
 		mockMvc.perform(put("/patients/{id}", 1L)
@@ -233,5 +241,22 @@ public class PatientApiTest {
 		.andExpect(status().isCreated())
 		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$.patientId", Matchers.is(8)));
+	}
+	
+	@Test
+	public void shouldReturn400WhenSendingInvalidVisitPostRequest() throws Exception {
+		// given
+		when(visitService.addVisit(any())).thenReturn(visitDTO);
+		
+		// when
+		mockMvc.perform(post("/patients/8/visits")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(invalidVisitJsonString))
+		
+		// then
+		.andExpect(status().isBadRequest())
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.fieldErrors", Matchers.hasSize(1)))
+		.andExpect(jsonPath("$.message", Matchers.is("Invalid data format")));
 	}
 }
