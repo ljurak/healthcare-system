@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.hamcrest.Matchers;
@@ -21,7 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.healthcare.rest.security.SecurityConfig;
 import com.healthcare.service.DoctorService;
+import com.healthcare.service.VisitService;
 import com.healthcare.service.dto.DoctorDTO;
+import com.healthcare.service.dto.VisitDTO;
 import com.healthcare.service.exception.DoctorNotFoundException;
 
 @WebMvcTest(
@@ -34,47 +37,45 @@ import com.healthcare.service.exception.DoctorNotFoundException;
 	)
 public class DoctorApiTest {
 	
-	private static String validDoctorJsonString;
+	private final String validDoctorJsonString = "{"
+			+ "\"firstName\":\"Greg\","
+			+ "\"lastName\":\"Monty\","
+			+ "\"birthDate\":\"1987-03-12\","
+			+ "\"address\":\"345 Valid Route\","
+			+ "\"phoneNumber\":\"5461239834\","
+			+ "\"email\":null,"
+			+ "\"specialty\":\"dermatolody\"}";
 	
-	private static String invalidDoctorJsonString;
+	private final String invalidDoctorJsonString = "{"
+			+ "\"firstName\":\"Greg\","
+			+ "\"birthDate\":\"1987-03-12\","
+			+ "\"address\":\"345 Valid Route\","
+			+ "\"phoneNumber\":\"5461239834\","
+			+ "\"email\":null}";
 	
-	private static String notReadableDateJsonString;
+	private final String notReadableDateJsonString = "{"
+			+ "\"firstName\":\"Greg\","
+			+ "\"lastName\":\"Monty\","
+			+ "\"birthDate\":\"19ec-0h-1i\","
+			+ "\"address\":\"345 Valid Route\","
+			+ "\"phoneNumber\":\"5461239834\","
+			+ "\"email\":null}";
 	
 	private static DoctorDTO doctorDTO;
 	
-	
+	private static VisitDTO visitDTO;
+		
 	@Autowired
 	private MockMvc mockMvc;
 	
 	@MockBean
 	private DoctorService doctorService;
 	
-	@BeforeAll
-	public static void init() {
-		validDoctorJsonString = "{"
-				+ "\"firstName\":\"Greg\","
-				+ "\"lastName\":\"Monty\","
-				+ "\"birthDate\":\"1987-03-12\","
-				+ "\"address\":\"345 Valid Route\","
-				+ "\"phoneNumber\":\"5461239834\","
-				+ "\"email\":null,"
-				+ "\"specialty\":\"dermatolody\"}";
-		
-		invalidDoctorJsonString = "{"
-				+ "\"firstName\":\"Greg\","
-				+ "\"birthDate\":\"1987-03-12\","
-				+ "\"address\":\"345 Valid Route\","
-				+ "\"phoneNumber\":\"5461239834\","
-				+ "\"email\":null}";
-		
-		notReadableDateJsonString = "{"
-				+ "\"firstName\":\"Greg\","
-				+ "\"lastName\":\"Monty\","
-				+ "\"birthDate\":\"19ec-0h-1i\","
-				+ "\"address\":\"345 Valid Route\","
-				+ "\"phoneNumber\":\"5461239834\","
-				+ "\"email\":null}";
+	@MockBean
+	private VisitService visitService;
 	
+	@BeforeAll
+	public static void init() {	
 		doctorDTO = new DoctorDTO();
 		doctorDTO.setId(1L);
 		doctorDTO.setFirstName("Greg");
@@ -82,6 +83,12 @@ public class DoctorApiTest {
 		doctorDTO.setBirthDate(LocalDate.of(1987, 3, 12));
 		doctorDTO.setAddress("345 Valid Route");
 		doctorDTO.setPhoneNumber("5461239834");
+		
+		visitDTO = new VisitDTO();
+		visitDTO.setPatientId(8L);
+		visitDTO.setDoctorId(3L);
+		visitDTO.setVisitDate(LocalDate.of(2021, 10, 24));
+		visitDTO.setVisitTime(LocalTime.of(12, 0));
 	}
 	
 	@Test
@@ -181,7 +188,9 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn404WhenSendingGetRequestAndDoctorDoesNotExist() throws Exception {
 		// given
-		when(doctorService.getDoctorById(2L)).thenThrow(DoctorNotFoundException.class);
+		when(doctorService.getDoctorById(2L)).thenAnswer(invocation -> {
+			throw new DoctorNotFoundException("Doctor with id: " + invocation.getArgument(0) + " does not exist");
+		});
 		
 		// when
 		mockMvc.perform(get("/doctors/{id}", 2L))
@@ -189,7 +198,7 @@ public class DoctorApiTest {
 		// then
 		.andExpect(status().isNotFound())
 		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-		.andExpect(jsonPath("$.status", Matchers.is("NOT_FOUND")));
+		.andExpect(jsonPath("$.message", Matchers.is("Doctor with id: 2 does not exist")));
 	}
 	
 	@Test
@@ -206,5 +215,36 @@ public class DoctorApiTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$.firstName", Matchers.is("Greg")));
+	}
+	
+	@Test
+	public void shouldReturnListOfDoctorsVisitsWhenSendingGetRequestWithParameters() throws Exception {
+		// given
+		when(visitService.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
+		
+		// when
+		mockMvc.perform(get("/doctors/3/visits")
+				.param("startDate", "2019-10-12")
+				.param("endDate", "2020-02-17"))
+		
+		// then
+		.andExpect(status().isOk())
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$", Matchers.hasSize(1)))
+		.andExpect(jsonPath("$[0].visitDate", Matchers.is("2021-10-24")));
+	}
+	
+	@Test
+	public void shouldReturn400WhenSendingGetRequestWithInvalidParameters() throws Exception {
+		// given
+		when(visitService.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
+		
+		// when
+		mockMvc.perform(get("/doctors/3/visits")
+				.param("startDate", "2019-1-12")
+				.param("endDate", "2020-02-1"))
+		
+		// then
+		.andExpect(status().isBadRequest());
 	}
 }
