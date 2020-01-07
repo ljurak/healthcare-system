@@ -21,9 +21,9 @@ public class PatientServiceImpl implements PatientService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PatientServiceImpl.class);	
 	
-	private PatientRepo patientRepo;	
+	private final PatientRepo patientRepo;	
 	
-	private DTOConverter<PatientDTO, Patient> patientConverter;
+	private final DTOConverter<PatientDTO, Patient> patientConverter;
 	
 	@Autowired
 	public PatientServiceImpl(

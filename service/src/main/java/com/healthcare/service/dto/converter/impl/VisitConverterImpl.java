@@ -16,9 +16,9 @@ import com.healthcare.service.exception.PatientNotFoundException;
 @Component
 public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 	
-	private PatientRepo patientRepo;
+	private final PatientRepo patientRepo;
 	
-	private DoctorRepo doctorRepo;
+	private final DoctorRepo doctorRepo;
 	
 	@Autowired
 	public VisitConverterImpl(PatientRepo patientRepo, DoctorRepo doctorRepo) {

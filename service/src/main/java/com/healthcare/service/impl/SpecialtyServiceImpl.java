@@ -16,8 +16,8 @@ import com.healthcare.service.dto.converter.DTOConverter;
 @Transactional(readOnly = true)
 public class SpecialtyServiceImpl implements SpecialtyService {
 	
-	private SpecialtyRepo specialtyRepo;
-	private DTOConverter<SpecialtyDTO, Specialty> specialtyConverter;
+	private final SpecialtyRepo specialtyRepo;
+	private final DTOConverter<SpecialtyDTO, Specialty> specialtyConverter;
 	
 	@Autowired
 	public SpecialtyServiceImpl(SpecialtyRepo specialtyRepo, DTOConverter<SpecialtyDTO, Specialty> specialtyConverter) {

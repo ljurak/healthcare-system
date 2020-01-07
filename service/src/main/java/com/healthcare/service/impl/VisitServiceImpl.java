@@ -25,9 +25,9 @@ public class VisitServiceImpl implements VisitService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(VisitServiceImpl.class);
 	
-	private VisitRepo visitRepo;
+	private final VisitRepo visitRepo;
 	
-	private DTOConverter<VisitDTO, Visit> visitConverter;
+	private final DTOConverter<VisitDTO, Visit> visitConverter;
 	
 	@Autowired
 	public VisitServiceImpl(VisitRepo visitRepo, DTOConverter<VisitDTO, Visit> visitConverter) {

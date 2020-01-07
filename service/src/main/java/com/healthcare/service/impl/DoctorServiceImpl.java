@@ -21,9 +21,9 @@ public class DoctorServiceImpl implements DoctorService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DoctorServiceImpl.class);
 
-	private DoctorRepo doctorRepo;
+	private final DoctorRepo doctorRepo;
 	
-	private DTOConverter<DoctorDTO, Doctor> doctorConverter;
+	private final DTOConverter<DoctorDTO, Doctor> doctorConverter;
 	
 	@Autowired
 	public DoctorServiceImpl(DoctorRepo doctorRepo, DTOConverter<DoctorDTO, Doctor> doctorConverter) {
