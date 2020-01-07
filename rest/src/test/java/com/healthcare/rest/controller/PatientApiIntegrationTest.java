@@ -3,7 +3,11 @@ package com.healthcare.rest.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDate;
+
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.healthcare.model.entities.Patient;
+import com.healthcare.model.repo.PatientRepo;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -68,6 +75,9 @@ public class PatientApiIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
+	@Autowired
+	private PatientRepo patientRepo;
+	
 	@Test
 	public void shouldReturnListOfPatientsWhenSendingGetRequest() throws Exception {		
 		// when
@@ -93,6 +103,11 @@ public class PatientApiIntegrationTest {
 		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$.firstName", is("Mike")))
 		.andExpect(jsonPath("$.email", is(nullValue())));
+		
+		Patient patient = patientRepo.findByLastNameContainingIgnoreCaseOrderByLastName("Kent").get(0);
+		assertEquals("Mike", patient.getFirstName());
+		assertEquals(LocalDate.of(1992, 4, 19), patient.getBirthDate());
+		assertNull(patient.getEmail());
 	}
 	
 	@Test
@@ -175,6 +190,11 @@ public class PatientApiIntegrationTest {
 		.andExpect(jsonPath("$.firstName", is("Clementine")))
 		.andExpect(jsonPath("$.phoneNumber", is("1234567890")))
 		.andExpect(jsonPath("$.email", is("example@mail.com")));
+		
+		Patient patient = patientRepo.findById(1L).get();
+		assertEquals("Clementine", patient.getFirstName());
+		assertEquals("1234567890", patient.getPhoneNumber());
+		assertEquals("example@mail.com", patient.getEmail());
 	}
 	
 	@Test
