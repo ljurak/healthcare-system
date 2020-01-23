@@ -85,7 +85,7 @@ const visits = (state = {}, action) => {
 		case actions.UPDATE_VISIT_FAILURE:
 			return {
 				update: action.payload.message,
-				visitId: action.payload.result,
+				visitId: action.payload.visitId,
 				type: 'alert-failure'
 			};
 		case actions.ADD_VISIT_REQUEST:

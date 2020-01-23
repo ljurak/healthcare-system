@@ -260,7 +260,7 @@ export const updateVisit = (visit, patientId) => (dispatch) => {
 		.then(handleApiResponse)
 		.then(
 			response => dispatch(updateVisitSuccess(normalize(response, schema.visitSchema))),
-			error => dispatch(updateVisitFailure(error))
+			error => dispatch(updateVisitFailure({ ...error, visitId: visit.id }))
 		);
 };
 
