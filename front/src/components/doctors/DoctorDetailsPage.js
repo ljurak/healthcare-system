@@ -57,7 +57,7 @@ class DoctorDetailsPage extends React.Component {
 				<h3 className="visits-list-title">Doctor's visits</h3>
 				{ isFetchingVisits
 					? (<div className="visits-search-info">Loading visits...</div>)
-					: (visits.length > 0)
+					: (visits.length > 0 && visits[0].doctorId === parseInt(doctorId, 10))
 						? (<VisitsList visits={visits} renderForPatient={false} />)
 						: (<div className="visits-search-info">No visits</div>)
 				}
