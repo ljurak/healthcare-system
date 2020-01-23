@@ -31,6 +31,8 @@ export const getPatient = (state, id) => fromPatients.getPatient(state.entities.
 
 export const getVisibleDoctors = (state) => fromDoctors.getVisibleDoctors(state.entities.doctors);
 
+export const getVisibleDoctorsBySpecialty = (state) => fromDoctors.getVisibleDoctorsBySpecialty(state.entities.doctors);
+
 export const getDoctor = (state, id) => fromDoctors.getDoctor(state.entities.doctors, id);
 
 export const getVisibleSpecialties = (state) => fromSpecialties.getVisibleSpecialties(state.entities.specialties);

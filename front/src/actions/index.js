@@ -13,6 +13,7 @@ const fetchPatientsRequest = makeRequestActionCreator(actions.FETCH_PATIENTS_REQ
 const fetchPatientRequest = makeRequestActionCreator(actions.FETCH_PATIENT_REQUEST);
 const fetchDoctorsRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_REQUEST);
 const fetchDoctorRequest = makeRequestActionCreator(actions.FETCH_DOCTOR_REQUEST);
+const fetchDoctorsBySpecialtyRequest = makeRequestActionCreator(actions.FETCH_DOCTORS_BY_SPECIALTY_REQUEST);
 const fetchSpecialtiesRequest = makeRequestActionCreator(actions.FETCH_SPECIALTIES_REQUEST);
 const fetchPatientVisitsRequest = makeRequestActionCreator(actions.FETCH_PATIENT_VISITS_REQUEST);
 const fetchDoctorVisitsRequest = makeRequestActionCreator(actions.FETCH_DOCTOR_VISITS_REQUEST);
@@ -30,6 +31,7 @@ const fetchPatientsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENTS_SUC
 const fetchPatientSuccess = makeSuccessActionCreator(actions.FETCH_PATIENT_SUCCESS);
 const fetchDoctorsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_SUCCESS);
 const fetchDoctorSuccess = makeSuccessActionCreator(actions.FETCH_DOCTOR_SUCCESS);
+const fetchDoctorsBySpecialtySuccess = makeSuccessActionCreator(actions.FETCH_DOCTORS_BY_SPECIALTY_SUCCESS);
 const fetchSpecialtiesSuccess = makeSuccessActionCreator(actions.FETCH_SPECIALTIES_SUCCESS);
 const fetchPatientVisitsSuccess = makeSuccessActionCreator(actions.FETCH_PATIENT_VISITS_SUCCESS);
 const fetchDoctorVisitsSuccess = makeSuccessActionCreator(actions.FETCH_DOCTOR_VISITS_SUCCESS);
@@ -47,6 +49,7 @@ const fetchPatientsFailure = makeFailureActionCreator(actions.FETCH_PATIENTS_FAI
 const fetchPatientFailure = makeFailureActionCreator(actions.FETCH_PATIENT_FAILURE);
 const fetchDoctorsFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_FAILURE);
 const fetchDoctorFailure = makeFailureActionCreator(actions.FETCH_DOCTOR_FAILURE);
+const fetchDoctorsBySpecialtyFailure = makeFailureActionCreator(actions.FETCH_DOCTORS_BY_SPECIALTY_FAILURE);
 const fetchSpecialtiesFailure = makeFailureActionCreator(actions.FETCH_SPECIALTIES_FAILURE);
 const fetchPatientVisitsFailure = makeFailureActionCreator(actions.FETCH_PATIENT_VISITS_FAILURE);
 const fetchDoctorVisitsFailure = makeFailureActionCreator(actions.FETCH_DOCTOR_VISITS_FAILURE);
@@ -154,13 +157,13 @@ export const fetchDoctorsByLastname = (lastname) => (dispatch) => {
 };
 
 export const fetchDoctorsBySpecialty = (specialty) => (dispatch) => {
-	dispatch(fetchDoctorsRequest());
+	dispatch(fetchDoctorsBySpecialtyRequest());
 
 	return DoctorsApi.fetchDoctorsBySpecialty(specialty)
 		.then(handleApiResponse)
 		.then(
-			response => dispatch(fetchDoctorsSuccess(normalize(response, schema.doctorsListSchema))),
-			error => dispatch(fetchDoctorsFailure(error))
+			response => dispatch(fetchDoctorsBySpecialtySuccess(normalize(response, schema.doctorsListSchema))),
+			error => dispatch(fetchDoctorsBySpecialtyFailure(error))
 		);
 };
 
@@ -231,10 +234,10 @@ export const fetchVisitsByPatientId = (patientId) => (dispatch) => {
 		);
 };
 
-export const fetchVisitsByDoctorId = (patientId, startDate, endDate) => (dispatch) => {
+export const fetchVisitsByDoctorId = (doctorId, startDate, endDate) => (dispatch) => {
 	dispatch(fetchDoctorVisitsRequest());
 
-	return VisitsApi.fetchVisitsByDoctor(patientId, startDate, endDate)
+	return VisitsApi.fetchVisitsByDoctor(doctorId, startDate, endDate)
 		.then(handleApiResponse)
 		.then(
 			response => dispatch(fetchDoctorVisitsSuccess(normalize(response, schema.visitsListSchema))),
