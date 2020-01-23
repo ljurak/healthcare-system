@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getVisibleDoctors } from '../../reducers';
+import { getVisibleDoctorsBySpecialty } from '../../reducers';
 
 const PatientVisitAddFormDoctorsField = ({ id, field, doctors }) => (
 	<select id={id} {...field}>
@@ -14,7 +14,7 @@ const PatientVisitAddFormDoctorsField = ({ id, field, doctors }) => (
 
 const mapStateToProps = (state) => {
 	return {
-		doctors: getVisibleDoctors(state)
+		doctors: getVisibleDoctorsBySpecialty(state)
 	};
 };
 
