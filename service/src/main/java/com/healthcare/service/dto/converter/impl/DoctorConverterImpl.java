@@ -22,15 +22,15 @@ public class DoctorConverterImpl implements DTOConverter<DoctorDTO, Doctor> {
 
 	@Override
 	public Doctor convertFromDTO(DoctorDTO dto) {
+		Specialty specialty = specialtyRepo.findByName(dto.getSpecialty()).orElseThrow(
+				() -> new SpecialtyNotFoundException("Specialty [" + dto.getSpecialty() + "] does not exist"));
 		Doctor entity = new Doctor();
 		entity.setFirstName(dto.getFirstName());
 		entity.setLastName(dto.getLastName());
 		entity.setBirthDate(dto.getBirthDate());
 		entity.setAddress(dto.getAddress());
 		entity.setPhoneNumber(dto.getPhoneNumber());
-		entity.setEmail(dto.getEmail());
-		Specialty specialty = specialtyRepo.findByName(dto.getSpecialty())
-				.orElseThrow(() -> new SpecialtyNotFoundException("Specialty [" + dto.getSpecialty() + "] does not exist"));
+		entity.setEmail(dto.getEmail());		
 		entity.setSpecialty(specialty);
 		return entity;
 	}

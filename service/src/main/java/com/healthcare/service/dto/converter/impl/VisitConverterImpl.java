@@ -28,11 +28,11 @@ public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 
 	@Override
 	public Visit convertFromDTO(VisitDTO dto) {
+		Patient patient = patientRepo.findById(dto.getPatientId()).orElseThrow(
+				() -> new PatientNotFoundException("Patient with id: " + dto.getPatientId() + " does not exist"));
+		Doctor doctor = doctorRepo.findById(dto.getDoctorId()).orElseThrow(
+				() -> new DoctorNotFoundException("Doctor with id: " + dto.getDoctorId() + " does not exist"));
 		Visit entity = new Visit();
-		Patient patient = patientRepo.findById(dto.getPatientId())
-				.orElseThrow(() -> new PatientNotFoundException("Patient with id: " + dto.getPatientId() + " does not exist"));
-		Doctor doctor = doctorRepo.findById(dto.getDoctorId())
-				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + dto.getDoctorId() + " does not exist"));
 		entity.setPatient(patient);
 		entity.setDoctor(doctor);
 		entity.setDescription(dto.getDescription());
@@ -55,5 +55,5 @@ public class VisitConverterImpl implements DTOConverter<VisitDTO, Visit> {
 		dto.setVisitTime(entity.getVisitTime());
 		dto.setStatus(entity.getStatus());
 		return dto;
-	}	
+	}
 }
