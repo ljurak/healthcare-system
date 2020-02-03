@@ -51,21 +51,21 @@ public class VisitServiceImpl implements VisitService {
 	private void validateNewVisit(VisitDTO visitDTO) {
 		LocalDateTime visitDateTime = LocalDateTime.of(visitDTO.getVisitDate(), visitDTO.getVisitTime());
 		if (visitDateTime.isBefore(LocalDateTime.now())) {
-			LOGGER.info("Unable to add visit: {}", visitDTO);
+			LOGGER.info("Unable to add visit (past date): {}", visitDTO);
 			throw new VisitException("Cannot add visit with past date");
 		}
 		Visit existingVisit = visitRepo.findVisitByDoctorAndDateTimeNotCancelled(
 				visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
 		if (existingVisit != null) {
-			LOGGER.info("Unable to add visit: {}", visitDTO);
+			LOGGER.info("Unable to add visit (unavailable date): {}", visitDTO);
 			throw new VisitException("Visit at given time is not available");
 		}
 	}
 
 	@Override
 	public VisitDTO getVisitById(Long id) {
-		Visit visit = visitRepo.findById(id)
-				.orElseThrow(() -> new VisitNotFoundException("Visit with id: " + id + " does not exist"));
+		Visit visit = visitRepo.findById(id).orElseThrow(
+				() -> new VisitNotFoundException("Visit with id: " + id + " does not exist"));
 		return visitConverter.convertFromEntity(visit);
 	}
 
@@ -90,8 +90,9 @@ public class VisitServiceImpl implements VisitService {
 	@Override
 	@Transactional(readOnly = false)
 	public VisitDTO updateVisit(VisitDTO visitDTO) {
-		Visit persistedVisit = visitRepo.findById(visitDTO.getId())
-				.orElseThrow(() -> new VisitNotFoundException("Visit with id: " + visitDTO.getId() + " does not exist"));
+		LOGGER.info("An attempt to update visit: {}", visitDTO);
+		Visit persistedVisit = visitRepo.findById(visitDTO.getId()).orElseThrow(
+				() -> new VisitNotFoundException("Visit with id: " + visitDTO.getId() + " does not exist"));
 		validateExistingVisit(persistedVisit, visitDTO);
 		persistedVisit.setStatus(visitDTO.getStatus());
 		persistedVisit.setDescription(visitDTO.getDescription());
@@ -105,7 +106,7 @@ public class VisitServiceImpl implements VisitService {
 			Visit existingVisit = visitRepo.findVisitByDoctorAndDateTimeNotCancelled(
 					visitDTO.getDoctorId(), visitDTO.getVisitDate(), visitDTO.getVisitTime());
 			if (existingVisit != null) {
-				LOGGER.info("Unable to update visit: {}", visitDTO);
+				LOGGER.info("Unable to update visit (unavailable date): {}", visitDTO);
 				throw new VisitException("Visit at given time is not available");
 			}
 		}

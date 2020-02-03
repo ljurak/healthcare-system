@@ -48,8 +48,8 @@ public class DoctorServiceImpl implements DoctorService {
 	
 	@Override
 	public DoctorDTO getDoctorById(Long id) {
-		Doctor doctor = doctorRepo.findById(id)
-				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
+		Doctor doctor = doctorRepo.findById(id).orElseThrow(
+				() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
 		return doctorConverter.convertFromEntity(doctor);
 	}	
 
@@ -68,8 +68,9 @@ public class DoctorServiceImpl implements DoctorService {
 	@Override
 	@Transactional(readOnly = false)
 	public DoctorDTO updateDoctor(DoctorDTO doctorDTO, Long id) {
-		Doctor persistedDoctor = doctorRepo.findById(id)
-				.orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
+		LOGGER.info("An attempt to update doctor: {}", doctorDTO);
+		Doctor persistedDoctor = doctorRepo.findById(id).orElseThrow(
+				() -> new DoctorNotFoundException("Doctor with id: " + id + " does not exist"));
 		persistedDoctor.setAddress(doctorDTO.getAddress());
 		persistedDoctor.setPhoneNumber(doctorDTO.getPhoneNumber());
 		persistedDoctor.setEmail(doctorDTO.getEmail());

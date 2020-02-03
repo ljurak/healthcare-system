@@ -50,8 +50,8 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public PatientDTO getPatientById(Long id) {
-		Patient patient = patientRepo.findById(id)
-			.orElseThrow(() -> new PatientNotFoundException("Patient with id: " + id + " does not exist"));
+		Patient patient = patientRepo.findById(id).orElseThrow(
+				() -> new PatientNotFoundException("Patient with id: " + id + " does not exist"));
 		return patientConverter.convertFromEntity(patient);
 	}
 	
@@ -64,8 +64,9 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	@Transactional(readOnly = false)
 	public PatientDTO updatePatient(PatientDTO patientDTO) {
-		Patient persistedPatient = patientRepo.findById(patientDTO.getId())
-				.orElseThrow(() -> new PatientNotFoundException("Patient with id: " + patientDTO.getId() + " does not exist"));
+		LOGGER.info("An attempt to update patient: {}", patientDTO);
+		Patient persistedPatient = patientRepo.findById(patientDTO.getId()).orElseThrow(
+				() -> new PatientNotFoundException("Patient with id: " + patientDTO.getId() + " does not exist"));
 		persistedPatient.setAddress(patientDTO.getAddress());
 		persistedPatient.setPhoneNumber(patientDTO.getPhoneNumber());
 		persistedPatient.setEmail(patientDTO.getEmail());
