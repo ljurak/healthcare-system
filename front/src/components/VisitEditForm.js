@@ -27,6 +27,7 @@ class VisitEditForm extends React.Component {
 		}
 
 		let { patientName, doctorName, visitDate, visitTime, description, status } = visit;
+		visitTime = visitTime.substr(0, 5);
 		if (!description) {
 			description = '';
 		}
