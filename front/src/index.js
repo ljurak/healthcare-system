@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
 import './index.css';
 import './css/form.css';
 import './css/update-form.css';
@@ -18,12 +17,12 @@ import './css/alert-box.css';
 import './css/loading.css';
 
 import { clearAlert } from './actions';
+import { history } from './helpers/history';
+import configureStore from './helpers/configureStore';
 import Root from './components/Root';
-import configureStore from './store/configureStore';
 
 const store = configureStore();
 
-const history = createBrowserHistory();
 history.listen(location => store.dispatch(clearAlert()));
 
 ReactDOM.render(
