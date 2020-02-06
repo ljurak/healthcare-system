@@ -15,6 +15,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.healthcare.service.utils.JwtUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 				.antMatchers("/login").permitAll()
+				.antMatchers("/token").permitAll()
 				.anyRequest().authenticated()
 		.and()
 			.sessionManagement()

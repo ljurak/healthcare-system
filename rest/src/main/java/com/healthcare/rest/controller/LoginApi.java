@@ -11,46 +11,56 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.healthcare.rest.security.JwtUtils;
 import com.healthcare.rest.security.LoginDTO;
+import com.healthcare.service.AuthenticationService;
+import com.healthcare.service.dto.JwtTokenDTO;
+import com.healthcare.service.utils.JwtUtils;
 
 @RestController
-@RequestMapping("/login")
 @CrossOrigin
 public class LoginApi {
 	
 	private AuthenticationManager authenticationManager;
+	
 	private JwtUtils jwtUtils;
 	
+	private AuthenticationService authenticationService;
+	
 	@Autowired
-	public LoginApi(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+	public LoginApi(
+			AuthenticationManager authenticationManager, 
+			JwtUtils jwtUtils, 
+			AuthenticationService authenticationService) {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtils = jwtUtils;
+		this.authenticationService = authenticationService;
 	}
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public JwtToken authenticate(@RequestBody @Valid LoginDTO loginDTO) {
+	@PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public JwtTokenDTO authenticate(@RequestBody @Valid LoginDTO loginDTO) {
 		UsernamePasswordAuthenticationToken authenticationRequest = 
 				new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
 		Authentication authentication = authenticationManager.authenticate(authenticationRequest);
-		String token = jwtUtils.generateToken((UserDetails) authentication.getPrincipal());
-		return new JwtToken(token);
+		UserDetails principal = (UserDetails) authentication.getPrincipal();
+		String token = jwtUtils.generateToken(principal);
+		String refreshToken = authenticationService.createRefreshToken(principal.getUsername());
+		return new JwtTokenDTO(token, refreshToken);
 	}
 	
-	static class JwtToken {
-		@JsonProperty("token")
-		private final String token;
+	@PostMapping(path = "/token", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public JwtTokenDTO refreshToken(@RequestBody @Valid RefreshToken token) {
+		return authenticationService.refreshAccessToken(token.getRefreshToken());
+	}
+	
+	static class RefreshToken {
+		@JsonProperty("refreshToken")
+		private String refreshToken;
 		
-		JwtToken(String token) {
-			this.token = token;
-		}
-		
-		String getToken() {
-			return token;
-		}
+		String getRefreshToken() {
+			return refreshToken;
+		}	
 	}
 }

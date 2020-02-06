@@ -21,6 +21,7 @@ import com.healthcare.rest.exception.FieldValidationError;
 import com.healthcare.rest.exception.InvalidRequestException;
 import com.healthcare.service.exception.DoctorNotFoundException;
 import com.healthcare.service.exception.PatientNotFoundException;
+import com.healthcare.service.exception.RefreshTokenException;
 import com.healthcare.service.exception.SpecialtyNotFoundException;
 import com.healthcare.service.exception.VisitException;
 import com.healthcare.service.exception.VisitNotFoundException;
@@ -78,10 +79,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<ApiError>(apiError, apiError.getStatus());
 	}
 	
+	@ExceptionHandler(RefreshTokenException.class)
+	public ResponseEntity<ApiError> handleRefreshTokenException(RefreshTokenException ex) {
+		ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+		return new ResponseEntity<>(apiError, apiError.getStatus());
+	}
+	
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(
 			HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
+		System.out.println(ex.getMessage());
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Malformed JSON request");
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
