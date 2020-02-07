@@ -4,6 +4,7 @@ import * as actions from './actionTypes';
 import * as schema from './schema';
 import { PatientsApi, DoctorsApi, VisitsApi, SpecialtiesApi, LoginApi } from '../api';
 import { getPatient, getDoctor } from '../reducers';
+import { history } from '../helpers/history';
 
 // ACTION CREATORS
 
@@ -77,7 +78,7 @@ export const fetchPatients = () => (dispatch) => {
 	dispatch(fetchPatientsRequest());
 
 	return PatientsApi.fetchPatients()
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchPatientsSuccess(normalize(response, schema.patientsListSchema))), 
 			error => dispatch(fetchPatientsFailure(error))
@@ -88,7 +89,7 @@ export const fetchPatientsByLastname = (lastname) => (dispatch) => {
 	dispatch(fetchPatientsRequest());
 
 	return PatientsApi.fetchPatientsByLastname(lastname)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchPatientsSuccess(normalize(response, schema.patientsListSchema))),
 			error => dispatch(fetchPatientsFailure(error))
@@ -103,7 +104,7 @@ export const fetchPatientById = (id) => (dispatch, getState) => {
 	dispatch(fetchPatientRequest());
 
 	return PatientsApi.fetchPatientById(id)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchPatientSuccess(normalize(response, schema.patientSchema))),
 			error => dispatch(fetchPatientFailure(error))
@@ -114,7 +115,7 @@ export const addPatient = (patient) => (dispatch) => {
 	dispatch(addPatientRequest());
 
 	return PatientsApi.addPatient(patient)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(addPatientSuccess(normalize(response, schema.patientSchema))),
 			error => dispatch(addPatientFailure(error))
@@ -125,7 +126,7 @@ export const updatePatient = (patient, id) => (dispatch) => {
 	dispatch(updatePatientRequest());
 
 	return PatientsApi.updatePatient(patient, id)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(updatePatientSuccess(normalize(response, schema.patientSchema))),
 			error => dispatch(updatePatientFailure(error))
@@ -138,7 +139,7 @@ export const fetchDoctors = () => (dispatch) => {
 	dispatch(fetchDoctorsRequest());
 
 	return DoctorsApi.fetchDoctors()
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchDoctorsSuccess(normalize(response, schema.doctorsListSchema))),
 			error => dispatch(fetchDoctorsFailure(error))
@@ -149,7 +150,7 @@ export const fetchDoctorsByLastname = (lastname) => (dispatch) => {
 	dispatch(fetchDoctorsRequest());
 
 	return DoctorsApi.fetchDoctorsByLastname(lastname)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchDoctorsSuccess(normalize(response, schema.doctorsListSchema))),
 			error => dispatch(fetchDoctorsFailure(error))
@@ -160,7 +161,7 @@ export const fetchDoctorsBySpecialty = (specialty) => (dispatch) => {
 	dispatch(fetchDoctorsBySpecialtyRequest());
 
 	return DoctorsApi.fetchDoctorsBySpecialty(specialty)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchDoctorsBySpecialtySuccess(normalize(response, schema.doctorsListSchema))),
 			error => dispatch(fetchDoctorsBySpecialtyFailure(error))
@@ -175,7 +176,7 @@ export const fetchDoctorById = (id) => (dispatch, getState) => {
 	dispatch(fetchDoctorRequest());
 
 	return DoctorsApi.fetchDoctorById(id)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchDoctorSuccess(normalize(response, schema.doctorSchema))),
 			error => dispatch(fetchDoctorFailure(error))
@@ -186,7 +187,7 @@ export const addDoctor = (doctor) => (dispatch) => {
 	dispatch(addDoctorRequest());
 
 	return DoctorsApi.addDoctor(doctor)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(addDoctorSuccess(normalize(response, schema.doctorSchema))),
 			error => dispatch(addDoctorFailure(error))
@@ -197,7 +198,7 @@ export const updateDoctor = (doctor, id) => (dispatch) => {
 	dispatch(updateDoctorRequest());
 
 	return DoctorsApi.updateDoctor(doctor, id)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(updateDoctorSuccess(normalize(response, schema.doctorSchema))),
 			error => dispatch(updateDoctorFailure(error))
@@ -214,7 +215,7 @@ export const fetchSpecialties = () => (dispatch, getState) => {
 	dispatch(fetchSpecialtiesRequest());
 
 	return SpecialtiesApi.fetchSpecialties()
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchSpecialtiesSuccess(normalize(response, schema.specialtiesListSchema))),
 			error => dispatch(fetchSpecialtiesFailure(error))
@@ -227,7 +228,7 @@ export const fetchVisitsByPatientId = (patientId) => (dispatch) => {
 	dispatch(fetchPatientVisitsRequest());
 
 	return VisitsApi.fetchVisitsByPatient(patientId)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchPatientVisitsSuccess(normalize(response, schema.visitsListSchema))),
 			error => dispatch(fetchPatientVisitsFailure(error))
@@ -238,7 +239,7 @@ export const fetchVisitsByDoctorId = (doctorId, startDate, endDate) => (dispatch
 	dispatch(fetchDoctorVisitsRequest());
 
 	return VisitsApi.fetchVisitsByDoctor(doctorId, startDate, endDate)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(fetchDoctorVisitsSuccess(normalize(response, schema.visitsListSchema))),
 			error => dispatch(fetchDoctorVisitsFailure(error))
@@ -249,7 +250,7 @@ export const addVisit = (visit, patientId) => (dispatch) => {
 	dispatch(addVisitRequest());
 
 	return VisitsApi.addVisit(visit, patientId)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(addVisitSuccess(normalize(response, schema.visitSchema))),
 			error => dispatch(addVisitFailure(error))
@@ -260,7 +261,7 @@ export const updateVisit = (visit, patientId) => (dispatch) => {
 	dispatch(updateVisitRequest());
 
 	return VisitsApi.updateVisit(visit, patientId)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => dispatch(updateVisitSuccess(normalize(response, schema.visitSchema))),
 			error => dispatch(updateVisitFailure({ ...error, visitId: visit.id }))
@@ -273,7 +274,7 @@ export const login = (user) => (dispatch) => {
 	dispatch(loginRequest());
 
 	return LoginApi.login(user)
-		.then(handleApiResponse)
+		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => {
 				localStorage.setItem('token', response.token);
@@ -284,8 +285,12 @@ export const login = (user) => (dispatch) => {
 };
 
 // helper function processing response from api
-const handleApiResponse = (response) => {
+const handleApiResponse = (response, dispatch) => {
 	return response.json().then(json => {
+		if (response.status === 401) {
+			dispatch(logout());
+			history.push('/login');
+		}
 		if (!response.ok) {
 			return Promise.reject(json);
 		}
