@@ -8,16 +8,25 @@ import { login, clearAlert } from '../actions';
 import { getAuthenticationAlert } from '../reducers';
 
 class LoginPage extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			shouldRedirect: false
+		};
+	}
+
 	handleSubmit = (values, actions) => {
 		const user = { ...values };
-		this.props.login(user);
+		this.props.login(user)
+			.then(() => this.setState((state, props) => ({ shouldRedirect: props.isLoggedIn })));
 	}
 
 	render() {
 		const { isLogging, isLoggedIn, alert, clearAlert } = this.props;
 		const { from } = this.props.location.state || { from: { pathname: '/' } };
+		const shouldRedirect = this.state.shouldRedirect;
 
-		if (isLoggedIn) {
+		if (shouldRedirect && isLoggedIn) {
 			return <Redirect to={from} />;
 		}
 
@@ -78,7 +87,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = { login, clearAlert };
+const mapDispatchToProps = { 
+	login,
+	clearAlert 
+};
 
 export default connect(
 	mapStateToProps, 
