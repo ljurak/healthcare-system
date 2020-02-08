@@ -43,29 +43,33 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 	@Override
 	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		String token = extractToken(request);
-		if (token == null) {
+		if (!request.getRequestURI().equals("/login") && !request.getRequestURI().equals("/token")) {
+			String token = extractToken(request);
+			if (token == null) {
+				createInvalidTokenResponse(request, response, chain);
+				return;
+			}
+			
+			UserDetails principal;
+			try {
+				principal = jwtUtils.parseToken(token);
+			} catch (JWTVerificationException ex) {
+				createInvalidTokenResponse(request, response, chain);
+				return;
+			}
+			
+			if (principal == null) {
+				createInvalidTokenResponse(request, response, chain);
+				return;
+			}
+			
+			Authentication authentication = 
+					new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 			chain.doFilter(request, response);
 			return;
 		}
-		
-		UserDetails principal;
-		try {
-			principal = jwtUtils.parseToken(token);
-		} catch (JWTVerificationException ex) {
-			createInvalidTokenResponse(request, response, chain);
-			return;
-		}
-		
-		if (principal == null) {
-			createInvalidTokenResponse(request, response, chain);
-			return;
-		}
-		
-		Authentication authentication = 
-				new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		chain.doFilter(request, response);		
+		chain.doFilter(request, response);	
 	}
 	
 	public String extractToken(HttpServletRequest request) {
