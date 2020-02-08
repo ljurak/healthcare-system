@@ -1,6 +1,7 @@
 package com.healthcare.rest.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -57,6 +58,7 @@ public class LoginApi {
 	
 	static class RefreshToken {
 		@JsonProperty("refreshToken")
+		@NotBlank
 		private String refreshToken;
 		
 		String getRefreshToken() {
