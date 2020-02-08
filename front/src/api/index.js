@@ -1,7 +1,9 @@
+import { getToken } from '../helpers/token';
+
 const BASE_API_URL = 'http://localhost:8080';
 
 const createAuthorizationHeader = () => {
-	const token = localStorage.getItem('token');
+	const token = getToken();
 	if (token) {
 		return { 'Authorization': `Bearer ${token}` };
 	}

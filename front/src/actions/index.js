@@ -5,6 +5,7 @@ import * as schema from './schema';
 import { PatientsApi, DoctorsApi, VisitsApi, SpecialtiesApi, LoginApi } from '../api';
 import { getPatient, getDoctor } from '../reducers';
 import { history } from '../helpers/history';
+import { setToken, removeToken } from '../helpers/token';
 
 // ACTION CREATORS
 
@@ -63,7 +64,7 @@ const updateVisitFailure = makeFailureActionCreator(actions.UPDATE_VISIT_FAILURE
 const loginFailure = makeFailureActionCreator(actions.LOGIN_FAILURE);
 
 export const logout = () => {
-	localStorage.removeItem('token');
+	removeToken();
 	return { type: actions.LOGOUT };
 };
 
@@ -277,7 +278,7 @@ export const login = (user) => (dispatch) => {
 		.then(response => handleApiResponse(response, dispatch))
 		.then(
 			response => {
-				localStorage.setItem('token', response.token);
+				setToken(response.token);
 				dispatch(loginSuccess(response));
 			}, 
 			error => dispatch(loginFailure(error))

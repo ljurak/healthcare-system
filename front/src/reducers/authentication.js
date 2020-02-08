@@ -1,6 +1,7 @@
 import * as actions from '../actions/actionTypes';
+import { getToken } from '../helpers/token';
 
-const isLoggedIn = localStorage.getItem('token') !== null;
+const isLoggedIn = getToken() !== null;
 const initialState = { isLogging: false, isLoggedIn };
 
 const authentication = (state = initialState, action) => {
