@@ -1,0 +1,62 @@
+.visit-calendar-header {
+	font-size: 1.6rem;
+	font-weight: bold;
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.visit-calendar-header .date-range {
+	font-size: 1.8rem;
+	align-self: flex-end;
+}
+
+.visit-calendar-header .btn {
+	color: #fff;
+	font-size: 1.6rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 10rem;
+	padding: 0.5rem;
+	border-radius: 4px;
+	border: 2px solid transparent;
+	background-color: var(--color-main);
+	transition: 0.3s all;
+}
+
+.visit-calendar-header .btn:hover {
+	border: 2px solid var(--color-main);
+	background-color: #fff;
+	color: var(--color-main);
+}
+
+.visit-calendar {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 1.4rem;
+	margin-bottom: 1.6rem;
+}
+
+.visit-calendar .date,
+.visit-calendar .time {
+	border: 1px solid #bababa;
+}
+
+.visit-calendar .time {
+	
+}
+
+.visit-calendar .cell {
+	border: 1px solid #dadada;
+	height: 30px;
+}
+
+.visit-calendar .cell.marked {
+	background-color: var(--color-main);
+}
+
+.visit-calendar .cell:not(.marked):hover {
+	background-color: #eaeaea;
+}
