@@ -15,15 +15,19 @@ import './css/sidebar.css';
 import './css/page-footer.css';
 import './css/alert-box.css';
 import './css/loading.css';
+import './css/scheduler.css';
 
-import { clearAlert } from './actions';
+import { clearAlert, clearVisits } from './actions';
 import { history } from './helpers/history';
 import configureStore from './helpers/configureStore';
 import Root from './components/Root';
 
 const store = configureStore();
 
-history.listen(location => store.dispatch(clearAlert()));
+history.listen(location => {
+	store.dispatch(clearAlert());
+	store.dispatch(clearVisits());
+});
 
 ReactDOM.render(
 	<Root store={store} history={history} />, 
