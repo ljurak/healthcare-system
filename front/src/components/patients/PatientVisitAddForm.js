@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import DatePickerField from './PatientVisitAddFormDatePickerField';
 import TimePickerField from './PatientVisitAddFormTimePickerField';
 import DoctorsField from './PatientVisitAddFormDoctorsField';
+import Scheduler from '../Scheduler';
 
 class PatientVisitAddForm extends React.Component {
 
@@ -39,7 +40,7 @@ class PatientVisitAddForm extends React.Component {
 						visitTime: Yup.date()
 							.required('Required').nullable()
 							.test('is-in-range', 'Time out of range', function(value) {
-								return moment(value).isBetween(moment('08:00', 'HH:mm'), moment('19:00', 'HH:mm'), 'hour', '[]');
+								return moment(value).get('hour') >= 8 && moment(value).get('hour') <= 19;
 							}),
 						doctor: Yup.number()
 							.required('Required'),
@@ -48,24 +49,20 @@ class PatientVisitAddForm extends React.Component {
 					})}
 					onSubmit={this.handleSubmit}>
 					
-					{({ values, errors, touched, setFieldValue, handleBlur, handleChange, isSubmitting }) => {
+					{({ values, errors, touched, setFieldValue, handleChange, isSubmitting }) => {
 						const handleSpecialtyChange = (e) => {
 							this.props.fetchDoctors(e.target.value);
+							setFieldValue('doctor', '');
 							handleChange(e);
+						};
+
+						const handleDateTimeChange = (date) => {
+							setFieldValue('visitDate', date);
+							setFieldValue('visitTime', date);
 						};
 
 						return (
 							<Form className="visit-add-form">
-								<div className={'form-row' + (errors.visitDate && touched.visitDate ? ' error' : '')}>
-									<label htmlFor="date">Visit date*</label>							
-									<DatePickerField id="visitDate" name="visitDate" value={values.visitDate} onChange={setFieldValue} onBlur={handleBlur} />
-									<ErrorMessage name="visitDate" component="div" className="error" />									
-								</div>
-								<div className={'form-row' + (errors.visitTime && touched.visitTime ? ' error' : '')}>
-									<label htmlFor="date">Visit time*</label>									
-									<TimePickerField id="visitTime" name="visitTime" value={values.visitTime} onChange={setFieldValue} onBlur={handleBlur} />
-									<ErrorMessage name="visitTime" component="div" className="error" />									
-								</div>								
 								<div className="form-row">
 									<label htmlFor="specialty">Doctor's specialty</label>									
 									<Field id="specialty" name="specialty" as="select" onChange={handleSpecialtyChange}>
@@ -73,13 +70,24 @@ class PatientVisitAddForm extends React.Component {
 										{this.props.specialties.map(specialty => (
 											<option key={specialty.id} value={specialty.name}>{specialty.name}</option>
 										))}
-									</Field>									
+									</Field>					
 								</div>
 								<div className={'form-row' + (errors.doctor && touched.doctor ? ' error' : '')}>
 									<label htmlFor="doctor">Doctor*</label>									
 									<Field id="doctor" name="doctor" component={DoctorsField} />
 									<ErrorMessage name="doctor" component="div" className="error" />									
 								</div>
+								<div className={'form-row' + (errors.visitDate && touched.visitDate ? ' error' : '')}>
+									<label htmlFor="visitDate">Visit date*</label>
+									<Field id="visitDate" name="visitDate" onChange={setFieldValue} component={DatePickerField} />						
+									<ErrorMessage name="visitDate" component="div" className="error" />									
+								</div>
+								<div className={'form-row' + (errors.visitTime && touched.visitTime ? ' error' : '')}>
+									<label htmlFor="visitTime">Visit time*</label>	
+									<Field id="visitTime" name="visitTime" onChange={setFieldValue} component={TimePickerField} />							
+									<ErrorMessage name="visitTime" component="div" className="error" />									
+								</div>
+								<Scheduler setDateTime={handleDateTimeChange} doctorId={values.doctor} />								
 								<div className={'form-row' + (errors.description && touched.description ? ' error' : '')}>
 									<label htmlFor="description">Description</label>									
 									<Field id="description" name="description" as="textarea" />

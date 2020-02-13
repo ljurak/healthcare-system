@@ -1,68 +1,134 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import * as moment from 'moment';
 
-class SchedulerContainer extends React.Component {
+import { fetchVisitsForScheduler } from '../actions';
+import { getVisitsForScheduler } from '../selectors';
+
+class Scheduler extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			currentDate: moment(),
 			startDate: moment().startOf('week'),
-			startTime: '08:00',
-			endTime: '19:00',
-			markedDate: null
+			minDate: moment(),
+			maxDate: moment().add(6, 'M'),
+			startDayHour: 8,
+			endDayHour: 19,
+			selectedDate: null
 		};
 	}
- 
-	setPreviousWeek = () => {
-		this.setState(prevState => ({ 
-			startDate: moment(prevState.startDate).subtract(1, 'w')
-		}));
+
+	componentDidUpdate(prevProps) {
+		if (this.props.doctorId !== prevProps.doctorId) {
+			this.fetchVisits(this.state.startDate);
+			this.setSelectedDate(null);
+		}
 	}
 
-	setNextWeek = () => {
-		this.setState(prevState => ({ 
-			startDate: moment(prevState.startDate).add(1, 'w')
-		}));
+	setWeek = (date) => {
+		this.setState({ startDate: date });
+		this.fetchVisits(date);
 	}
 
-	setMarkedDate = (date) => {
-		this.setState({ markedDate: date });
+	fetchVisits = (date) => {
+		if (this.props.doctorId) {
+			const doctorId = parseInt(this.props.doctorId, 10);
+			const startDate = date.format('YYYY-MM-DD');
+			const endDate = moment(date).add(6, 'd').format('YYYY-MM-DD');
+			this.props.fetchVisits(doctorId, startDate, endDate);
+		}	
+	}
+
+	setSelectedDate = (date) => {
+		this.setState({ selectedDate: date });
 	}
 	
 	render() {
-		const { startDate, startTime, endTime, markedDate } = this.state;
+		const { startDate, minDate, maxDate, startDayHour, endDayHour, selectedDate } = this.state;
+		const { setDateTime, visits } = this.props;
 
 		return (
 			<div>
 				<SchedulerHeader 
-					startDate={startDate} 
-					setPreviousWeek={this.setPreviousWeek} 
-					setNextWeek={this.setNextWeek} 
+					startDate={startDate}
+					minDate={minDate}
+					maxDate={maxDate}
+					setWeek={this.setWeek} 
 				/>
-				<Scheduler
-					setDateTime={this.props.setDateTime}
+				<SchedulerCalendar
+					setDateTime={setDateTime}
 					startDate={startDate} 
-					startTime={startTime} 
-					endTime={endTime}
-					markedDate={markedDate}
-					setMarkedDate={this.setMarkedDate}
+					startDayHour={startDayHour} 
+					endDayHour={endDayHour}
+					selectedDate={selectedDate}
+					setSelectedDate={this.setSelectedDate}
+					visits={visits}
 				/>
 			</div>
 		);
 	}
 };
 
-const SchedulerHeader = ({ startDate, setPreviousWeek, setNextWeek }) => {
-	const endDate = moment(startDate).add(6, 'd');
+const SchedulerHeader = ({ startDate, minDate, maxDate, setWeek }) => {
+	const previousWeek = moment(startDate).subtract(7, 'd');
+	const nextWeek = moment(startDate).add(7, 'd');
+	const canGoPrevious = startDate.isAfter(minDate);
+	const canGoNext = startDate.isBefore(maxDate);
+
 	return (
 		<div className="visit-calendar-header">
-			<button className="btn prev-btn" type="button" onClick={setPreviousWeek}>Previous</button>
-			<div className="date-range">{startDate.format('DD/MM/YYYY') + ' - ' + endDate.format('DD/MM/YYYY')}</div>
-			<button className="btn next-btn" type="button" onClick={setNextWeek}>Next</button>
+			<button 
+				className="btn prev-btn" 
+				type="button" 
+				disabled={!canGoPrevious} 
+				onClick={() => setWeek(previousWeek)}
+			>
+				Previous
+			</button>
+			<SchedulerDatePicker
+				startDate={startDate}
+				minDate={minDate}
+				maxDate={maxDate}
+				setWeek={setWeek} 
+			/>
+			<button 
+				className="btn next-btn" 
+				type="button" 
+				disabled={!canGoNext} 
+				onClick={() => setWeek(nextWeek)}
+			>
+				Next
+			</button>
 		</div>
 	);
 };
 
-const Scheduler = ({ startDate, startTime, endTime, setDateTime, markedDate, setMarkedDate }) => {
+const SchedulerDatePicker = ({ startDate, minDate, maxDate, setWeek }) => {
+
+	const handleChange = (date) => {
+		if (moment(date).isValid()) {
+			setWeek(moment(date).startOf('week'));
+		}
+	};
+
+	return (
+		<DatePicker
+			autoComplete="off"
+			className="date-range"
+			selected={startDate.toDate()}
+			onChange={handleChange}
+			minDate={minDate.toDate()}
+			maxDate={maxDate.toDate()}
+			dateFormat="dd-MM-yyyy"
+			placeholderText="DD-MM-YYYY" 
+		/>
+	);
+};
+
+const SchedulerCalendar = ({ startDate, startDayHour, endDayHour, selectedDate, setSelectedDate, setDateTime, visits }) => {
 	
 	const days = [];
 	const currentDate = moment(startDate);
@@ -72,24 +138,31 @@ const Scheduler = ({ startDate, startTime, endTime, setDateTime, markedDate, set
 	}
 
 	const tableRows = [];
-	const daysStrings = days.map(day => day.format('DD-MM-YYYY'));
-	const currentHour = moment(startTime, 'HH:mm');
-	const endHour = moment(endTime, 'HH:mm');
-	while (currentHour.isSameOrBefore(endHour)) {
-		const hour = currentHour.format('HH:mm');
-		const row = <SchedulerRow key={hour} days={daysStrings} time={hour} setDateTime={setDateTime} markedDate={markedDate} setMarkedDate={setMarkedDate} />;
+	const currentDateTime = moment(startDate).set('hour', startDayHour);
+	let currentHour = startDayHour;
+	while (currentHour <= endDayHour) {
+		const startDateForRow = moment(currentDateTime);
+		const row = <SchedulerRow 
+			key={currentHour} 
+			date={startDateForRow} 
+			selectedDate={selectedDate} 
+			setSelectedDate={setSelectedDate}
+			setDateTime={setDateTime}
+			visits={visits} 
+		/>;
 		tableRows.push(row);
-		currentHour.add(1, 'h');
+		currentDateTime.add(1, 'h');
+		currentHour++;
 	}
 
 	return (
 		<table className="visit-calendar">
 			<thead>
 				<tr>
-					<th className="date"></th>
+					<th className="weekday"></th>
 					{days.map(day => (
-						<th className="date" key={day}>
-							<div className="day-of-week">{day.format('ddd')}</div>
+						<th className="weekday" key={day}>
+							<div>{day.format('ddd')}</div>
 							<div>{day.format('DD/MM')}</div>
 						</th>
 					))}
@@ -102,25 +175,58 @@ const Scheduler = ({ startDate, startTime, endTime, setDateTime, markedDate, set
 	);
 };
 
-const SchedulerRow = ({ days, time, setDateTime, markedDate, setMarkedDate }) => (
-	<tr>
-		<th className="time">{time}</th>
-		{days.map(day => (
-			<SchedulerCell key={day} date={day} time={time} setDateTime={setDateTime} markedDate={markedDate} setMarkedDate={setMarkedDate} />
-		))}
-	</tr>
-);
+const SchedulerRow = ({ date, selectedDate, setSelectedDate, setDateTime, visits }) => {
+	const cellDates = [];
+	const currentDateTime = moment(date);
+	for (let i = 0; i < 7; i++) {
+		cellDates.push(moment(currentDateTime));
+		currentDateTime.add(1, 'd');
+	}
 
-const SchedulerCell = ({ date, time, setDateTime, markedDate, setMarkedDate }) => {
-	const setFormValues = () => {
-		setDateTime(moment(date, 'DD-MM-YYYY').toDate(), moment(time, 'HH:mm').toDate());
-		setMarkedDate(moment(`${date} ${time}`, 'DD-MM-YYYY HH:mm'));
-	};
-	const marked = moment(`${date} ${time}`, 'DD-MM-YYYY HH:mm').isSame(markedDate);
-
-	return (
-		<td className={'cell' + (marked ? ' marked' : '')} onClick={setFormValues}></td>
+	return ( 
+		<tr>
+			<th className="hour">{date.format('HH:mm')}</th>
+			{cellDates.map(date => (
+				<SchedulerCell 
+					key={date.get('date')} 
+					date={date} 
+					selectedDate={selectedDate} 
+					setSelectedDate={setSelectedDate} 
+					setDateTime={setDateTime}
+					visit={visits[date.format('YYYY-MM-DD HH:mm:ss')]}
+				/>
+			))}
+		</tr>
 	);
 };
 
-export default SchedulerContainer;
+const SchedulerCell = ({ date, selectedDate, setSelectedDate, setDateTime, visit }) => {
+	const setFormValues = () => {
+		setDateTime(date.toDate());
+		setSelectedDate(date);
+	};
+	const isMarked = date.isSame(selectedDate);
+	const isActive = date.isAfter(moment());
+
+	return !isActive
+		? <td className="cell inactive"></td>
+		: (visit
+			? <td className="cell unavailable"></td>
+			: <td className={'cell active' + (isMarked ? ' marked' : '')} onClick={setFormValues}></td>
+		);		
+};
+
+const mapStateToProps = state => {
+	return {
+		visits: getVisitsForScheduler(state)
+	};
+};
+
+const mapDispatchToProps = { 
+	fetchVisits: fetchVisitsForScheduler
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Scheduler);
