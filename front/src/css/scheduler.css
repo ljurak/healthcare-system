@@ -1,6 +1,5 @@
 .visit-calendar-header {
 	font-size: 1.6rem;
-	font-weight: bold;
 	margin-bottom: 1rem;
 	display: flex;
 	justify-content: space-between;
@@ -9,7 +8,17 @@
 
 .visit-calendar-header .date-range {
 	font-size: 1.8rem;
-	align-self: flex-end;
+	text-align: center;
+	border: none;
+	border-bottom: 2px solid #000;
+	box-shadow: none;
+	background-color: #eaeaea;
+}
+
+.visit-calendar-header .date-range:focus {
+	border: none;
+	border-bottom: 2px solid var(--color-main);
+	box-shadow: none;
 }
 
 .visit-calendar-header .btn {
@@ -26,7 +35,11 @@
 	transition: 0.3s all;
 }
 
-.visit-calendar-header .btn:hover {
+.visit-calendar-header .btn:disabled {
+	opacity: 0.5;
+}
+
+.visit-calendar-header .btn:not(:disabled):hover {
 	border: 2px solid var(--color-main);
 	background-color: #fff;
 	color: var(--color-main);
@@ -39,12 +52,12 @@
 	margin-bottom: 1.6rem;
 }
 
-.visit-calendar .date,
-.visit-calendar .time {
+.visit-calendar .weekday,
+.visit-calendar .hour {
 	border: 1px solid #bababa;
 }
 
-.visit-calendar .time {
+.visit-calendar .hour {
 	
 }
 
@@ -57,6 +70,14 @@
 	background-color: var(--color-main);
 }
 
-.visit-calendar .cell:not(.marked):hover {
+.visit-calendar .cell.inactive {
+	background-color: #eaeaea;
+}
+
+.visit-calendar .cell.unavailable {
+	background-color: #f9900a;
+}
+
+.visit-calendar .cell.active:not(.marked):hover {
 	background-color: #eaeaea;
 }

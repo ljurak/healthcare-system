@@ -1,15 +1,22 @@
-.form-row .react-datepicker-wrapper {
+.form-row .react-datepicker-wrapper,
+.visit-calendar-header .react-datepicker-wrapper,
+.visit-search-form .react-datepicker-wrapper {
 	display: block;
 }
 
 .form-row .react-datepicker,
 .form-row .react-datepicker__current-month,
-.form-row .react-datepicker-time__header {
+.form-row .react-datepicker-time__header,
+.visit-calendar-header .react-datepicker,
+.visit-calendar-header .react-datepicker__current-month,
+.visit-calendar-header .react-datepicker-time__header {
 	font-size: 1.6rem;
 }
 
 .form-row .react-datepicker__day,
-.form-row .react-datepicker__day-name {
+.form-row .react-datepicker__day-name,
+.visit-calendar-header .react-datepicker__day,
+.visit-calendar-header .react-datepicker__day-name {
 	width: 3rem;
 	line-height: 3rem;
 }
