@@ -43,6 +43,8 @@ export const getVisiblePatientVisits = (state) => fromVisits.getVisiblePatientVi
 
 export const getVisibleDoctorVisits = (state) => fromVisits.getVisibleDoctorVisits(state.entities.visits);
 
+export const getVisibleSchedulerVisits = (state) => fromVisits.getVisibleSchedulerVisits(state.entities.visits);
+
 export const getVisit = (state, id) => fromVisits.getVisit(state.entities.visits, id);
 
 export const getIsFetchingPatients = (state) => fromPatients.getIsFetching(state.entities.patients);

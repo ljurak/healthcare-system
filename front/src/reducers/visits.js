@@ -6,6 +6,7 @@ const byId = (state = {}, action) => {
 	switch (action.type) {
 		case actions.FETCH_PATIENT_VISITS_SUCCESS:
 		case actions.FETCH_DOCTOR_VISITS_SUCCESS:
+		case actions.FETCH_SCHEDULER_VISITS_SUCCESS:
 		case actions.ADD_VISIT_SUCCESS:
 		case actions.UPDATE_VISIT_SUCCESS:
 			return {
@@ -27,7 +28,6 @@ const visiblePatientIds = (state = [], action) => {
 			return [
 				action.payload.result,
 				...state
-				
 			];
 		case actions.LOGOUT:
 			return [];
@@ -45,6 +45,18 @@ const visibleDoctorIds = (state = [], action) => {
 		default:
 			return state;
 	}	
+};
+
+const visibleSchedulerIds = (state = [], action) => {
+	switch (action.type) {
+		case actions.FETCH_SCHEDULER_VISITS_SUCCESS:
+			return action.payload.result;
+		case actions.CLEAR_VISITS:
+		case actions.LOGOUT:
+			return [];
+		default:
+			return state;
+	}
 };
 
 const requestInfo = (state = { isFetching: false, isAdding: false, isUpdating: false }, action) => {
@@ -94,11 +106,15 @@ export const getVisiblePatientIds = (state) => state.visiblePatientIds;
 
 export const getVisibleDoctorIds = (state) => state.visibleDoctorIds;
 
+export const getVisibleSchedulerIds = (state) => state.visibleSchedulerIds;
+
 export const getVisit = (state, id) => state.byId[id];
 
 export const getVisiblePatientVisits = (state) => state.visiblePatientIds.map(id => getVisit(state, id));
 
 export const getVisibleDoctorVisits = (state) => state.visibleDoctorIds.map(id => getVisit(state, id));
+
+export const getVisibleSchedulerVisits = (state) => state.visibleSchedulerIds.map(id => getVisit(state, id));
 
 export const getIsFetching = (state) => state.requestInfo.isFetching;
 
@@ -110,5 +126,6 @@ export default combineReducers({
 	byId,
 	visiblePatientIds,
 	visibleDoctorIds,
+	visibleSchedulerIds,
 	requestInfo
 });
