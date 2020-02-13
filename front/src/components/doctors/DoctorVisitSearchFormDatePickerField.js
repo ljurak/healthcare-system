@@ -14,14 +14,15 @@ const DoctorVisitSearchFormDatePickerField = ({ id, name, value, onChange, onBlu
 
 	return (
 		<DatePicker
-			autocomplete="off"
+			autoComplete="off"
 			id={id}
 			name={name}
 			selected={value}
 			onChange={handleChange}
 			onBlur={handleBlur}
 			dateFormat="yyyy-MM-dd"
-			placeholderText="YYYY-MM-DD" />
+			placeholderText="YYYY-MM-DD" 
+		/>
 	);	
 };
 

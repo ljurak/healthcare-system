@@ -40,7 +40,7 @@ class DoctorDetailsPage extends React.Component {
 			fetchVisitsByDoctorId, 
 			isFetchingVisits,
 			alert, 
-			clearAlert, } = this.props;
+			clearAlert } = this.props;
 
 		return (
 			<React.Fragment>
@@ -49,11 +49,13 @@ class DoctorDetailsPage extends React.Component {
 					updateDoctor={updateDoctor}
 					isUpdating={isUpdatingDoctor}
 					alert={alert}
-					clearAlert={clearAlert} />
+					clearAlert={clearAlert} 
+				/>
 				<DoctorVisitSearchForm
 					doctorId={doctorId}
 					fetchVisits={fetchVisitsByDoctorId}
-					isFetching={isFetchingVisits} />
+					isFetching={isFetchingVisits} 
+				/>
 				<h3 className="visits-list-title">Doctor's visits</h3>
 				{ isFetchingVisits
 					? (<div className="visits-search-info">Loading visits...</div>)

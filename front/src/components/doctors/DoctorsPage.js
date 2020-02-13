@@ -23,7 +23,15 @@ class DoctorsPage extends React.Component {
 	}
 
 	render() {
-		const { doctors, specialties, isFetching, isAdding, fetchDoctorsByLastname, addDoctor, alert, clearAlert } = this.props;
+		const { 
+			doctors, 
+			specialties, 
+			isFetching, 
+			isAdding, 
+			fetchDoctorsByLastname, 
+			addDoctor, 
+			alert, 
+			clearAlert } = this.props;
 
 		return (
 			<React.Fragment>
@@ -32,10 +40,12 @@ class DoctorsPage extends React.Component {
 					isAdding={isAdding} 
 					addDoctor={addDoctor} 
 					alert={alert} 
-					clearAlert={clearAlert} />
+					clearAlert={clearAlert} 
+				/>
 				<DoctorSearchForm 
 					isFetching={isFetching} 
-					fetchDoctors={fetchDoctorsByLastname} />
+					fetchDoctors={fetchDoctorsByLastname} 
+				/>
 				{ doctors.length > 0
 					? (<PeopleList people={doctors} baseUrl="/doctors" />)
 					: (<div className="doctors-search-info">No results</div>) 

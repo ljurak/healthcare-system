@@ -62,7 +62,8 @@ class PatientDetailsPage extends React.Component {
 					updatePatient={updatePatient}
 					isUpdating={isUpdatingPatient}
 					alert={patientsAlert}
-					clearAlert={clearAlert} />
+					clearAlert={clearAlert} 
+				/>
 				<PatientVisitAddForm
 					patientId={patientId}
 					specialties={specialties} 
@@ -70,7 +71,8 @@ class PatientDetailsPage extends React.Component {
 					addVisit={addVisit}
 					isAdding={isAddingVisit}
 					alert={visitsAlert}
-					clearAlert={clearAlert} />
+					clearAlert={clearAlert} 
+				/>
 				<h3 className="visits-list-title">Patient's visits</h3>
 				{ isFetchingVisits 
 					? (<div className="visits-search-info">Loading visits...</div>)

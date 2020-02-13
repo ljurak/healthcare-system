@@ -2,15 +2,12 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const PatientVisitAddFormDatePickerField = ({ id, name, value, onChange, onBlur }) => {
+const PatientVisitAddFormDatePickerField = ({ field, form, ...props }) => {
 
-	const handleChange = (value) => {
-		onChange(name, value);
-	};
+	const { name, value } = field;
+	const { onChange } = props;
 
-	const handleBlur = (e) => {
-		onBlur(e);
-	};
+	const handleChange = (date) => onChange(name, date);
 
 	const minDate = new Date();
 	const maxDate = new Date();
@@ -18,17 +15,17 @@ const PatientVisitAddFormDatePickerField = ({ id, name, value, onChange, onBlur 
 
 	return (
 		<DatePicker
-			autocomplete="off"
-			id={id}
-			name={name}
+			{...field}
+			{...props}
 			selected={value}
 			onChange={handleChange}
-			onBlur={handleBlur}
 			minDate={minDate}
 			maxDate={maxDate}
+			autoComplete="off"
 			dateFormat="yyyy-MM-dd"
-			placeholderText="YYYY-MM-DD" />
-	);	
+			placeholderText="YYYY-MM-DD" 
+		/>
+	);
 };
 
 export default PatientVisitAddFormDatePickerField;

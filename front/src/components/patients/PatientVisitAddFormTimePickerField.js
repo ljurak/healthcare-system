@@ -2,15 +2,12 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-const PatientVisitAddFormTimePickerField = ({ id, name, value, onChange, onBlur }) => {
+const PatientVisitAddFormTimePickerField = ({ field, form, ...props }) => {
 
-	const handleChange = (value) => {
-		onChange(name, value);
-	};
+	const { name, value } = field;
+	const { onChange } = props;
 
-	const handleBlur = (e) => {
-		onBlur(e);
-	};
+	const handleChange = (date) => onChange(name, date);
 
 	const minTime = new Date();
 	minTime.setHours(8);
@@ -18,24 +15,23 @@ const PatientVisitAddFormTimePickerField = ({ id, name, value, onChange, onBlur 
 	const maxTime = new Date();
 	maxTime.setHours(19);
 	maxTime.setMinutes(0);
-	
 
 	return (
 		<DatePicker
-			autocomplete="off"
-			id={id}
-			name={name}
+			{...field}
+			{...props}
 			selected={value}
 			onChange={handleChange}
-			onBlur={handleBlur}
 			showTimeSelect
 			showTimeSelectOnly
 			timeIntervals={60}
 			minTime={minTime}
 			maxTime={maxTime}
+			autoComplete="off"
 			dateFormat="HH:mm"
 			timeFormat="HH:mm"
-			placeholderText="HH:MM" />
+			placeholderText="HH:MM" 
+		/>
 	);	
 };
 

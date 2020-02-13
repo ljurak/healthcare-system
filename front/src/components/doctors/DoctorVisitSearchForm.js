@@ -39,12 +39,24 @@ class DoctorVisitSearchForm extends React.Component {
 						<Form className="visit-search-form">
 							<div className={'form-row' + (errors.startDate && touched.startDate ? ' error' : '')}>
 								<label htmlFor="startDate">Start date*</label>									
-								<DatePickerField id="startDate" name="startDate" value={values.startDate} onChange={setFieldValue} onBlur={handleBlur} />
+								<DatePickerField 
+									id="startDate" 
+									name="startDate" 
+									value={values.startDate} 
+									onChange={setFieldValue} 
+									onBlur={handleBlur} 
+								/>
 								<ErrorMessage name="startDate" component="div" className="error" />
 							</div>
 							<div className={'form-row' + (errors.endDate && touched.endDate ? ' error' : '')}>
 								<label htmlFor="endDate">End date*</label>
-								<DatePickerField id="endDate" name="endDate" value={values.endDate} onChange={setFieldValue} onBlur={handleBlur} />
+								<DatePickerField 
+									id="endDate" 
+									name="endDate" 
+									value={values.endDate} 
+									onChange={setFieldValue} 
+									onBlur={handleBlur} 
+								/>
 								<ErrorMessage name="endDate" component="div" className="error" />
 							</div>								
 							<div className="form-row btn">
