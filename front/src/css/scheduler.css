@@ -81,3 +81,7 @@
 .visit-calendar .cell.active:not(.marked):hover {
 	background-color: #eaeaea;
 }
+
+.visit-search-form .visit-scheduler {
+	width: 100%;
+}
