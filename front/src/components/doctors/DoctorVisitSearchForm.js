@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import * as moment from 'moment';
 
 import DatePickerField from './DoctorVisitSearchFormDatePickerField';
+import Scheduler from '../Scheduler';
 
 class DoctorVisitSearchForm extends React.Component {
 
@@ -20,7 +21,7 @@ class DoctorVisitSearchForm extends React.Component {
 	}
 
 	render() {
-		const { isFetching } = this.props;
+		const { isFetching, doctorId } = this.props;
 		return (
 			<React.Fragment>
 				<h3 className="visit-search-form-title">Search visits</h3>
@@ -37,6 +38,7 @@ class DoctorVisitSearchForm extends React.Component {
 					
 					{({ values, errors, touched, setFieldValue, handleBlur, handleChange, isSubmitting }) => (						
 						<Form className="visit-search-form">
+							<Scheduler selectable={false} doctorId={doctorId} />
 							<div className={'form-row' + (errors.startDate && touched.startDate ? ' error' : '')}>
 								<label htmlFor="startDate">Start date*</label>									
 								<DatePickerField 
