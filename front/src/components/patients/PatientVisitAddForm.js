@@ -87,7 +87,7 @@ class PatientVisitAddForm extends React.Component {
 									<Field id="visitTime" name="visitTime" onChange={setFieldValue} component={TimePickerField} />							
 									<ErrorMessage name="visitTime" component="div" className="error" />									
 								</div>
-								<Scheduler setDateTime={handleDateTimeChange} doctorId={values.doctor} />								
+								<Scheduler selectable={true} setDateTime={handleDateTimeChange} doctorId={values.doctor} />								
 								<div className={'form-row' + (errors.description && touched.description ? ' error' : '')}>
 									<label htmlFor="description">Description</label>									
 									<Field id="description" name="description" as="textarea" />

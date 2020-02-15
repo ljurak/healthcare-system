@@ -48,10 +48,10 @@ class Scheduler extends React.Component {
 	
 	render() {
 		const { startDate, minDate, maxDate, startDayHour, endDayHour, selectedDate } = this.state;
-		const { setDateTime, visits } = this.props;
+		const { selectable, setDateTime, visits } = this.props;
 
 		return (
-			<div>
+			<div className="visit-scheduler">
 				<SchedulerHeader 
 					startDate={startDate}
 					minDate={minDate}
@@ -59,6 +59,7 @@ class Scheduler extends React.Component {
 					setWeek={this.setWeek} 
 				/>
 				<SchedulerCalendar
+					selectable={selectable}
 					setDateTime={setDateTime}
 					startDate={startDate} 
 					startDayHour={startDayHour} 
@@ -128,7 +129,7 @@ const SchedulerDatePicker = ({ startDate, minDate, maxDate, setWeek }) => {
 	);
 };
 
-const SchedulerCalendar = ({ startDate, startDayHour, endDayHour, selectedDate, setSelectedDate, setDateTime, visits }) => {
+const SchedulerCalendar = ({ selectable, startDate, startDayHour, endDayHour, selectedDate, setSelectedDate, setDateTime, visits }) => {
 	
 	const days = [];
 	const currentDate = moment(startDate);
@@ -142,9 +143,10 @@ const SchedulerCalendar = ({ startDate, startDayHour, endDayHour, selectedDate, 
 	let currentHour = startDayHour;
 	while (currentHour <= endDayHour) {
 		const startDateForRow = moment(currentDateTime);
-		const row = <SchedulerRow 
-			key={currentHour} 
-			date={startDateForRow} 
+		const row = <SchedulerRow
+			key={currentHour}
+			date={startDateForRow}
+			selectable={selectable}
 			selectedDate={selectedDate} 
 			setSelectedDate={setSelectedDate}
 			setDateTime={setDateTime}
@@ -175,7 +177,7 @@ const SchedulerCalendar = ({ startDate, startDayHour, endDayHour, selectedDate, 
 	);
 };
 
-const SchedulerRow = ({ date, selectedDate, setSelectedDate, setDateTime, visits }) => {
+const SchedulerRow = ({ date, selectable, selectedDate, setSelectedDate, setDateTime, visits }) => {
 	const cellDates = [];
 	const currentDateTime = moment(date);
 	for (let i = 0; i < 7; i++) {
@@ -189,7 +191,8 @@ const SchedulerRow = ({ date, selectedDate, setSelectedDate, setDateTime, visits
 			{cellDates.map(date => (
 				<SchedulerCell 
 					key={date.get('date')} 
-					date={date} 
+					date={date}
+					selectable={selectable}
 					selectedDate={selectedDate} 
 					setSelectedDate={setSelectedDate} 
 					setDateTime={setDateTime}
@@ -200,10 +203,12 @@ const SchedulerRow = ({ date, selectedDate, setSelectedDate, setDateTime, visits
 	);
 };
 
-const SchedulerCell = ({ date, selectedDate, setSelectedDate, setDateTime, visit }) => {
-	const setFormValues = () => {
-		setDateTime(date.toDate());
-		setSelectedDate(date);
+const SchedulerCell = ({ date, selectable, selectedDate, setSelectedDate, setDateTime, visit }) => {
+	const handleClick = () => {
+		if (selectable) {
+			setDateTime(date.toDate());
+			setSelectedDate(date);
+		}
 	};
 	const isMarked = date.isSame(selectedDate);
 	const isActive = date.isAfter(moment());
@@ -212,7 +217,7 @@ const SchedulerCell = ({ date, selectedDate, setSelectedDate, setDateTime, visit
 		? <td className="cell inactive"></td>
 		: (visit
 			? <td className="cell unavailable"></td>
-			: <td className={'cell active' + (isMarked ? ' marked' : '')} onClick={setFormValues}></td>
+			: <td className={'cell active' + (isMarked ? ' marked' : '')} onClick={handleClick}></td>
 		);		
 };
 
