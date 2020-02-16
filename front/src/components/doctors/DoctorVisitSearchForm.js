@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import * as moment from 'moment';
 
 import DatePickerField from './DoctorVisitSearchFormDatePickerField';
-import Scheduler from '../Scheduler';
+import Scheduler from '../visits/Scheduler';
 
 class DoctorVisitSearchForm extends React.Component {
 

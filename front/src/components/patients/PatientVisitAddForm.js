@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import DatePickerField from './PatientVisitAddFormDatePickerField';
 import TimePickerField from './PatientVisitAddFormTimePickerField';
 import DoctorsField from './PatientVisitAddFormDoctorsField';
-import Scheduler from '../Scheduler';
+import Scheduler from '../visits/Scheduler';
 
 class PatientVisitAddForm extends React.Component {
 

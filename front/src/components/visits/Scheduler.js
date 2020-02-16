@@ -4,8 +4,8 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import * as moment from 'moment';
 
-import { fetchVisitsForScheduler } from '../actions';
-import { getVisitsForScheduler } from '../selectors';
+import { fetchVisitsForScheduler } from '../../actions';
+import { getVisitsForScheduler } from '../../selectors';
 
 class Scheduler extends React.Component {
 	constructor(props) {
