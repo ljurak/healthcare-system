@@ -21,6 +21,12 @@ class Scheduler extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		if (this.props.doctorId) {
+			this.fetchVisits(this.state.startDate);
+		}
+	}
+
 	componentDidUpdate(prevProps) {
 		if (this.props.doctorId !== prevProps.doctorId) {
 			this.fetchVisits(this.state.startDate);
@@ -203,23 +209,54 @@ const SchedulerRow = ({ date, selectable, selectedDate, setSelectedDate, setDate
 	);
 };
 
-const SchedulerCell = ({ date, selectable, selectedDate, setSelectedDate, setDateTime, visit }) => {
-	const handleClick = () => {
+class SchedulerCell extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showDetails: false
+		};
+	}
+
+	handleMouseOver = () => {
+		this.setState({ showDetails: true });
+	}
+
+	handleMouseOut = () => {
+		this.setState({ showDetails: false });
+	}
+
+	handleClick = () => {
+		const { date, selectable, setDateTime, setSelectedDate } = this.props;
 		if (selectable) {
 			setDateTime(date.toDate());
 			setSelectedDate(date);
 		}
-	};
-	const isMarked = date.isSame(selectedDate);
-	const isActive = date.isAfter(moment());
+	}
 
-	return !isActive
-		? <td className="cell inactive"></td>
-		: (visit
-			? <td className="cell unavailable"></td>
-			: <td className={'cell active' + (isMarked ? ' marked' : '')} onClick={handleClick}></td>
-		);		
-};
+	render() {
+		const { showDetails } = this.state;
+		const { date, selectedDate, visit } = this.props;
+		const isMarked = date.isSame(selectedDate);
+		const isActive = date.isAfter(moment());
+
+		return !isActive
+			? (<td className="cell inactive"></td>)
+			: visit
+				? (
+					<td className="cell unavailable" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+						{showDetails &&
+							<div className="visit-info">
+								<p>Patient: {visit.patientName}</p>
+								<p>Date: {visit.visitDate}</p>
+								<p>Time: {visit.visitTime}</p>
+							</div>
+						}
+					</td>
+				) : (
+					<td className={'cell active' + (isMarked ? ' marked' : '')} onClick={this.handleClick}></td>
+				);
+	}
+}
 
 const mapStateToProps = state => {
 	return {
