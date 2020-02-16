@@ -76,6 +76,7 @@
 
 .visit-calendar .cell.unavailable {
 	background-color: #f9900a;
+	position: relative;
 }
 
 .visit-calendar .cell.active:not(.marked):hover {
@@ -84,4 +85,20 @@
 
 .visit-search-form .visit-scheduler {
 	width: 100%;
+}
+
+.visit-calendar .visit-info {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	min-width: 150px;
+	transform: translate(-50%, calc(-100% - 5px));
+	padding: 1rem;
+	border: 1px solid rgba(0,0,0,0.5);
+	border-radius: 0.5rem;
+	background-color: #fff; 
+}
+
+.visit-calendar .visit-info p {
+	margin: 0.5rem 0;
 }
