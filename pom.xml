@@ -23,8 +23,6 @@
 	</properties>
 
     <modules>
-        <module>model</module>
-		<module>service</module>
 		<module>rest</module>
     </modules>
 
