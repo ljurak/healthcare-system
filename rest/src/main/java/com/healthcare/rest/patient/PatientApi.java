@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.rest.common.exception.InvalidRequestException;
 import com.healthcare.rest.patient.dto.PatientDTO;
-import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @RestController
@@ -29,19 +28,16 @@ import com.healthcare.rest.visit.dto.VisitDTO;
 @CrossOrigin
 class PatientApi {
 	
-	private PatientService patientService;
-	
-	private VisitFacade visitFacade;
+	private PatientFacade patientFacade;
 	
 	@Autowired
-	public PatientApi(PatientService patientService, VisitFacade visitFacade) {
-		this.patientService = patientService;
-		this.visitFacade = visitFacade;
+	public PatientApi(PatientFacade patientFacade) {
+		this.patientFacade = patientFacade;
 	}
 	
 	@GetMapping
 	public List<PatientDTO> getPatients() {
-		return patientService.getPatients();
+		return patientFacade.getPatients();
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -51,18 +47,18 @@ class PatientApi {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		PatientDTO registeredPatient = patientService.registerPatient(patientDTO);
+		PatientDTO registeredPatient = patientFacade.registerPatient(patientDTO);
 		return registeredPatient;
 	}
 	
 	@GetMapping("/{id}")
 	public PatientDTO getPatient(@PathVariable long id) {
-		return patientService.getPatientById(id);
+		return patientFacade.getPatientById(id);
 	}
 	
 	@GetMapping(params = "lastname")
 	public List<PatientDTO> getPatientsByLastname(@RequestParam String lastname) {
-		return patientService.getPatientsByLastName(lastname);
+		return patientFacade.getPatientsByLastName(lastname);
 	}
 	
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -72,13 +68,13 @@ class PatientApi {
 		}
 		
 		patientDTO.setId(id);
-		PatientDTO updatedPatient = patientService.updatePatient(patientDTO);
+		PatientDTO updatedPatient = patientFacade.updatePatient(patientDTO);
 		return updatedPatient;
 	}
 	
 	@GetMapping("/{id}/visits")
 	public List<VisitDTO> getPatientVisits(@PathVariable long id) {
-		return visitFacade.getVisitsByPatientId(id);
+		return patientFacade.getVisitsByPatientId(id);
 	}
 	
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -89,7 +85,7 @@ class PatientApi {
 		}
 		
 		visitDTO.setPatientId(id);		
-		VisitDTO registeredVisit = visitFacade.addVisit(visitDTO);
+		VisitDTO registeredVisit = patientFacade.addVisit(visitDTO);
 		return registeredVisit;
 	}
 	
@@ -100,7 +96,7 @@ class PatientApi {
 		}
 		
 		visitDTO.setPatientId(id);		
-		VisitDTO updatedVisit = visitFacade.updateVisit(visitDTO);
+		VisitDTO updatedVisit = patientFacade.updateVisit(visitDTO);
 		return updatedVisit;
 	}
 }

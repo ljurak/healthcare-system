@@ -24,7 +24,6 @@ import com.healthcare.rest.patient.dto.PatientDTO;
 import com.healthcare.rest.patient.exception.PatientNotFoundException;
 import com.healthcare.rest.user.LoginApi;
 import com.healthcare.rest.user.SecurityConfig;
-import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @WebMvcTest(
@@ -79,10 +78,7 @@ public class PatientApiTest {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private PatientService patientService;
-	
-	@MockBean
-	private VisitFacade visitFacade;
+	private PatientFacade patientFacade;
 	
 	@BeforeAll
 	public static void init() {	
@@ -104,7 +100,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturnListOfPatientsWhenSendingGetRequest() throws Exception {
 		// given
-		when(patientService.getPatients()).thenReturn(List.of(patientDTO));
+		when(patientFacade.getPatients()).thenReturn(List.of(patientDTO));
 		
 		// when
 		mockMvc.perform(get("/patients"))
@@ -119,7 +115,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn201WhenSendingValidPatientPostRequest() throws Exception {
 		// given
-		when(patientService.registerPatient(any())).thenReturn(patientDTO);
+		when(patientFacade.registerPatient(any())).thenReturn(patientDTO);
 		
 		// when
 		mockMvc.perform(post("/patients")
@@ -135,7 +131,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn400WhenSendingInvalidPatientPostRequest() throws Exception {
 		// given
-		when(patientService.registerPatient(any())).thenReturn(patientDTO);
+		when(patientFacade.registerPatient(any())).thenReturn(patientDTO);
 		
 		// when
 		mockMvc.perform(post("/patients")
@@ -152,7 +148,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn400WhenSendingNotReadableJsonPostRequest() throws Exception {
 		// given
-		when(patientService.registerPatient(any())).thenReturn(patientDTO);
+		when(patientFacade.registerPatient(any())).thenReturn(patientDTO);
 		
 		// when
 		mockMvc.perform(post("/patients")
@@ -168,7 +164,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturnPatientWhenSendingGetRequestWithId() throws Exception {
 		// given
-		when(patientService.getPatientById(1L)).thenReturn(patientDTO);	
+		when(patientFacade.getPatientById(1L)).thenReturn(patientDTO);	
 		
 		// when
 		mockMvc.perform(get("/patients/{id}", 1L))
@@ -182,7 +178,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturnListOfPatientsByLastnameWhenSendingGetRequestWithParameter() throws Exception {
 		// given
-		when(patientService.getPatientsByLastName(any())).thenReturn(List.of(patientDTO));
+		when(patientFacade.getPatientsByLastName(any())).thenReturn(List.of(patientDTO));
 		
 		// when
 		mockMvc.perform(get("/patients")
@@ -198,7 +194,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn404WhenSendingGetRequestAndPatientDoesNotExist() throws Exception {
 		// given
-		when(patientService.getPatientById(any())).thenAnswer(invocation -> { 
+		when(patientFacade.getPatientById(any())).thenAnswer(invocation -> { 
 			throw new PatientNotFoundException("Patient with id: " + invocation.getArgument(0) + " does not exist"); 
 		});
 		
@@ -214,7 +210,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn200WhenSendingUpdatePatientPutRequest() throws Exception {
 		// given
-		when(patientService.updatePatient(any())).thenReturn(patientDTO);
+		when(patientFacade.updatePatient(any())).thenReturn(patientDTO);
 		
 		// when
 		mockMvc.perform(put("/patients/{id}", 1L)
@@ -230,7 +226,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn201WhenSendingValidVisitPostRequest() throws Exception {
 		// given
-		when(visitFacade.addVisit(any())).thenReturn(visitDTO);
+		when(patientFacade.addVisit(any())).thenReturn(visitDTO);
 		
 		// when
 		mockMvc.perform(post("/patients/8/visits")
@@ -246,7 +242,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn400WhenSendingInvalidVisitPostRequest() throws Exception {
 		// given
-		when(visitFacade.addVisit(any())).thenReturn(visitDTO);
+		when(patientFacade.addVisit(any())).thenReturn(visitDTO);
 		
 		// when
 		mockMvc.perform(post("/patients/8/visits")
