@@ -24,7 +24,7 @@ import com.healthcare.rest.patient.dto.PatientDTO;
 import com.healthcare.rest.patient.exception.PatientNotFoundException;
 import com.healthcare.rest.user.LoginApi;
 import com.healthcare.rest.user.SecurityConfig;
-import com.healthcare.rest.visit.VisitService;
+import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @WebMvcTest(
@@ -82,7 +82,7 @@ public class PatientApiTest {
 	private PatientService patientService;
 	
 	@MockBean
-	private VisitService visitService;
+	private VisitFacade visitFacade;
 	
 	@BeforeAll
 	public static void init() {	
@@ -230,7 +230,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn201WhenSendingValidVisitPostRequest() throws Exception {
 		// given
-		when(visitService.addVisit(any())).thenReturn(visitDTO);
+		when(visitFacade.addVisit(any())).thenReturn(visitDTO);
 		
 		// when
 		mockMvc.perform(post("/patients/8/visits")
@@ -246,7 +246,7 @@ public class PatientApiTest {
 	@Test
 	public void shouldReturn400WhenSendingInvalidVisitPostRequest() throws Exception {
 		// given
-		when(visitService.addVisit(any())).thenReturn(visitDTO);
+		when(visitFacade.addVisit(any())).thenReturn(visitDTO);
 		
 		// when
 		mockMvc.perform(post("/patients/8/visits")

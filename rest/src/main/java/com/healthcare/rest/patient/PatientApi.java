@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.rest.common.exception.InvalidRequestException;
 import com.healthcare.rest.patient.dto.PatientDTO;
-import com.healthcare.rest.visit.VisitService;
+import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @RestController
@@ -31,12 +31,12 @@ class PatientApi {
 	
 	private PatientService patientService;
 	
-	private VisitService visitService;
+	private VisitFacade visitFacade;
 	
 	@Autowired
-	public PatientApi(PatientService patientService, VisitService visitService) {
+	public PatientApi(PatientService patientService, VisitFacade visitFacade) {
 		this.patientService = patientService;
-		this.visitService = visitService;
+		this.visitFacade = visitFacade;
 	}
 	
 	@GetMapping
@@ -78,7 +78,7 @@ class PatientApi {
 	
 	@GetMapping("/{id}/visits")
 	public List<VisitDTO> getPatientVisits(@PathVariable long id) {
-		return visitService.getVisitsByPatientId(id);
+		return visitFacade.getVisitsByPatientId(id);
 	}
 	
 	@PostMapping(path = "/{id}/visits", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -89,7 +89,7 @@ class PatientApi {
 		}
 		
 		visitDTO.setPatientId(id);		
-		VisitDTO registeredVisit = visitService.addVisit(visitDTO);
+		VisitDTO registeredVisit = visitFacade.addVisit(visitDTO);
 		return registeredVisit;
 	}
 	
@@ -100,7 +100,7 @@ class PatientApi {
 		}
 		
 		visitDTO.setPatientId(id);		
-		VisitDTO updatedVisit = visitService.updateVisit(visitDTO);
+		VisitDTO updatedVisit = visitFacade.updateVisit(visitDTO);
 		return updatedVisit;
 	}
 }

@@ -24,7 +24,7 @@ import com.healthcare.rest.doctor.dto.DoctorDTO;
 import com.healthcare.rest.doctor.exception.DoctorNotFoundException;
 import com.healthcare.rest.user.LoginApi;
 import com.healthcare.rest.user.SecurityConfig;
-import com.healthcare.rest.visit.VisitService;
+import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @WebMvcTest(
@@ -72,7 +72,7 @@ public class DoctorApiTest {
 	private DoctorService doctorService;
 	
 	@MockBean
-	private VisitService visitService;
+	private VisitFacade visitFacade;
 	
 	@BeforeAll
 	public static void init() {	
@@ -220,7 +220,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturnListOfDoctorsVisitsWhenSendingGetRequestWithParameters() throws Exception {
 		// given
-		when(visitService.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
+		when(visitFacade.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
 		
 		// when
 		mockMvc.perform(get("/doctors/3/visits")
@@ -237,7 +237,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn400WhenSendingGetRequestWithInvalidParameters() throws Exception {
 		// given
-		when(visitService.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
+		when(visitFacade.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
 		
 		// when
 		mockMvc.perform(get("/doctors/3/visits")

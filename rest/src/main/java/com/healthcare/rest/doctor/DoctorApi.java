@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.rest.common.exception.InvalidRequestException;
 import com.healthcare.rest.doctor.dto.DoctorDTO;
-import com.healthcare.rest.visit.VisitService;
+import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @RestController
@@ -34,12 +34,12 @@ class DoctorApi {
 	
 	private DoctorService doctorService;
 	
-	private VisitService visitService;
+	private VisitFacade visitFacade;
 
 	@Autowired
-	public DoctorApi(DoctorService doctorService, VisitService visitService) {
+	public DoctorApi(DoctorService doctorService, VisitFacade visitFacade) {
 		this.doctorService = doctorService;
-		this.visitService = visitService;
+		this.visitFacade = visitFacade;
 	}
 	
 	@GetMapping
@@ -88,6 +88,6 @@ class DoctorApi {
 			@PathVariable long id, 
 			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate startDate, 
 			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-		return visitService.getVisitsByDoctorIdBetweenDates(id, startDate, endDate);
+		return visitFacade.getVisitsByDoctorIdBetweenDates(id, startDate, endDate);
 	}
 }
