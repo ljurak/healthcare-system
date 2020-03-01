@@ -5,15 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import com.healthcare.rest.common.dto.DTOConverter;
 import com.healthcare.rest.patient.dto.PatientDTO;
 import com.healthcare.rest.patient.exception.PatientNotFoundException;
 
-@Service
-@Transactional(readOnly = true)
+@Component
 class PatientServiceImpl implements PatientService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PatientServiceImpl.class);	
@@ -37,7 +35,6 @@ class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
 	public PatientDTO registerPatient(PatientDTO patientDTO) {
 		LOGGER.info("An attempt to register patient: {}", patientDTO);
 		Patient registeredPatient = patientRepo.save(patientConverter.convertFromDTO(patientDTO));
@@ -59,7 +56,6 @@ class PatientServiceImpl implements PatientService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
 	public PatientDTO updatePatient(PatientDTO patientDTO) {
 		LOGGER.info("An attempt to update patient: {}", patientDTO);
 		Patient persistedPatient = patientRepo.findById(patientDTO.getId()).orElseThrow(
