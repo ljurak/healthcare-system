@@ -5,15 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import com.healthcare.rest.common.dto.DTOConverter;
 import com.healthcare.rest.doctor.dto.DoctorDTO;
 import com.healthcare.rest.doctor.exception.DoctorNotFoundException;
 
-@Service
-@Transactional(readOnly = true)
+@Component
 class DoctorServiceImpl implements DoctorService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DoctorServiceImpl.class);
@@ -35,7 +33,6 @@ class DoctorServiceImpl implements DoctorService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
 	public DoctorDTO addDoctor(DoctorDTO doctorDTO) {
 		LOGGER.info("An attempt to add doctor: {}", doctorDTO);
 		Doctor doctor = doctorRepo.save(doctorConverter.convertFromDTO(doctorDTO));
@@ -63,7 +60,6 @@ class DoctorServiceImpl implements DoctorService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
 	public DoctorDTO updateDoctor(DoctorDTO doctorDTO, Long id) {
 		LOGGER.info("An attempt to update doctor: {}", doctorDTO);
 		Doctor persistedDoctor = doctorRepo.findById(id).orElseThrow(
