@@ -24,7 +24,6 @@ import com.healthcare.rest.doctor.dto.DoctorDTO;
 import com.healthcare.rest.doctor.exception.DoctorNotFoundException;
 import com.healthcare.rest.user.LoginApi;
 import com.healthcare.rest.user.SecurityConfig;
-import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @WebMvcTest(
@@ -69,10 +68,7 @@ public class DoctorApiTest {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private DoctorService doctorService;
-	
-	@MockBean
-	private VisitFacade visitFacade;
+	private DoctorFacade doctorFacade;
 	
 	@BeforeAll
 	public static void init() {	
@@ -94,7 +90,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturnListOfDoctorsWhenSendingGetRequest() throws Exception {
 		// given
-		when(doctorService.getDoctors()).thenReturn(List.of(doctorDTO));
+		when(doctorFacade.getDoctors()).thenReturn(List.of(doctorDTO));
 		
 		// when
 		mockMvc.perform(get("/doctors"))
@@ -109,7 +105,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn201WhenSendingValidPostRequest() throws Exception {
 		// given
-		when(doctorService.addDoctor(any())).thenReturn(doctorDTO);
+		when(doctorFacade.addDoctor(any())).thenReturn(doctorDTO);
 		
 		// when
 		mockMvc.perform(post("/doctors")
@@ -125,7 +121,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn400WhenSendingInvalidPostRequest() throws Exception {
 		// given
-		when(doctorService.addDoctor(any())).thenReturn(doctorDTO);
+		when(doctorFacade.addDoctor(any())).thenReturn(doctorDTO);
 		
 		// when
 		mockMvc.perform(post("/doctors")
@@ -142,7 +138,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn400WhenSendingNotReadableJsonPostRequest() throws Exception {
 		// given
-		when(doctorService.addDoctor(any())).thenReturn(doctorDTO);
+		when(doctorFacade.addDoctor(any())).thenReturn(doctorDTO);
 		
 		// when
 		mockMvc.perform(post("/doctors")
@@ -158,7 +154,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturnDoctorWhenSendingGetRequestWithId() throws Exception {
 		// given
-		when(doctorService.getDoctorById(1L)).thenReturn(doctorDTO);	
+		when(doctorFacade.getDoctorById(1L)).thenReturn(doctorDTO);	
 		
 		// when
 		mockMvc.perform(get("/doctors/{id}", 1L))
@@ -172,7 +168,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturnListOfDoctorsByLastnameWhenSendingGetRequestWithParameter() throws Exception {
 		// given
-		when(doctorService.getDoctorsByLastName(any())).thenReturn(List.of(doctorDTO));
+		when(doctorFacade.getDoctorsByLastName(any())).thenReturn(List.of(doctorDTO));
 		
 		// when
 		mockMvc.perform(get("/doctors")
@@ -188,7 +184,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn404WhenSendingGetRequestAndDoctorDoesNotExist() throws Exception {
 		// given
-		when(doctorService.getDoctorById(2L)).thenAnswer(invocation -> {
+		when(doctorFacade.getDoctorById(2L)).thenAnswer(invocation -> {
 			throw new DoctorNotFoundException("Doctor with id: " + invocation.getArgument(0) + " does not exist");
 		});
 		
@@ -204,7 +200,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn200WhenSendingPutRequest() throws Exception {
 		// given
-		when(doctorService.updateDoctor(any(), any())).thenReturn(doctorDTO);
+		when(doctorFacade.updateDoctor(any(), any())).thenReturn(doctorDTO);
 		
 		// when
 		mockMvc.perform(put("/doctors/{id}", 1L)
@@ -220,7 +216,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturnListOfDoctorsVisitsWhenSendingGetRequestWithParameters() throws Exception {
 		// given
-		when(visitFacade.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
+		when(doctorFacade.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
 		
 		// when
 		mockMvc.perform(get("/doctors/3/visits")
@@ -237,7 +233,7 @@ public class DoctorApiTest {
 	@Test
 	public void shouldReturn400WhenSendingGetRequestWithInvalidParameters() throws Exception {
 		// given
-		when(visitFacade.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
+		when(doctorFacade.getVisitsByDoctorIdBetweenDates(any(), any(), any())).thenReturn(List.of(visitDTO));
 		
 		// when
 		mockMvc.perform(get("/doctors/3/visits")

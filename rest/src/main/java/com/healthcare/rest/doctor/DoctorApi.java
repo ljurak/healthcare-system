@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthcare.rest.common.exception.InvalidRequestException;
 import com.healthcare.rest.doctor.dto.DoctorDTO;
-import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
 @RestController
@@ -32,45 +31,42 @@ import com.healthcare.rest.visit.dto.VisitDTO;
 @CrossOrigin
 class DoctorApi {
 	
-	private DoctorService doctorService;
-	
-	private VisitFacade visitFacade;
+	private DoctorFacade doctorFacade;
 
 	@Autowired
-	public DoctorApi(DoctorService doctorService, VisitFacade visitFacade) {
-		this.doctorService = doctorService;
-		this.visitFacade = visitFacade;
+	public DoctorApi(DoctorFacade doctorFacade) {
+		this.doctorFacade = doctorFacade;
 	}
 	
 	@GetMapping
 	public List<DoctorDTO> getDoctors() {
-		return doctorService.getDoctors();
+		return doctorFacade.getDoctors();
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public DoctorDTO processAddingNewDoctor(@RequestBody @Valid DoctorDTO doctorDTO, BindingResult result) {
+	public DoctorDTO addNewDoctor(@RequestBody @Valid DoctorDTO doctorDTO, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		DoctorDTO addedDoctor = doctorService.addDoctor(doctorDTO);
+		DoctorDTO addedDoctor = doctorFacade.addDoctor(doctorDTO);
 		return addedDoctor;
 	}
 	
 	@GetMapping("/{id}")
 	public DoctorDTO getDoctor(@PathVariable long id) {
-		return doctorService.getDoctorById(id);
+		return doctorFacade.getDoctorById(id);
 	}
 	
 	@GetMapping(params = "lastname")
 	public List<DoctorDTO> getDoctorsByLastName(@RequestParam String lastname) {
-		return doctorService.getDoctorsByLastName(lastname);
+		return doctorFacade.getDoctorsByLastName(lastname);
 	}
 	
 	@GetMapping(params = "specialty")
 	public List<DoctorDTO> getDoctorsBySpecialty(@RequestParam String specialty) {
-		return doctorService.getDoctorsBySpecialty(specialty);
+		return doctorFacade.getDoctorsBySpecialty(specialty);
 	}
 	
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -79,7 +75,7 @@ class DoctorApi {
 			throw new InvalidRequestException("Invalid data format", result);
 		}
 		
-		DoctorDTO updatedDoctor = doctorService.updateDoctor(doctorDTO, id);
+		DoctorDTO updatedDoctor = doctorFacade.updateDoctor(doctorDTO, id);
 		return updatedDoctor;
 	}
 	
@@ -88,6 +84,6 @@ class DoctorApi {
 			@PathVariable long id, 
 			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate startDate, 
 			@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-		return visitFacade.getVisitsByDoctorIdBetweenDates(id, startDate, endDate);
+		return doctorFacade.getVisitsByDoctorIdBetweenDates(id, startDate, endDate);
 	}
 }
