@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.healthcare.rest.doctor.dto.DoctorDTO;
+import com.healthcare.rest.doctor.dto.SpecialtyDTO;
 import com.healthcare.rest.visit.VisitFacade;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
@@ -16,10 +17,13 @@ public class DoctorFacade {
 	
 	private DoctorService doctorService;
 	
+	private SpecialtyService specialtyService;
+	
 	private VisitFacade visitFacade;
 
-	public DoctorFacade(DoctorService doctorService, VisitFacade visitFacade) {
+	public DoctorFacade(DoctorService doctorService, SpecialtyService specialtyService, VisitFacade visitFacade) {
 		this.doctorService = doctorService;
+		this.specialtyService = specialtyService;
 		this.visitFacade = visitFacade;
 	}
 	
@@ -41,6 +45,10 @@ public class DoctorFacade {
 	
 	public List<VisitDTO> getVisitsByDoctorIdBetweenDates(Long doctorId, LocalDate startDate, LocalDate endDate) {
 		return visitFacade.getVisitsByDoctorIdBetweenDates(doctorId, startDate, endDate);
+	}
+	
+	public List<SpecialtyDTO> getSpecialties() {
+		return specialtyService.getSpecialties();
 	}
 	
 	@Transactional(readOnly = false)

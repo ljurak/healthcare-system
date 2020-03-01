@@ -3,14 +3,12 @@ package com.healthcare.rest.doctor;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import com.healthcare.rest.common.dto.DTOConverter;
 import com.healthcare.rest.doctor.dto.SpecialtyDTO;
 
-@Service
-@Transactional(readOnly = true)
+@Component
 class SpecialtyServiceImpl implements SpecialtyService {
 	
 	private final SpecialtyRepo specialtyRepo;

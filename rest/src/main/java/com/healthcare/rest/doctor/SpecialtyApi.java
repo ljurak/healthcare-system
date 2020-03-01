@@ -14,14 +14,14 @@ import com.healthcare.rest.doctor.dto.SpecialtyDTO;
 @CrossOrigin
 class SpecialtyApi {
 	
-	private SpecialtyService specialtyService;
+	private DoctorFacade doctorFacade;
 
-	public SpecialtyApi(SpecialtyService specialtyService) {
-		this.specialtyService = specialtyService;
+	public SpecialtyApi(DoctorFacade doctorFacade) {
+		this.doctorFacade = doctorFacade;
 	}
 	
 	@GetMapping
 	public List<SpecialtyDTO> getSpecialties() {
-		return specialtyService.getSpecialties();
+		return doctorFacade.getSpecialties();
 	}
 }
