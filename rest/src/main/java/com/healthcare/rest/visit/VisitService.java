@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.healthcare.rest.visit.dto.VisitDTO;
 
-public interface VisitService {
+interface VisitService {
 	
 	/**
 	 * Adds visit for a patient to the specified doctor

@@ -7,8 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import com.healthcare.rest.common.dto.DTOConverter;
 import com.healthcare.rest.visit.dto.VisitDTO;
@@ -16,8 +15,7 @@ import com.healthcare.rest.visit.dto.VisitStatus;
 import com.healthcare.rest.visit.exception.VisitException;
 import com.healthcare.rest.visit.exception.VisitNotFoundException;
 
-@Service
-@Transactional(readOnly = true)
+@Component
 class VisitServiceImpl implements VisitService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(VisitServiceImpl.class);
@@ -33,7 +31,6 @@ class VisitServiceImpl implements VisitService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
 	public VisitDTO addVisit(VisitDTO visitDTO) {
 		LOGGER.info("An attempt to add visit: {}", visitDTO);
 		validateNewVisit(visitDTO);
@@ -85,7 +82,6 @@ class VisitServiceImpl implements VisitService {
 	}
 
 	@Override
-	@Transactional(readOnly = false)
 	public VisitDTO updateVisit(VisitDTO visitDTO) {
 		LOGGER.info("An attempt to update visit: {}", visitDTO);
 		Visit persistedVisit = visitRepo.findById(visitDTO.getId()).orElseThrow(
