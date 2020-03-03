@@ -5,6 +5,9 @@ public class JwtTokenDTO {
 	private String token;
 	
 	private String refreshToken;
+	
+	public JwtTokenDTO() {
+	}
 
 	public JwtTokenDTO(String token, String refreshToken) {
 		this.token = token;
