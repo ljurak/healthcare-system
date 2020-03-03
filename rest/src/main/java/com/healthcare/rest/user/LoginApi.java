@@ -20,7 +20,7 @@ import com.healthcare.rest.user.dto.LoginDTO;
 
 @RestController
 @CrossOrigin
-public class LoginApi {
+class LoginApi {
 	
 	private AuthenticationManager authenticationManager;
 	
