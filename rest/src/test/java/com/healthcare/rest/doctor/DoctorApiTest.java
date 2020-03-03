@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.healthcare.rest.doctor.dto.DoctorDTO;
 import com.healthcare.rest.doctor.exception.DoctorNotFoundException;
-import com.healthcare.rest.user.LoginApi;
 import com.healthcare.rest.user.SecurityConfig;
 import com.healthcare.rest.visit.dto.VisitDTO;
 
@@ -31,7 +30,7 @@ import com.healthcare.rest.visit.dto.VisitDTO;
 		excludeAutoConfiguration = SecurityAutoConfiguration.class, 
 		excludeFilters = @ComponentScan.Filter(
 			type = FilterType.ASSIGNABLE_TYPE, 
-			classes = { SecurityConfig.class, LoginApi.class }
+			classes = { SecurityConfig.class }
 		) 
 	)
 public class DoctorApiTest {
