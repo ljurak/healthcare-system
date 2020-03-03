@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,12 +17,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthcare.rest.doctor.Doctor;
 import com.healthcare.rest.doctor.DoctorRepo;
+import com.healthcare.rest.user.dto.JwtTokenDTO;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 public class DoctorApiIntegrationTest {
 	
 	private final String validAddDoctorJsonString = "{"
@@ -55,7 +59,11 @@ public class DoctorApiIntegrationTest {
 			+ "\"birthDate\":\"19ec-0h-1i\","
 			+ "\"address\":\"345 Valid Route\","
 			+ "\"phoneNumber\":\"5461239834\","
-			+ "\"email\":null}";	
+			+ "\"email\":null}";
+	
+	private ObjectMapper objectMapper = new ObjectMapper();
+	
+	private String token;
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -63,10 +71,24 @@ public class DoctorApiIntegrationTest {
 	@Autowired
 	private DoctorRepo doctorRepo;
 	
+	@BeforeEach
+	public void setUp() throws Exception {
+		String username = "admin";
+		String password = "admin";
+		String requestBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+		
+		MvcResult result = mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(requestBody))
+				.andReturn();
+		
+		token = objectMapper.readValue(result.getResponse().getContentAsString(), JwtTokenDTO.class).getToken();
+	}
+	
 	@Test
 	public void shouldReturnListOfDoctorsWhenSendingGetRequest() throws Exception {
 		// when
-		mockMvc.perform(get("/doctors"))
+		mockMvc.perform(get("/doctors").header("Authorization", "Bearer " + token))
 			
 		// then
 		.andExpect(status().isOk())
@@ -81,7 +103,8 @@ public class DoctorApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/doctors")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(validAddDoctorJsonString))
+				.content(validAddDoctorJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isCreated())
@@ -100,7 +123,8 @@ public class DoctorApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/doctors")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(invalidAddDoctorJsonString))
+				.content(invalidAddDoctorJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isBadRequest())
@@ -115,7 +139,8 @@ public class DoctorApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/doctors")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(notReadableDateJsonString))
+				.content(notReadableDateJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isBadRequest())
@@ -127,7 +152,7 @@ public class DoctorApiIntegrationTest {
 	@Test
 	public void shouldReturnDoctorWhenSendingGetRequestWithId() throws Exception {
 		// when
-		mockMvc.perform(get("/doctors/{id}", 1L))
+		mockMvc.perform(get("/doctors/{id}", 1L).header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -140,7 +165,8 @@ public class DoctorApiIntegrationTest {
 	public void shouldReturnListOfDoctorsByLastnameWhenSendingGetRequestWithParameter() throws Exception {		
 		// when
 		mockMvc.perform(get("/doctors")
-				.param("lastname", "oo"))
+				.param("lastname", "oo")
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -153,7 +179,7 @@ public class DoctorApiIntegrationTest {
 	@Test
 	public void shouldReturn404WhenSendingGetRequestAndDoctorDoesNotExist() throws Exception {		
 		// when
-		mockMvc.perform(get("/doctors/{id}", 25L))
+		mockMvc.perform(get("/doctors/{id}", 25L).header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isNotFound())
@@ -167,7 +193,8 @@ public class DoctorApiIntegrationTest {
 		// when
 		mockMvc.perform(put("/doctors/{id}", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(validUpdateDoctorJsonString))
+				.content(validUpdateDoctorJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -187,7 +214,8 @@ public class DoctorApiIntegrationTest {
 		// when
 		mockMvc.perform(get("/doctors/3/visits")
 				.param("startDate", "2019-10-12")
-				.param("endDate", "2020-02-17"))
+				.param("endDate", "2020-02-17")
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -202,7 +230,8 @@ public class DoctorApiIntegrationTest {
 		// when
 		mockMvc.perform(get("/doctors/3/visits")
 				.param("startDate", "2019-1-12")
-				.param("endDate", "2020-02-1"))
+				.param("endDate", "2020-02-1")
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isBadRequest());

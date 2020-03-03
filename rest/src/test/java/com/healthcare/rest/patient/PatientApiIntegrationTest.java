@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,9 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.healthcare.rest.user.dto.JwtTokenDTO;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc
 public class PatientApiIntegrationTest {
 	
 	private final String validAddPatientJsonString = "{"
@@ -75,10 +80,28 @@ public class PatientApiIntegrationTest {
 	@Autowired
 	private PatientRepo patientRepo;
 	
+	private ObjectMapper objectMapper = new ObjectMapper();
+	
+	private String token;
+	
+	@BeforeEach
+	public void setUp() throws Exception {
+		String username = "admin";
+		String password = "admin";
+		String requestBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
+		
+		MvcResult result = mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(requestBody))
+				.andReturn();
+		
+		token = objectMapper.readValue(result.getResponse().getContentAsString(), JwtTokenDTO.class).getToken();
+	}
+	
 	@Test
 	public void shouldReturnListOfPatientsWhenSendingGetRequest() throws Exception {		
 		// when
-		mockMvc.perform(get("/patients"))
+		mockMvc.perform(get("/patients").header("Authorization", "Bearer " + token))
 			
 		// then
 		.andExpect(status().isOk())
@@ -93,7 +116,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(validAddPatientJsonString))
+				.content(validAddPatientJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isCreated())
@@ -112,7 +136,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(invalidAddPatientJsonString))
+				.content(invalidAddPatientJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isBadRequest())
@@ -127,7 +152,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/patients")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(notReadableDateJsonString))
+				.content(notReadableDateJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isBadRequest())
@@ -139,7 +165,7 @@ public class PatientApiIntegrationTest {
 	@Test
 	public void shouldReturnPatientWhenSendingGetRequestWithId() throws Exception {		
 		// when
-		mockMvc.perform(get("/patients/{id}", 1L))
+		mockMvc.perform(get("/patients/{id}", 1L).header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -152,7 +178,8 @@ public class PatientApiIntegrationTest {
 	public void shouldReturnListOfPatientsByLastnameWhenSendingGetRequestWithParameter() throws Exception {		
 		// when
 		mockMvc.perform(get("/patients")
-				.param("lastname", "ei"))
+				.param("lastname", "ei")
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -165,7 +192,7 @@ public class PatientApiIntegrationTest {
 	@Test
 	public void shouldReturn404WhenSendingGetRequestAndPatientDoesNotExist() throws Exception {		
 		// when
-		mockMvc.perform(get("/patients/{id}", 25L))
+		mockMvc.perform(get("/patients/{id}", 25L).header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isNotFound())
@@ -179,7 +206,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(put("/patients/{id}", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(validUpdatePatientJsonString))
+				.content(validUpdatePatientJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isOk())
@@ -200,7 +228,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/patients/8/visits")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(validAddVisitJsonString))
+				.content(validAddVisitJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isCreated())
@@ -214,7 +243,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/patients/8/visits")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(unavailableAddVisitJsonString))
+				.content(unavailableAddVisitJsonString)
+				.header("Authorization", "Bearer " + token))
 			
 		// then
 		.andExpect(status().isBadRequest())
@@ -227,7 +257,8 @@ public class PatientApiIntegrationTest {
 		// when
 		mockMvc.perform(post("/patients/8/visits")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(invalidAddVisitJsonString))
+				.content(invalidAddVisitJsonString)
+				.header("Authorization", "Bearer " + token))
 		
 		// then
 		.andExpect(status().isBadRequest())
