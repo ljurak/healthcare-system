@@ -19,11 +19,10 @@ const App = () => {
             		<SideBar />
             		<main className="main-content">
             			<Switch>
-                            <PrivateRoute exact path="/" component={MainContent} />
                             <PrivateRoute path="/patients" component={PatientComponent} />
                             <PrivateRoute path="/doctors" component={DoctorComponent} />
                             <Route path="/login" component={LoginPage} />
-                            <Redirect from="*" to="/" />
+                            <Redirect from="*" to="/patients" />
                         </Switch>
             		</main>	                	
                 </div>

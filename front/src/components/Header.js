@@ -20,9 +20,6 @@ const Header = ({ isLoggedIn, logout, history }) => {
 				<nav className="page-nav">
 		            <ul className="page-nav-list">
 			            <li className="page-nav-list-item">
-			            	<NavLink exact to="/">Home</NavLink>
-			            </li>
-			            <li className="page-nav-list-item">
 			            	<NavLink to="/patients">Patients</NavLink>
 			            </li>
 			            <li className="page-nav-list-item">
