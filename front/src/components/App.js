@@ -4,7 +4,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Header from './Header';
 import SideBar from './SideBar';
 import Footer from './Footer';
-import MainContent from './MainContent';
 import PatientComponent from './patients/PatientComponent';
 import DoctorComponent from './doctors/DoctorComponent';
 import LoginPage from './LoginPage';
